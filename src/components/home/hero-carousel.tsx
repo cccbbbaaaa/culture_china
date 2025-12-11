@@ -64,7 +64,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
   const imageAreaRef = useRef<HTMLDivElement | null>(null);
   const imageSizeCacheRef = useRef<Map<string, { width: number; height: number }>>(new Map());
   // 客户端组件中，setInterval 返回 number / In client components, setInterval returns number
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<number | null>(null);
   const safeIndex = safeSlides.length === 0 ? 0 : Math.min(activeIndex, safeSlides.length - 1);
   const activeSlide = safeSlides[safeIndex];
   const activeSrc = activeSlide?.src ?? "";
