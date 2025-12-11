@@ -22,17 +22,17 @@
 
 *目标：点击导航栏菜单，能跳转到对应页面，页面有基础的标题和占位符。*
 
-* [ ] **首页 (Homepage) 框架**
-  * [ ] 开发首屏 Hero Banner (预留图片轮播位置)。
-  * [ ] 搭建 "文化中国介绍"、"近期活动"、"校友师资" 三大板块的容器布局。
-* [ ] **静态内容页 (Static Pages)**
-  * [ ] 创建 `(intro)/mission`, `(intro)/purpose`, `(intro)/center` 等静态页面路由。
-  * [ ] 实现基础的图文排版组件 (Typography Layout)。
-* [ ] **列表/聚合页 (List Pages)**
-  * [ ] 搭建 "学员风采" 列表页骨架 (Grid Layout)。
-  * [ ] 搭建 "特色活动/课程教学" 资讯流骨架 (Card Feed)。
-* [ ] **招生页 (Admissions)**
-  * [ ] 创建招生信息展示页。
+* [x] **首页 (Homepage) 框架**
+  * [x] 开发首屏 Hero Banner (预留图片轮播位置)。
+  * [x] 搭建 "文化中国介绍"、"近期活动"、"校友师资" 三大板块的容器布局。
+* [x] **静态内容页 (Static Pages)**
+  * [x] 创建 `/intro/mission`, `/intro/purpose`, `/intro/center` 等静态页面路由。
+  * [x] 实现基础的图文排版组件 (Typography Layout)。
+* [x] **列表/聚合页 (List Pages)**
+  * [x] 搭建 "学员风采" 列表页骨架 (Grid Layout)。
+  * [x] 搭建 "特色活动/课程教学" 资讯流骨架 (Card Feed)。
+* [x] **招生页 (Admissions)**
+  * [x] 创建招生信息展示页。
 
 ## Phase 2: 后端与管理后台 (Backend & Admin)
 
