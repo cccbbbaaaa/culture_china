@@ -70,7 +70,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="bg-ink/5 py-8">
+      <div className="bg-gradient-to-b from-primary/10 via-canvas to-canvas py-10">
         <HeroCarousel slides={slides} />
       </div>
 

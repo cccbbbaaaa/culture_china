@@ -97,7 +97,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           )}
         >
           {/* 图像区域：固定高度 clamp，避免缩放比下失控 / Image area with clamp height */}
-          <div className="relative h-[clamp(320px,52vh,520px)] bg-ink">
+          <div className="relative h-[clamp(380px,58vh,620px)] bg-primary/10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.src}
@@ -109,13 +109,13 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
               >
                 <Image
                   alt={activeSlide.alt}
-                  className="object-cover"
+                  className="object-contain"
                   fill
                   priority
                   sizes="(min-width: 1536px) 1536px, 100vw"
                   src={activeSlide.src}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-primary/10 to-transparent" />
               </motion.div>
             </AnimatePresence>
 
@@ -124,7 +124,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
               <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between px-3 sm:px-6 lg:px-8">
                 <button
                   aria-label="上一张 / Previous"
-                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-canvas/25 bg-ink/30 text-canvas backdrop-blur transition hover:bg-ink/45"
+                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-canvas/70 text-ink backdrop-blur transition hover:bg-canvas"
                   onClick={goPrev}
                   type="button"
                 >
@@ -132,7 +132,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                 </button>
                 <button
                   aria-label="下一张 / Next"
-                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-canvas/25 bg-ink/30 text-canvas backdrop-blur transition hover:bg-ink/45"
+                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-canvas/70 text-ink backdrop-blur transition hover:bg-canvas"
                   onClick={goNext}
                   type="button"
                 >
@@ -142,7 +142,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
             </div>
 
             {/* Dots：放到底部中间 / Dots */}
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-ink/40 px-3 py-2 backdrop-blur">
+            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-canvas/70 px-3 py-2 backdrop-blur">
               {safeSlides.map((slide, index) => {
                 const isActive = index === activeIndex;
                 return (
@@ -151,7 +151,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                     aria-label={`跳到第 ${index + 1} 张 / Go to slide ${index + 1}`}
                     className={cn(
                       "h-2.5 w-2.5 rounded-full transition-all",
-                      isActive ? "bg-accent" : "bg-canvas/40 hover:bg-canvas/70"
+                      isActive ? "bg-primary" : "bg-ink/20 hover:bg-ink/35"
                     )}
                     onClick={() => setActiveIndex(index)}
                     type="button"
@@ -162,7 +162,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           </div>
 
           {/* 文案区域：上图下文，更干净 / Text area below image */}
-          <div className="px-6 py-7 sm:px-10 sm:py-9">
+          <div className="px-6 py-7 sm:px-10 sm:py-10">
             <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
             <h1 className="mt-3 text-[clamp(1.9rem,3vw,3.1rem)] font-serif font-semibold leading-tight text-ink">
               {activeSlide.title}
