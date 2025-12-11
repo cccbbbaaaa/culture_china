@@ -32,6 +32,7 @@
 **浙江大学晨兴文化中国人才计划**是一个非学分制、精英化的跨学科教育项目，旨在培养具有全球视野且认同中华传统文化的未来领袖。
 
 本项目为其官方网站，采用**混合内容策略**：
+
 - **核心静态内容**：本地化存储（使命背景、培养宗旨、师资名录等）
 - **时效性内容**：通过外部链接引用微信公众号推文（新闻、活动、随笔）
 
@@ -55,24 +56,23 @@ graph TB
         A --> C[Client Components]
         B --> D[直接 DB 查询]
         C --> E[Server Actions]
-        C --> F[React Query]
+        C --> F[API Routes]
     end
-    
+  
     subgraph "UI 层 UI Layer"
         G[Tailwind CSS] --> H[shadcn/ui]
         H --> I[自定义组件]
     end
-    
+  
     subgraph "数据层 Data Layer"
         J[Drizzle ORM] --> K[PostgreSQL]
         J --> L[Zod 校验]
     end
-    
+  
     D --> J
     E --> J
-    F --> M[API Routes]
-    M --> J
-    
+    F --> J
+  
     style A fill:#962E2A,color:#fff
     style J fill:#E2BA3E,color:#000
     style K fill:#1F2937,color:#fff
@@ -87,12 +87,12 @@ sequenceDiagram
     participant DB as Database
     participant CC as Client Component
     participant SA as Server Action
-    
+  
     User->>RSC: 访问页面
     RSC->>DB: 直接查询数据
     DB-->>RSC: 返回数据
     RSC-->>User: 渲染页面
-    
+  
     User->>CC: 交互操作
     CC->>SA: 调用 Server Action
     SA->>DB: 数据变更
@@ -134,7 +134,7 @@ src/
 ├── app/                          # Next.js App Router
 │   ├── api/                      # API Routes
 │   │   └── health/db/            # 数据库健康检查
-│   ├── (intro)/                  # 计划介绍相关页面
+│   ├── intro/                    # 计划介绍相关页面
 │   │   ├── mission/              # 使命背景
 │   │   ├── purpose/              # 培养宗旨
 │   │   └── center/               # 儒商中心
@@ -153,6 +153,7 @@ src/
 │   │   ├── header.tsx            # 导航栏
 │   │   ├── footer.tsx            # 页脚
 │   │   ├── page-shell.tsx        # 页面容器/标题/分区
+│   │   ├── page-enter.tsx        # 页面进入动画
 │   │   ├── image-lightbox.tsx    # 图片放大预览
 │   │   └── entry-gate.tsx        # 开屏遮罩（已禁用）
 │   └── ui/                       # shadcn/ui 基础组件
@@ -190,27 +191,29 @@ src/
 ### 安装步骤
 
 1. **克隆仓库并安装依赖**
+
    ```bash
    git clone <repository-url>
    cd culture_china/project
    pnpm install
    ```
-
 2. **配置环境变量**
+
    ```bash
    cp env.example .env
    ```
-   
+
    编辑 `.env`，设置数据库连接：
+
    ```env
    # 本地开发
    DATABASE_URL=postgresql://dev:devpass@localhost:5433/culture_china
-   
+
    # 或 Vercel Postgres（自动提供 POSTGRES_URL）
    # POSTGRES_URL=postgres://...
    ```
-
 3. **启动数据库**（Docker 示例）
+
    ```bash
    docker run --name culture-china-db \
      -e POSTGRES_USER=dev \
@@ -218,31 +221,31 @@ src/
      -e POSTGRES_DB=culture_china \
      -p 5433:5432 -d postgres:15
    ```
-
 4. **执行数据库迁移**
+
    ```bash
    pnpm db:generate   # 基于 schema.ts 生成 SQL
    pnpm db:migrate   # 执行迁移
    ```
-
 5. **启动开发服务器**
+
    ```bash
    pnpm dev
    ```
-   
+
    访问 `http://localhost:3000`，并通过 `http://localhost:3000/api/health/db` 检查数据库连通性。
 
 ### 常用命令
 
-| 命令 | 说明 |
-| ---- | ---- |
-| `pnpm dev` | 启动开发服务器（热重载） |
-| `pnpm build` | 生产构建 |
-| `pnpm start` | 本地预览生产构建 |
-| `pnpm lint` | 运行 ESLint |
-| `pnpm db:generate` | 生成 Drizzle 迁移文件 |
-| `pnpm db:migrate` | 执行数据库迁移 |
-| `pnpm db:studio` | 打开 Drizzle Studio（可视化数据库） |
+| 命令                 | 说明                                |
+| -------------------- | ----------------------------------- |
+| `pnpm dev`         | 启动开发服务器（热重载）            |
+| `pnpm build`       | 生产构建                            |
+| `pnpm start`       | 本地预览生产构建                    |
+| `pnpm lint`        | 运行 ESLint                         |
+| `pnpm db:generate` | 生成 Drizzle 迁移文件               |
+| `pnpm db:migrate`  | 执行数据库迁移                      |
+| `pnpm db:studio`   | 打开 Drizzle Studio（可视化数据库） |
 
 ---
 
@@ -261,7 +264,7 @@ culture_china/project/
 ├── src/
 │   ├── app/                     # Next.js App Router
 │   │   ├── api/                 # API Routes
-│   │   ├── (intro)/             # 计划介绍路由组
+│   │   ├── intro/               # 计划介绍页面
 │   │   ├── activities/          # 特色活动
 │   │   ├── admissions/          # 招生信息
 │   │   ├── alumni/              # 学员风采
@@ -298,15 +301,15 @@ culture_china/project/
 
 ### 关键文件说明
 
-| 文件/目录 | 说明 |
-| --------- | ---- |
-| `src/app/` | Next.js App Router 路由与页面 |
-| `src/components/shared/` | 跨页面共享组件（Header/Footer/PageShell） |
-| `src/components/home/` | 首页专用组件（HeroCarousel） |
-| `src/db/schema.ts` | 数据库模型定义（resources/alumni/faculty） |
-| `src/lib/env.ts` | 环境变量 Zod 校验（支持 Vercel Postgres） |
-| `drizzle.config.ts` | Drizzle CLI 配置 |
-| `components.json` | shadcn/ui 组件配置 |
+| 文件/目录                  | 说明                                       |
+| -------------------------- | ------------------------------------------ |
+| `src/app/`               | Next.js App Router 路由与页面              |
+| `src/components/shared/` | 跨页面共享组件（Header/Footer/PageShell）  |
+| `src/components/home/`   | 首页专用组件（HeroCarousel）               |
+| `src/db/schema.ts`       | 数据库模型定义（resources/alumni/faculty） |
+| `src/lib/env.ts`         | 环境变量 Zod 校验（支持 Vercel Postgres）  |
+| `drizzle.config.ts`      | Drizzle CLI 配置                           |
+| `components.json`        | shadcn/ui 组件配置                         |
 
 ---
 
@@ -324,10 +327,9 @@ culture_china/project/
 graph LR
     A[Server Component] -->|直接查询| B[Database]
     C[Client Component] -->|调用| D[Server Action]
-    C -->|或| E[React Query]
+    C -->|或| E[API Route]
     D --> B
-    E --> F[API Route]
-    F --> B
+    E --> B
 ```
 
 ### 样式规范
@@ -345,13 +347,13 @@ graph LR
 
 ## 📚 文档索引
 
-| 文档 | 说明 |
-| ---- | ---- |
-| [`docs/basic_rule/ARCHITECTURE.md`](./docs/basic_rule/ARCHITECTURE.md) | 技术架构规范 |
+| 文档                                                                    | 说明           |
+| ----------------------------------------------------------------------- | -------------- |
+| [`docs/basic_rule/ARCHITECTURE.md`](./docs/basic_rule/ARCHITECTURE.md)   | 技术架构规范   |
 | [`docs/basic_rule/DESIGH_SYSTEM.md`](./docs/basic_rule/DESIGH_SYSTEM.md) | 视觉与设计系统 |
-| [`docs/plan/FEATURE_LIST.md`](./docs/plan/FEATURE_LIST.md) | 功能规划清单 |
-| [`docs/task/TODO.md`](./docs/task/TODO.md) | 阶段性开发进度 |
-| [`docs/background/intro.md`](./docs/background/intro.md) | 项目背景介绍 |
+| [`docs/plan/FEATURE_LIST.md`](./docs/plan/FEATURE_LIST.md)               | 功能规划清单   |
+| [`docs/task/TODO.md`](./docs/task/TODO.md)                               | 阶段性开发进度 |
+| [`docs/background/intro.md`](./docs/background/intro.md)                 | 项目背景介绍   |
 
 ---
 
@@ -389,6 +391,5 @@ graph TD
 
 **© 2025 浙江大学晨兴文化中国人才计划**
 
-Made with ❤️ using Next.js + TypeScript
 
 </div>
