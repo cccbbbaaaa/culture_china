@@ -2,7 +2,7 @@
 
 ![文化中国 Logo](./public/images/branding/logo.png)
 
-# Culture China · 晨兴文化中国人才计划
+# Cultural China · 晨兴文化中国人才计划
 
 **Zhejiang University Morningside Cultural China Scholars Program**
 
@@ -35,6 +35,7 @@
 
 - **核心静态内容**：本地化存储（使命背景、培养宗旨、师资名录等）
 - **时效性内容**：通过外部链接引用微信公众号推文（新闻、活动、随笔）
+- **多语言支持**：支持中英双语版本（当前优先完成中文版本，英文版本待 Phase 5 实施）
 
 ### 核心特性
 
@@ -390,6 +391,5 @@ graph TD
 <div align="center">
 
 **© 2025 浙江大学晨兴文化中国人才计划**
-
 
 </div>

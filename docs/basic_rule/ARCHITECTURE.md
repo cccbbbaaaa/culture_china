@@ -12,6 +12,7 @@
 * **Framework** : Next.js 14+ (App Router)
 * **Language** : TypeScript 5+ (Strict Mode)
 * **Package Manager** : pnpm
+* **Internationalization** : 待定（Phase 5，优先完成中文版本）
 
 ### 2.2 前端 (Frontend)
 
