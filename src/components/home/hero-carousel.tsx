@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -63,19 +63,34 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
   const [fitMode, setFitMode] = useState<FitMode>("cover");
   const imageAreaRef = useRef<HTMLDivElement | null>(null);
   const imageSizeCacheRef = useRef<Map<string, { width: number; height: number }>>(new Map());
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const safeIndex = safeSlides.length === 0 ? 0 : Math.min(activeIndex, safeSlides.length - 1);
   const activeSlide = safeSlides[safeIndex];
   const activeSrc = activeSlide?.src ?? "";
 
-  useEffect(() => {
+  // 清除并重新设置自动滚动定时器 / Clear and reset auto-scroll timer
+  const resetAutoScroll = useCallback(() => {
+    if (timerRef.current) {
+      window.clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
     if (safeSlides.length <= 1) return;
 
-    const timer = window.setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % safeSlides.length);
     }, 6000);
-
-    return () => window.clearInterval(timer);
   }, [safeSlides.length]);
+
+  useEffect(() => {
+    resetAutoScroll();
+    return () => {
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [resetAutoScroll]);
 
   useEffect(() => {
     if (!activeSrc) return;
@@ -140,10 +155,12 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
 
   const goPrev = () => {
     setActiveIndex((prev) => (prev - 1 + safeSlides.length) % safeSlides.length);
+    resetAutoScroll(); // 重置定时器 / Reset timer
   };
 
   const goNext = () => {
     setActiveIndex((prev) => (prev + 1) % safeSlides.length);
+    resetAutoScroll(); // 重置定时器 / Reset timer
   };
 
   return (
@@ -222,7 +239,10 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                       "h-2.5 w-2.5 rounded-full transition-all",
                       isActive ? "bg-primary" : "bg-ink/20 hover:bg-ink/35"
                     )}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => {
+                      setActiveIndex(index);
+                      resetAutoScroll(); // 重置定时器 / Reset timer
+                    }}
                     type="button"
                   />
                 );
