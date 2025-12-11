@@ -23,8 +23,8 @@ export default function HomePage() {
       subtitle: "Zhejiang University Morningside Cultural China Scholars Program",
     },
     {
-      src: "/images/events/visits/2023-us.jpg",
-      alt: "海外访学剪影 / Overseas study visit moment",
+      src: "/images/events/visits/2024-hk1.jpg",
+      alt: "访学交流剪影 / Study visit moment",
       title: "以经典为骨，以世界为镜",
       subtitle: "以人文与学术的方式，培养具有全球视野的未来领袖。",
     },
@@ -33,6 +33,12 @@ export default function HomePage() {
       alt: "课程教学现场 / Curriculum session moment",
       title: "知行合一，笃行致远",
       subtitle: "认知 → 体验 → 反思 → 笃行",
+    },
+    {
+      src: "/images/events/visits/2023-us2.jpg",
+      alt: "海外访学剪影 / Overseas study visit moment",
+      title: "在世界现场，回到文化中国",
+      subtitle: "以体验与反思连接传统与当代。",
     },
   ];
 
@@ -59,9 +65,9 @@ export default function HomePage() {
 
   return (
     <div>
-      <PageShell className="pt-6">
-        <HeroCarousel slides={slides} />
+      <HeroCarousel isFullBleed slides={slides} />
 
+      <PageShell className="pt-10">
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
             <h2 className="text-section text-ink">文化中国介绍 / Project Overview</h2>
@@ -141,7 +147,15 @@ export default function HomePage() {
               </p>
 
               <div className="mt-6 flex gap-4 overflow-x-auto pb-2">
-                {Array.from({ length: 10 }).map((_, index) => (
+                {(
+                  [
+                    "/images/people/faculty/duweiming.png",
+                    "/images/people/faculty/zhengpeikai.png",
+                    "/images/people/faculty/liangyuansheng.png",
+                    "/images/people/faculty/chenqizong.jpg",
+                    "/images/people/faculty/jiangyuexiang.jpeg",
+                  ] as const
+                ).map((src, index) => (
                   <div key={index} className="min-w-[120px]">
                     <div className="relative h-16 w-16 overflow-hidden rounded-full border border-stone">
                       <Image
@@ -149,7 +163,7 @@ export default function HomePage() {
                         className="object-cover"
                         fill
                         sizes="64px"
-                        src="/images/branding/icon.jpg"
+                        src={src}
                       />
                     </div>
                     <p className="mt-2 text-sm font-medium text-ink">导师 {index + 1}</p>

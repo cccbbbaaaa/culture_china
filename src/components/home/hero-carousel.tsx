@@ -30,6 +30,10 @@ export interface HeroSlide {
 
 export interface HeroCarouselProps {
   slides: HeroSlide[];
+  /**
+   * 是否全宽铺满（用于首页首屏）/ Full-bleed layout for hero
+   */
+  isFullBleed?: boolean;
   className?: string;
 }
 
@@ -37,7 +41,7 @@ export interface HeroCarouselProps {
  * 首页首屏轮播（纯展示交互，不涉及数据请求）
  * Hero carousel (UI-only interaction, no data fetching)
  */
-export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
+export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCarouselProps) => {
   const safeSlides = useMemo(() => (slides.length > 0 ? slides : []), [slides]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -53,7 +57,13 @@ export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
 
   if (safeSlides.length === 0) {
     return (
-      <div className={cn("relative overflow-hidden rounded-2xl border border-stone bg-stone/40", className)}>
+      <div
+        className={cn(
+          "relative overflow-hidden border border-stone bg-stone/40",
+          isFullBleed ? "rounded-none border-x-0" : "rounded-2xl",
+          className
+        )}
+      >
         <div className="flex h-[520px] items-center justify-center px-6 text-center">
           <div>
             <p className="text-sm text-ink/70">暂无轮播图片</p>
@@ -74,8 +84,13 @@ export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
 
   return (
     <section className={cn("relative", className)} aria-label="首页轮播 / Homepage hero carousel">
-      <div className="relative overflow-hidden rounded-2xl border border-stone bg-ink">
-        <div className="relative h-[520px]">
+      <div
+        className={cn(
+          "relative overflow-hidden border border-stone bg-ink",
+          isFullBleed ? "rounded-none border-x-0" : "rounded-2xl"
+        )}
+      >
+        <div className={cn("relative", isFullBleed ? "h-[560px] sm:h-[640px]" : "h-[520px]")}>
           {safeSlides.map((slide, index) => {
             const isActive = index === activeIndex;
             return (
@@ -91,7 +106,7 @@ export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
                   className="object-cover"
                   fill
                   priority={index === 0}
-                  sizes="(min-width: 1024px) 1280px, 100vw"
+                  sizes="100vw"
                   src={slide.src}
                 />
 
@@ -99,7 +114,7 @@ export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/20" />
 
                 <div className="absolute inset-0 flex items-end">
-                  <div className="w-full p-6 sm:p-10">
+                  <div className="mx-auto w-full max-w-screen-2xl px-4 pb-10 pt-6 sm:px-6 sm:pb-12 lg:px-8">
                     <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
                     <h1 className="mt-3 max-w-3xl text-4xl font-serif font-semibold leading-tight text-canvas sm:text-5xl">
                       {slide.title}
@@ -126,30 +141,32 @@ export const HeroCarousel = ({ slides, className }: HeroCarouselProps) => {
         </div>
 
         {/* 控制按钮 / Controls */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3">
-          <div className="pointer-events-auto">
-            <Button
-              aria-label="上一张 / Previous"
-              className="bg-canvas/10 text-canvas hover:bg-canvas/20"
-              onClick={goPrev}
-              size="icon"
-              type="button"
-              variant="ghost"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="pointer-events-auto">
-            <Button
-              aria-label="下一张 / Next"
-              className="bg-canvas/10 text-canvas hover:bg-canvas/20"
-              onClick={goNext}
-              size="icon"
-              type="button"
-              variant="ghost"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
+        <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
+          <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between px-3 sm:px-6 lg:px-8">
+            <div className="pointer-events-auto">
+              <Button
+                aria-label="上一张 / Previous"
+                className="bg-canvas/10 text-canvas hover:bg-canvas/20"
+                onClick={goPrev}
+                size="icon"
+                type="button"
+                variant="ghost"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="pointer-events-auto">
+              <Button
+                aria-label="下一张 / Next"
+                className="bg-canvas/10 text-canvas hover:bg-canvas/20"
+                onClick={goNext}
+                size="icon"
+                type="button"
+                variant="ghost"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
 

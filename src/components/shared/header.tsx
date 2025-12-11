@@ -22,7 +22,7 @@ export const Header = () => {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-stone bg-canvas/80 backdrop-blur-md">
-      <nav aria-label="Global" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Global" className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo / 标识 Logo */}
           <div className="flex items-center">

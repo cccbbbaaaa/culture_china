@@ -4,7 +4,7 @@ import Link from "next/link";
 export const Footer = () => {
   return (
     <footer className="mt-auto bg-ink text-canvas">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div className="mx-auto grid max-w-screen-2xl grid-cols-1 gap-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
         {/* 项目信息 / About */}
         <div>
           <h3 className="mb-4 text-lg font-serif font-semibold">关于我们</h3>
@@ -60,7 +60,7 @@ export const Footer = () => {
 
       {/* 版权信息 / Copyright */}
       <div className="border-t border-canvas/20">
-        <div className="mx-auto max-w-7xl px-4 py-6 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-2xl px-4 py-6 text-center sm:px-6 lg:px-8">
           <p className="text-sm text-canvas/60">
             © {new Date().getFullYear()} 浙江大学晨兴文化中国人才计划. All rights reserved.
           </p>
