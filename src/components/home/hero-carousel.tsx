@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -40,6 +40,19 @@ export interface HeroCarouselProps {
   className?: string;
 }
 
+type FitMode = "cover" | "contain";
+
+const loadImageSize = (src: string): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+    img.onerror = () => reject(new Error("Failed to load image"));
+    img.src = src;
+  });
+};
+
 /**
  * 首页首屏轮播（纯展示交互，不涉及数据请求）
  * Hero carousel (UI-only interaction, no data fetching)
@@ -47,6 +60,12 @@ export interface HeroCarouselProps {
 export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCarouselProps) => {
   const safeSlides = useMemo(() => (slides.length > 0 ? slides : []), [slides]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [fitMode, setFitMode] = useState<FitMode>("cover");
+  const imageAreaRef = useRef<HTMLDivElement | null>(null);
+  const imageSizeCacheRef = useRef<Map<string, { width: number; height: number }>>(new Map());
+  const safeIndex = safeSlides.length === 0 ? 0 : Math.min(activeIndex, safeSlides.length - 1);
+  const activeSlide = safeSlides[safeIndex];
+  const activeSrc = activeSlide?.src ?? "";
 
   useEffect(() => {
     if (safeSlides.length <= 1) return;
@@ -57,6 +76,48 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
 
     return () => window.clearInterval(timer);
   }, [safeSlides.length]);
+
+  useEffect(() => {
+    if (!activeSrc) return;
+    const el = imageAreaRef.current;
+    if (!el) return;
+
+    let isCancelled = false;
+
+    const decideFit = (containerWidth: number, containerHeight: number, imageWidth: number, imageHeight: number) => {
+      // 计算 cover 与 contain 的比例差，差越大表示 cover 裁切越多 / ratio larger => more cropping if cover
+      const containScale = Math.min(containerWidth / imageWidth, containerHeight / imageHeight);
+      const coverScale = Math.max(containerWidth / imageWidth, containerHeight / imageHeight);
+      const ratio = coverScale / Math.max(containScale, 1e-6);
+
+      // 经验阈值：倾向 cover（减少留白），但避免过度裁切 / Prefer cover to reduce whitespace but avoid heavy crop
+      return ratio <= 1.3 ? ("cover" as const) : ("contain" as const);
+    };
+
+    const run = async () => {
+      const rect = el.getBoundingClientRect();
+      const containerWidth = Math.max(rect.width, 1);
+      const containerHeight = Math.max(rect.height, 1);
+
+      const cached = imageSizeCacheRef.current.get(activeSrc);
+      const size = cached ?? (await loadImageSize(activeSrc));
+      imageSizeCacheRef.current.set(activeSrc, size);
+
+      const next = decideFit(containerWidth, containerHeight, size.width, size.height);
+      if (!isCancelled) setFitMode(next);
+    };
+
+    const observer = new ResizeObserver(() => {
+      void run();
+    });
+    observer.observe(el);
+    void run();
+
+    return () => {
+      isCancelled = true;
+      observer.disconnect();
+    };
+  }, [activeSrc]);
 
   if (safeSlides.length === 0) {
     return (
@@ -85,8 +146,6 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
     setActiveIndex((prev) => (prev + 1) % safeSlides.length);
   };
 
-  const activeSlide = safeSlides[activeIndex];
-
   return (
     <section className={cn("relative", className)} aria-label="首页轮播 / Homepage hero carousel">
       <div className={cn("mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8", isFullBleed ? "max-w-none px-0" : null)}>
@@ -97,7 +156,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           )}
         >
           {/* 图像区域：固定高度 clamp，避免缩放比下失控 / Image area with clamp height */}
-          <div className="relative h-[clamp(380px,58vh,620px)] bg-canvas">
+          <div className="relative h-[clamp(380px,58vh,620px)] bg-canvas" ref={imageAreaRef}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.src}
@@ -119,7 +178,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
 
                 <Image
                   alt={activeSlide.alt}
-                  className="object-contain"
+                  className={cn("transition-[filter] duration-300", fitMode === "cover" ? "object-cover" : "object-contain")}
                   fill
                   priority
                   sizes="(min-width: 1536px) 1536px, 100vw"
@@ -189,3 +248,4 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
     </section>
   );
 };
+
