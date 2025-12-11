@@ -97,7 +97,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           )}
         >
           {/* 图像区域：固定高度 clamp，避免缩放比下失控 / Image area with clamp height */}
-          <div className="relative h-[clamp(380px,58vh,620px)] bg-primary/10">
+          <div className="relative h-[clamp(380px,58vh,620px)] bg-canvas">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.src}
@@ -109,13 +109,23 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
               >
                 <Image
                   alt={activeSlide.alt}
+                  className="object-cover opacity-35 blur-2xl"
+                  fill
+                  priority
+                  sizes="(min-width: 1536px) 1536px, 100vw"
+                  src={activeSlide.src}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-canvas/90 via-canvas/35 to-canvas/10" />
+
+                <Image
+                  alt={activeSlide.alt}
                   className="object-contain"
                   fill
                   priority
                   sizes="(min-width: 1536px) 1536px, 100vw"
                   src={activeSlide.src}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-primary/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-canvas/60 via-transparent to-transparent" />
               </motion.div>
             </AnimatePresence>
 
