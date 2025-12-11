@@ -54,7 +54,7 @@ export default function RootLayout({
     >
       <body className="bg-canvas font-sans text-ink antialiased">
         <Header />
-        <main className="min-h-screen pt-20">{children}</main>
+        <main className="min-h-screen pt-24 page-enter">{children}</main>
         <Footer />
       </body>
     </html>

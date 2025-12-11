@@ -85,122 +85,95 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
     setActiveIndex((prev) => (prev + 1) % safeSlides.length);
   };
 
+  const activeSlide = safeSlides[activeIndex];
+
   return (
     <section className={cn("relative", className)} aria-label="首页轮播 / Homepage hero carousel">
-      <div
-        className={cn(
-          "relative overflow-hidden border border-stone bg-ink",
-          isFullBleed ? "rounded-none border-x-0" : "rounded-2xl"
-        )}
-      >
+      <div className={cn("mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8", isFullBleed ? "max-w-none px-0" : null)}>
         <div
           className={cn(
-            "relative w-full",
-            isFullBleed ? "aspect-[16/7]" : "aspect-[16/9]",
-            "min-h-[420px] sm:min-h-[520px]"
+            "overflow-hidden border border-stone bg-canvas/pure shadow-sm",
+            isFullBleed ? "rounded-none border-x-0" : "rounded-3xl"
           )}
         >
-          {safeSlides.map((slide, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <div
-                key={slide.src}
-                className={cn(
-                  "absolute inset-0 transition-opacity duration-700",
-                  isActive ? "opacity-100" : "pointer-events-none opacity-0"
-                )}
+          {/* 图像区域：固定高度 clamp，避免缩放比下失控 / Image area with clamp height */}
+          <div className="relative h-[clamp(320px,52vh,520px)] bg-ink">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSlide.src}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0"
+                exit={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
               >
-                {/* 背景层（轻微模糊）/ Background layer (slight blur) */}
-                <Image alt={slide.alt} className="object-cover opacity-50 blur-xl" fill priority={index === 0} sizes="100vw" src={slide.src} />
+                <Image
+                  alt={activeSlide.alt}
+                  className="object-cover"
+                  fill
+                  priority
+                  sizes="(min-width: 1536px) 1536px, 100vw"
+                  src={activeSlide.src}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/30 to-transparent" />
+              </motion.div>
+            </AnimatePresence>
 
-                {/* 前景图（不裁切，避免过度放大模糊）/ Foreground (contain to avoid aggressive zoom) */}
-                <div className="absolute inset-0 mx-auto flex max-w-[1280px] items-center px-4 sm:px-6">
-                  <div className="relative w-full overflow-hidden rounded-2xl border border-canvas/15 bg-ink/30 shadow-lg">
-                    <div className="relative aspect-video w-full">
-                      <Image
-                        alt={slide.alt}
-                        className="object-contain"
-                        fill
-                        priority={index === 0}
-                        sizes="(min-width: 1280px) 1280px, 100vw"
-                        src={slide.src}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 遮罩层 / Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/40 to-ink/20" />
-
-                <div className="absolute inset-0">
-                  <div className="mx-auto flex h-full w-full max-w-[1280px] items-end px-4 pb-6 sm:px-6 sm:pb-10">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`${activeIndex}-${slide.title}`}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="w-full"
-                        exit={{ opacity: 0, y: 6 }}
-                        initial={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                      >
-                        <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
-                        <h1 className="mt-3 max-w-4xl text-4xl font-serif font-semibold leading-tight text-canvas sm:text-6xl">
-                          {slide.title}
-                        </h1>
-                        {slide.subtitle ? (
-                          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-canvas/85">{slide.subtitle}</p>
-                        ) : null}
-                        {slide.caption ? (
-                          <p className="mt-4 max-w-3xl text-base leading-relaxed text-canvas/70">{slide.caption}</p>
-                        ) : null}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </div>
+            {/* 控制按钮：固定在容器左右，缩放也稳定 / Stable controls */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
+              <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between px-3 sm:px-6 lg:px-8">
+                <button
+                  aria-label="上一张 / Previous"
+                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-canvas/25 bg-ink/30 text-canvas backdrop-blur transition hover:bg-ink/45"
+                  onClick={goPrev}
+                  type="button"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  aria-label="下一张 / Next"
+                  className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-canvas/25 bg-ink/30 text-canvas backdrop-blur transition hover:bg-ink/45"
+                  onClick={goNext}
+                  type="button"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </div>
 
-        {/* 控制按钮 / Controls */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
-          <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-3 sm:px-6">
-            <button
-              aria-label="上一张 / Previous"
-              className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-canvas/20 bg-ink/25 text-canvas backdrop-blur transition hover:bg-ink/40"
-              onClick={goPrev}
-              type="button"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              aria-label="下一张 / Next"
-              className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-canvas/20 bg-ink/25 text-canvas backdrop-blur transition hover:bg-ink/40"
-              onClick={goNext}
-              type="button"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+            {/* Dots：放到底部中间 / Dots */}
+            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-ink/40 px-3 py-2 backdrop-blur">
+              {safeSlides.map((slide, index) => {
+                const isActive = index === activeIndex;
+                return (
+                  <button
+                    key={slide.src}
+                    aria-label={`跳到第 ${index + 1} 张 / Go to slide ${index + 1}`}
+                    className={cn(
+                      "h-2.5 w-2.5 rounded-full transition-all",
+                      isActive ? "bg-accent" : "bg-canvas/40 hover:bg-canvas/70"
+                    )}
+                    onClick={() => setActiveIndex(index)}
+                    type="button"
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {/* 指示点 / Dots */}
-        <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-ink/40 px-3 py-2 backdrop-blur">
-          {safeSlides.map((slide, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <button
-                key={slide.src}
-                aria-label={`跳到第 ${index + 1} 张 / Go to slide ${index + 1}`}
-                className={cn(
-                  "h-2 w-2 rounded-full transition-all",
-                  isActive ? "bg-accent" : "bg-canvas/40 hover:bg-canvas/70"
-                )}
-                onClick={() => setActiveIndex(index)}
-                type="button"
-              />
-            );
-          })}
+          {/* 文案区域：上图下文，更干净 / Text area below image */}
+          <div className="px-6 py-7 sm:px-10 sm:py-9">
+            <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
+            <h1 className="mt-3 text-[clamp(1.9rem,3vw,3.1rem)] font-serif font-semibold leading-tight text-ink">
+              {activeSlide.title}
+            </h1>
+            {activeSlide.subtitle ? (
+              <p className="mt-3 max-w-4xl text-lg leading-relaxed text-ink/80">{activeSlide.subtitle}</p>
+            ) : null}
+            {activeSlide.caption ? (
+              <p className="mt-3 max-w-4xl text-base leading-relaxed text-ink/65">{activeSlide.caption}</p>
+            ) : null}
+          </div>
         </div>
       </div>
     </section>

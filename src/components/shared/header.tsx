@@ -28,10 +28,10 @@ export const Header = () => {
           <div className="flex items-center">
             <Link className="flex items-center gap-3" href="/">
               <Image
-                alt="浙江大学晨兴文化中国人才计划 Logo / Program logo"
+                alt="浙江大学晨兴文化中国人才计划 Icon / Program icon"
                 className="object-contain"
                 height={64}
-                src="/images/branding/logo.png"
+                src="/images/branding/icon.jpg"
                 width={64}
               />
               <div className="hidden sm:block">
