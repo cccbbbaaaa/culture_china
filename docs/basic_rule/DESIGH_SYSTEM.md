@@ -15,6 +15,10 @@
 
 public/images/branding/logo.png为该项目的logo
 
+public/images下存储了一系列样图，用于前端初步构建测试
+
+> 若需要更多占位素材，可在 `public/images/events/*` 中挑选年度论坛、访学等主题照片。
+
 ### 2.1 主色调 (Brand Colors)
 
 * **Primary: 晨兴红 (Morning Red)**
@@ -55,3 +59,13 @@ public/images/branding/logo.png为该项目的logo
 * **Section Title** : `text-2xl`, Serif, Semi-bold.
 * **Body Text** : `text-base` (16px), Sans, Relaxed line-height (1.75).
 * *特别处理* : 给中文段落增加 `tracking-wide` (字间距)，营造疏朗的阅读体验
+
+## 4. 组件与版式 (Components & Layout)
+
+* **Header** ：磨砂质感（`bg-canvas/80 + backdrop-blur`），默认悬浮固定在顶部，PC 端展示完整导航，移动端使用抽屉式列表。
+* **Footer** ：深色底 (`bg-ink`)，包含品牌简介、快速链接与二维码占位（可替换为公众号二维码）。
+* **Hero / Section** ：建议使用全幅图片 + 半透明蒙层，标题采用 `font-serif text-hero text-primary`，正文使用 `tracking-wide text-ink/80`。
+* **按钮（Button）** ：基于 `src/components/ui/button.tsx`，默认 `primary`（晨兴红），支持 `secondary / outline / ghost / link` 变体；保持圆角 8px。
+* **留白与网格** ：页面容器统一 `max-w-7xl + px-4 sm:px-6 lg:px-8`，区块之间至少 `py-12` 以保持“呼吸感”。
+
+> 在制作新模块时优先复用上述基础组件与约定，确保不同页面保持统一质感。

@@ -6,8 +6,8 @@
 
 ## 1. 核心架构与引用 (References)
 
-* **技术架构** : 见 `dosc/basic_rule/ARCHITECTURE.md` (Next.js, LangGraph, Drizzle ORM).
-* **视觉规范** : 见 `dosc/basic_rule/DESIGN_SYSTEM.md` (新中式风格, 沉稳枣红/典雅金).
+* **技术架构** : 见 `docs/basic_rule/ARCHITECTURE.md` (Next.js, LangGraph, Drizzle ORM).
+* **视觉规范** : 见 `docs/basic_rule/DESIGN_SYSTEM.md` (新中式风格, 沉稳枣红/典雅金).
 
 ## 2. 功能模块清单 (Feature Modules)
 

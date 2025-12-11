@@ -32,9 +32,11 @@
 
 ### 2.4 工具与基础设施 (Infra & Tools)
 
-* **Linting** : ESLint + Prettier
+* **Env 管理** : `src/lib/env.ts` 使用 Zod 校验 `process.env`
+* **Linting** : ESLint + Next.js `next lint`
 * **Date Handling** : date-fns
-* **AI Integration** (如果是 AI 应用): Vercel AI SDK
+* **UI 基础** : shadcn/ui（配置见 `components.json`）
+* **调试工具** : `/api/health/db` 路由可快速验证数据库连接
 
 ## 3. 目录结构规范 (Directory Structure)
 
@@ -42,52 +44,54 @@
 
 ```
 src/
-├── app/                 # Next.js App Router 页面
-│   ├── (auth)/          # 认证相关路由组
-│   ├── (dashboard)/     # 仪表盘相关路由组
-│   ├── api/             # Route Handlers
-│   ├── layout.tsx       # Root Layout
-│   └── page.tsx         # Landing Page
-├── components/          # 组件库
-│   ├── ui/              # Shadcn 基础组件 (Button, Input等)
-│   ├── shared/          # 跨模块通用组件
-│   └── feature-x/       # 特定功能组件 (如非复用)
-├── lib/                 # 工具函数与配置
-│   ├── db.ts            # 数据库连接
-│   ├── utils.ts         # 通用工具
-│   └── validators/      # Zod schema 定义
-├── server/              # 后端逻辑 (Actions, Queries)
-│   ├── actions/         # Server Actions (Mutations)
-│   └── queries/         # Data Fetching (Queries)
-├── types/               # 全局类型定义
-└── db/                  # 数据库 Schema 与 Migration
+├── app/                     # App Router 页面与 API
+│   ├── api/health/db        # 数据库健康检查 Route Handler
+│   ├── layout.tsx           # Root layout（含 Header/Footer）
+│   └── page.tsx             # 首页占位
+├── components/
+│   ├── shared/              # Header、Footer 等跨页面组件
+│   └── ui/                  # shadcn/ui 基础组件 (button 等)
+├── db/                      # Drizzle schema 定义
+├── lib/
+│   ├── db.ts                # Drizzle + postgres 连接
+│   ├── env.ts               # Zod 校验的环境变量
+│   └── utils.ts             # cn 等工具函数
 ```
 
-## 4. 开发规范 (Development Guidelines)
+> 说明：`server/` 与 `types/` 目录可在后续阶段按需补充（如需要自定义 Server Actions 或全局类型）。
 
-### 4.1 组件编写 (Component Principles)
+## 4. 基础设施现状 (Current Baseline)
+
+* `.env` 基于 `env.example` 配置，必须提供 `DATABASE_URL`
+* `drizzle.config.ts` 指向 `src/db/schema.ts`，迁移输出在 `/drizzle`
+* Docker PostgreSQL 推荐端口：`5433 -> 5432`（避免与系统实例冲突）
+* `components.json` 已初始化，新增 UI 组件时使用 `pnpm dlx shadcn@latest add ...`
+
+## 5. 开发规范 (Development Guidelines)
+
+### 5.1 组件编写 (Component Principles)
 
 * **Server Components First** : 默认使用服务端组件（RSC）。仅在需要 `useState`, `useEffect`, 或事件监听时添加 `"use client"`。
 * **Composition** : 避免创建巨大的单一组件，拆分为小型的、单一职责的组件。
 * **Props Interface** : 所有组件必须显式定义 Props 接口，避免使用 `any`。
 
-### 4.2 数据获取 (Data Fetching)
+### 5.2 数据获取 (Data Fetching)
 
 * 在 RSC (Server Components) 中，直接通过 DB/ORM 调用获取数据，不要通过内部 API Route fetch。
 * 在 Client Components 中，使用 Server Actions 或 React Query。
 
-### 4.3 样式规范 (Styling)
+### 5.3 样式规范 (Styling)
 
 * 严禁使用 CSS Modules 或 styled-components，**必须**使用 Tailwind CSS。
 * 使用 `clsx` 或 `cn` 工具函数处理条件类名。
 * 保持响应式设计，优先使用 `sm:`, `md:`, `lg:` 前缀。
 
-### 4.4 错误处理 (Error Handling)
+### 5.4 错误处理 (Error Handling)
 
 * UI 层使用 `error.tsx` (Error Boundaries)。
 * Server Actions 必须返回标准化的 `{ success: boolean, data?: T, error?: string }` 结构，而非直接抛出异常导致页面崩溃。
 
-## 5. 命名约定 (Naming Conventions)
+## 6. 命名约定 (Naming Conventions)
 
 * **Files** : `kebab-case.tsx` (如 `user-profile.tsx`) 或 `PascalCase` (组件文件)。
 * **Components** : `PascalCase` (如 `UserProfile`)。

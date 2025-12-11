@@ -7,16 +7,16 @@
 
 ## Phase 0: 基础设施初始化 (Infrastructure Setup)
 
-* [ ] **项目脚手架搭建**
-  * [ ] 初始化 Next.js 14+ (App Router) 项目。
-  * [ ] 配置 Tailwind CSS (录入 `DESIGN_SYSTEM.md` 中的色值与字体)。
-  * [ ] 安装核心依赖 (`lucide-react`, `shadcn/ui`, `framer-motion`, `zod`).
-* [ ] **数据库环境准备**
-  * [ ] 配置 PostgreSQL 数据库连接。
-  * [ ] 初始化 Drizzle ORM 并建立连接测试。
-* [ ] **全局布局开发**
-  * [ ] 实现 **响应式导航栏 (Header)** (磨砂玻璃效果，PC/Mobile 适配)。
-  * [ ] 实现 **页脚 (Footer)** (包含二维码占位、版权信息)。
+* [x] **项目脚手架搭建**
+  * [x] 初始化 Next.js 14+ (App Router) 项目。
+  * [x] 配置 Tailwind CSS (录入 `DESIGN_SYSTEM.md` 中的色值与字体)。
+  * [x] 安装核心依赖 (`lucide-react`, `shadcn/ui`, `framer-motion`, `zod`).
+* [x] **数据库环境准备**
+  * [x] 配置 PostgreSQL 数据库连接。
+  * [x] 初始化 Drizzle ORM 并建立连接测试（`GET /api/health/db`）。
+* [x] **全局布局开发**
+  * [x] 实现 **响应式导航栏 (Header)** (磨砂玻璃效果，PC/Mobile 适配)。
+  * [x] 实现 **页脚 (Footer)** (包含二维码占位、版权信息)。
 
 ## Phase 1: 前端页面骨架 (Frontend Skeleton)
 

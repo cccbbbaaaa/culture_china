@@ -22,7 +22,9 @@
     "framer-motion": "^11.3.19",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.5.2",
-    "date-fns": "^3.6.0"
+    "date-fns": "^3.6.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0"
   },
   "devDependencies": {
     "typescript": "^5.5.4",
