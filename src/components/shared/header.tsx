@@ -26,17 +26,23 @@ export const Header = () => {
         <div className="flex h-20 items-center justify-between">
           {/* Logo / 标识 Logo */}
           <div className="flex items-center">
-            <Link className="flex items-center space-x-3" href="/">
+            <Link className="flex items-center gap-3" href="/">
               <Image
-                alt="文化中国 Logo"
+                alt="浙江大学晨兴文化中国人才计划 Logo / Program logo"
                 className="object-contain"
-                height={40}
+                height={52}
                 src="/images/branding/logo.png"
-                width={40}
+                width={52}
               />
-              <span className="hidden text-xl font-serif font-semibold text-primary sm:block">
-                文化中国
-              </span>
+              <div className="hidden sm:block">
+                <p className="text-base font-serif font-semibold leading-tight text-primary md:text-lg">
+                  浙江大学晨兴文化中国人才计划
+                </p>
+                <p className="mt-0.5 text-xs leading-tight text-ink/70 md:text-sm">
+                  Zhejiang University Morningside Cultural China Scholars Program
+                </p>
+              </div>
+              <span className="text-base font-serif font-semibold text-primary sm:hidden">文化中国</span>
             </Link>
           </div>
 

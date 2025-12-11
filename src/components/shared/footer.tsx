@@ -41,12 +41,11 @@ export const Footer = () => {
         <div>
           <h3 className="mb-4 text-lg font-serif font-semibold">关注我们</h3>
           <div className="flex items-start space-x-4">
-            {/* TODO: 替换为真实二维码图片 / Replace with real QR image */}
             <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded bg-stone/20">
               <Image
-                alt="公众号二维码占位 / WeChat QR placeholder"
+                alt="微信公众号二维码 / WeChat QR"
                 height={96}
-                src="/images/branding/icon.jpg"
+                src="/images/branding/wechat_code.jpg"
                 width={96}
               />
             </div>

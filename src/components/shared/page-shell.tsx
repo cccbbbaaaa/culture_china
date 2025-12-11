@@ -98,7 +98,9 @@ export const Section = ({ title, description, children, className }: SectionProp
     <section className={cn("py-8", className)}>
       <div className="mb-6">
         <h2 className="text-section text-ink">{title}</h2>
-        {description ? <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink/70">{description}</p> : null}
+        {description ? (
+          <p className="mt-2 max-w-4xl text-sm leading-relaxed text-ink/70 sm:text-base">{description}</p>
+        ) : null}
       </div>
       {children}
     </section>
