@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans_SC, Noto_Serif_SC, Playfair_Display } from "next/font/google";
 
 import "@/app/globals.css";
-import { EntryGate } from "@/components/shared/entry-gate";
 import { Footer } from "@/components/shared/footer";
 import { Header } from "@/components/shared/header";
 
@@ -54,12 +53,11 @@ export default function RootLayout({
       className={`${notoSerif.variable} ${playfair.variable} ${notoSans.variable} ${inter.variable}`}
     >
       <body className="bg-canvas font-sans text-ink antialiased">
-        <EntryGate>
-          <Header />
-          <main className="min-h-screen pt-24">{children}</main>
-          <Footer />
-        </EntryGate>
+        <Header />
+        <main className="min-h-screen pt-24">{children}</main>
+        <Footer />
       </body>
     </html>
   );
 }
+
