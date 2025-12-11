@@ -49,7 +49,7 @@ export const PageHeader = ({ title, subtitle, breadcrumbs }: PageHeaderProps) =>
   return (
     <header className="mb-10">
       {breadcrumbs && breadcrumbs.length > 0 ? (
-        <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-2 text-sm text-ink/70">
+        <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-2 text-base text-ink/70">
           {breadcrumbs.map((item, index) => {
             const isLast = index === breadcrumbs.length - 1;
             return (
@@ -70,7 +70,7 @@ export const PageHeader = ({ title, subtitle, breadcrumbs }: PageHeaderProps) =>
 
       <h1 className="text-hero font-serif text-primary">{title}</h1>
       {subtitle ? (
-        <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-wide text-ink/80">{subtitle}</p>
+        <p className="mt-4 max-w-4xl text-lg leading-relaxed tracking-wide text-ink/80">{subtitle}</p>
       ) : null}
     </header>
   );
@@ -121,6 +121,8 @@ export interface PanelProps {
  */
 export const Panel = ({ children, className }: PanelProps) => {
   return (
-    <div className={cn("rounded-xl border border-stone bg-canvas/pure p-6 shadow-sm", className)}>{children}</div>
+    <div className={cn("rounded-2xl border border-stone bg-canvas/pure p-6 shadow-sm sm:p-7 lg:p-8", className)}>
+      {children}
+    </div>
   );
 };

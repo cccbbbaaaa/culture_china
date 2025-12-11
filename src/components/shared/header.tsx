@@ -23,26 +23,26 @@ export const Header = () => {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-stone bg-canvas/80 backdrop-blur-md">
       <nav aria-label="Global" className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-24 items-center justify-between">
           {/* Logo / 标识 Logo */}
           <div className="flex items-center">
             <Link className="flex items-center gap-3" href="/">
               <Image
                 alt="浙江大学晨兴文化中国人才计划 Logo / Program logo"
                 className="object-contain"
-                height={52}
+                height={64}
                 src="/images/branding/logo.png"
-                width={52}
+                width={64}
               />
               <div className="hidden sm:block">
-                <p className="text-base font-serif font-semibold leading-tight text-primary md:text-lg">
+                <p className="text-lg font-serif font-semibold leading-tight text-primary md:text-xl xl:text-2xl">
                   浙江大学晨兴文化中国人才计划
                 </p>
-                <p className="mt-0.5 text-xs leading-tight text-ink/70 md:text-sm">
+                <p className="mt-1 text-sm leading-tight text-ink/70 md:text-base">
                   Zhejiang University Morningside Cultural China Scholars Program
                 </p>
               </div>
-              <span className="text-base font-serif font-semibold text-primary sm:hidden">文化中国</span>
+              <span className="text-lg font-serif font-semibold text-primary sm:hidden">文化中国</span>
             </Link>
           </div>
 
@@ -51,7 +51,7 @@ export const Header = () => {
             {navigation.map((item) => (
               <Link
                 key={item.name}
-                className="font-medium text-ink transition-colors duration-200 hover:text-primary"
+                className="text-lg font-medium text-ink transition-colors duration-200 hover:text-primary xl:text-xl"
                 href={item.href}
               >
                 {item.name}
@@ -83,7 +83,7 @@ export const Header = () => {
             {navigation.map((item) => (
               <Link
                 key={item.name}
-                className="block rounded-md px-3 py-2 text-ink transition-colors hover:bg-stone/50 hover:text-primary"
+                className="block rounded-md px-3 py-2 text-base text-ink transition-colors hover:bg-stone/50 hover:text-primary"
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
               >

@@ -39,7 +39,7 @@ const config: Config = {
       },
       fontSize: {
         "hero": ["3rem", { lineHeight: "1.2", fontWeight: "700" }],
-        "section": ["1.5rem", { lineHeight: "1.4", fontWeight: "600" }],
+        "section": ["1.875rem", { lineHeight: "1.35", fontWeight: "600" }],
       },
       letterSpacing: {
         wide: "0.05em", // 中文段落字间距

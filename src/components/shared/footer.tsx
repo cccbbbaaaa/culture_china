@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ImageLightbox } from "@/components/shared/image-lightbox";
+
 export const Footer = () => {
   return (
     <footer className="mt-auto bg-ink text-canvas">
@@ -41,17 +43,15 @@ export const Footer = () => {
         <div>
           <h3 className="mb-4 text-lg font-serif font-semibold">关注我们</h3>
           <div className="flex items-start space-x-4">
-            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded bg-stone/20">
-              <Image
-                alt="微信公众号二维码 / WeChat QR"
-                height={96}
-                src="/images/branding/wechat_code.jpg"
-                width={96}
-              />
-            </div>
-            <div className="text-sm text-canvas/80">
+            <ImageLightbox
+              alt="微信公众号二维码 / WeChat QR"
+              className="h-28 w-28"
+              src="/images/branding/wechat_code.jpg"
+              thumbSize={112}
+            />
+            <div className="text-base text-canvas/80">
               <p className="mb-2">微信公众号</p>
-              <p className="text-xs">扫码关注获取最新动态</p>
+              <p className="text-sm">扫码关注获取最新动态（点击二维码可放大）</p>
             </div>
           </div>
         </div>

@@ -93,7 +93,13 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           isFullBleed ? "rounded-none border-x-0" : "rounded-2xl"
         )}
       >
-        <div className={cn("relative w-full", isFullBleed ? "aspect-[16/7]" : "aspect-[16/8] sm:aspect-video")}>
+        <div
+          className={cn(
+            "relative w-full",
+            isFullBleed ? "aspect-[16/7]" : "aspect-[16/9]",
+            "min-h-[420px] sm:min-h-[520px]"
+          )}
+        >
           {safeSlides.map((slide, index) => {
             const isActive = index === activeIndex;
             return (
@@ -108,10 +114,17 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                 <Image alt={slide.alt} className="object-cover opacity-50 blur-xl" fill priority={index === 0} sizes="100vw" src={slide.src} />
 
                 {/* 前景图（不裁切，避免过度放大模糊）/ Foreground (contain to avoid aggressive zoom) */}
-                <div className="absolute inset-0 mx-auto flex max-w-[1100px] items-center px-4 sm:px-6">
+                <div className="absolute inset-0 mx-auto flex max-w-[1280px] items-center px-4 sm:px-6">
                   <div className="relative w-full overflow-hidden rounded-2xl border border-canvas/15 bg-ink/30 shadow-lg">
                     <div className="relative aspect-video w-full">
-                      <Image alt={slide.alt} className="object-contain" fill priority={index === 0} sizes="(min-width: 1200px) 1100px, 100vw" src={slide.src} />
+                      <Image
+                        alt={slide.alt}
+                        className="object-contain"
+                        fill
+                        priority={index === 0}
+                        sizes="(min-width: 1280px) 1280px, 100vw"
+                        src={slide.src}
+                      />
                     </div>
                   </div>
                 </div>
@@ -120,7 +133,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                 <div className="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/40 to-ink/20" />
 
                 <div className="absolute inset-0">
-                  <div className="mx-auto flex h-full w-full max-w-[1100px] items-end px-4 pb-6 sm:px-6 sm:pb-8">
+                  <div className="mx-auto flex h-full w-full max-w-[1280px] items-end px-4 pb-6 sm:px-6 sm:pb-10">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`${activeIndex}-${slide.title}`}
@@ -131,14 +144,14 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                         transition={{ duration: 0.4, ease: "easeOut" }}
                       >
                         <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
-                        <h1 className="mt-3 max-w-3xl text-3xl font-serif font-semibold leading-tight text-canvas sm:text-5xl">
+                        <h1 className="mt-3 max-w-4xl text-4xl font-serif font-semibold leading-tight text-canvas sm:text-6xl">
                           {slide.title}
                         </h1>
                         {slide.subtitle ? (
-                          <p className="mt-4 max-w-2xl text-base leading-relaxed text-canvas/85">{slide.subtitle}</p>
+                          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-canvas/85">{slide.subtitle}</p>
                         ) : null}
                         {slide.caption ? (
-                          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-canvas/70">{slide.caption}</p>
+                          <p className="mt-4 max-w-3xl text-base leading-relaxed text-canvas/70">{slide.caption}</p>
                         ) : null}
                       </motion.div>
                     </AnimatePresence>
@@ -151,7 +164,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
 
         {/* 控制按钮 / Controls */}
         <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
-          <div className="mx-auto flex h-full max-w-[1100px] items-center justify-between px-3 sm:px-6">
+          <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-3 sm:px-6">
             <button
               aria-label="上一张 / Previous"
               className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-canvas/20 bg-ink/25 text-canvas backdrop-blur transition hover:bg-ink/40"
