@@ -72,24 +72,27 @@ export default function HomePage() {
     <div>
       {/* 顶部品牌标语带 / Slogan band */}
       <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
-        <PageShell className="py-16">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-canvas/80">
+        <PageShell className="py-24">
+          <div className="flex flex-col gap-10">
+            <div className="space-y-4 md:w-3/4 lg:w-2/3">
+              <p className="text-base font-semibold uppercase tracking-[0.34em] text-canvas/80">
                 HORIZON · EMPATHY · PERSPECTIVE
               </p>
-              <h1 className="text-3xl font-serif font-semibold leading-tight sm:text-4xl">
-                认知 · 体验 · 反思 · 笃行
+              <h1 className="text-4xl font-serif font-semibold leading-tight sm:text-5xl lg:text-6xl">
+                沉潜人文，观照当代
               </h1>
-              <p className="text-base leading-relaxed text-canvas/90 sm:text-lg">
-                培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。/ Cultivating future leaders grounded in Chinese
-                culture and equipped with a global horizon.
+              <p className="text-lg leading-relaxed text-canvas/95 sm:text-xl">
+                <span className="block">培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。</span>
+                <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon.</span>
               </p>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex w-full flex-wrap items-start gap-4">
               <Button asChild size="lg" variant="secondary">
                 <Link href="/intro">了解文化中国</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/admissions">加入文化中国</Link>
               </Button>
             </div>
           </div>
@@ -245,6 +248,16 @@ export default function HomePage() {
               </Panel>
             </div>
           </Section>
+
+          {/* 结尾引导语 / Closing mantra */}
+          <div className="mt-16 overflow-hidden rounded-3xl border border-stone/60 bg-gradient-to-r from-canvas via-primary/8 to-canvas shadow-sm">
+            <div className="flex flex-col items-center gap-2 px-6 py-12 text-center sm:py-14">
+              <p className="text-2xl font-serif font-semibold text-ink">认知 · 体验 · 反思 · 笃行</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-ink/70">
+                COGNITION · EXPERIENCE · REFLECTION · PRACTICE
+              </p>
+            </div>
+          </div>
         </PageEnter>
       </PageShell>
     </div>
