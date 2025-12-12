@@ -73,29 +73,33 @@ export default function HomePage() {
       {/* 顶部品牌标语带 / Slogan band */}
       <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
         <PageShell className="py-24">
-          <div className="flex flex-col gap-10">
-            <div className="space-y-4 md:w-3/4 lg:w-2/3">
-              <p className="text-base font-semibold uppercase tracking-[0.34em] text-canvas/80">
-                HORIZON · EMPATHY · PERSPECTIVE
-              </p>
-              <h1 className="text-4xl font-serif font-semibold leading-tight sm:text-5xl lg:text-6xl">
-                沉潜人文，观照当代
-              </h1>
-              <p className="text-lg leading-relaxed text-canvas/95 sm:text-xl">
-                <span className="block">培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。</span>
-                <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon.</span>
-              </p>
-            </div>
+          <PageEnter
+            className="w-full"
+            initial={{ opacity: 0, x: -48 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="flex flex-col gap-10 md:pl-6 lg:pl-10">
+              <div className="space-y-4 md:w-3/4 lg:w-2/3">
+                <h1 className="text-4xl font-serif font-semibold leading-tight sm:text-5xl lg:text-6xl">
+                  沉潜人文，观照当代
+                </h1>
+                <p className="text-lg leading-relaxed text-canvas/95 sm:text-xl">
+                  <span className="block">培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。</span>
+                  <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon.</span>
+                </p>
+              </div>
 
-            <div className="flex w-full flex-wrap items-start gap-4">
-              <Button asChild size="lg" variant="secondary">
-                <Link href="/intro">了解文化中国</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/admissions">加入文化中国</Link>
-              </Button>
+              <div className="flex w-full flex-wrap items-start gap-4">
+                <Button asChild size="lg" variant="secondary">
+                  <Link href="/intro">了解文化中国</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/admissions">加入文化中国</Link>
+                </Button>
+              </div>
             </div>
-          </div>
+          </PageEnter>
         </PageShell>
       </div>
 
