@@ -2,7 +2,13 @@
 
 import type { ReactNode } from "react";
 
-import { motion } from "framer-motion";
+import {
+  type AnimationControls,
+  type TargetAndTransition,
+  type Transition,
+  type VariantLabels,
+  motion,
+} from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -18,15 +24,15 @@ export interface PageEnterProps {
   /**
    * 自定义初始动画状态 / Custom initial animation state
    */
-  initial?: Record<string, unknown>;
+  initial?: TargetAndTransition | VariantLabels | boolean;
   /**
    * 自定义目标动画状态 / Custom animate state
    */
-  animate?: Record<string, unknown>;
+  animate?: AnimationControls | TargetAndTransition | VariantLabels | boolean;
   /**
    * 自定义过渡参数 / Custom transition
    */
-  transition?: Record<string, unknown>;
+  transition?: Transition;
 }
 
 /**
@@ -40,9 +46,9 @@ export const PageEnter = ({
   animate,
   transition,
 }: PageEnterProps) => {
-  const initialDefault = { opacity: 0, y: 10 };
-  const animateDefault = { opacity: 1, y: 0 };
-  const transitionDefault = { duration: 0.45, ease: "easeOut" };
+  const initialDefault: TargetAndTransition = { opacity: 0, y: 10 };
+  const animateDefault: TargetAndTransition = { opacity: 1, y: 0 };
+  const transitionDefault: Transition = { duration: 0.45, ease: "easeOut" };
 
   return (
     <motion.div
