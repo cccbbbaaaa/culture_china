@@ -75,15 +75,15 @@ export default function HomePage() {
         <PageShell className="py-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-canvas/80">
-                IMMERSION · REFLECTION · RENEWAL
+              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-canvas/80">
+                HORIZON · EMPATHY · PERSPECTIVE
               </p>
               <h1 className="text-3xl font-serif font-semibold leading-tight sm:text-4xl">
-                以体验与反思连接传统与当代
+                沉潜人文，观照当代
               </h1>
               <p className="text-base leading-relaxed text-canvas/90 sm:text-lg">
-                连接传统与当代，通过体验与反思培育具有视域、情感与观点的文化型领袖。/ Connecting tradition and contemporary
-                China through lived experience and reflection.
+                培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。/ Cultivating future leaders grounded in Chinese
+                culture and equipped with a global horizon.
               </p>
             </div>
 
