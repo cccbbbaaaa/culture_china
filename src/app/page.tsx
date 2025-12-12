@@ -70,6 +70,34 @@ export default function HomePage() {
 
   return (
     <div>
+      {/* 顶部品牌标语带 / Slogan band */}
+      <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas">
+        <PageShell className="py-10">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-3">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-canvas/85">
+                视域 · 情感 · 观点
+              </p>
+              <h1 className="text-3xl font-serif font-semibold leading-tight sm:text-4xl">
+                浙江大学晨兴文化中国人才计划
+              </h1>
+              <p className="text-base leading-relaxed text-canvas/90 sm:text-lg">
+                Zhejiang University Morningside Cultural China Scholars Program — Connecting tradition and modernity with immersive learning.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-canvas/30 bg-canvas/10 px-4 py-2 text-sm font-medium">
+                Chinese version is default · 中文为默认版本
+              </span>
+              <Button asChild variant="secondary">
+                <Link href="/intro/mission">了解使命 / View mission</Link>
+              </Button>
+            </div>
+          </div>
+        </PageShell>
+      </div>
+
       <div className="bg-gradient-to-b from-canvas via-canvas to-stone/20 py-10">
         <HeroCarousel slides={slides} />
       </div>
