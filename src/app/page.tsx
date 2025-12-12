@@ -71,15 +71,15 @@ export default function HomePage() {
   return (
     <div>
       {/* 顶部品牌标语带 / Slogan band */}
-      <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas">
-        <PageShell className="py-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
+        <PageShell className="py-16">
+          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="space-y-3">
               <p className="text-sm font-semibold uppercase tracking-[0.32em] text-canvas/80">
                 HORIZON · EMPATHY · PERSPECTIVE
               </p>
               <h1 className="text-3xl font-serif font-semibold leading-tight sm:text-4xl">
-                沉潜人文，观照当代
+                认知 · 体验 · 反思 · 笃行
               </h1>
               <p className="text-base leading-relaxed text-canvas/90 sm:text-lg">
                 培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。/ Cultivating future leaders grounded in Chinese
