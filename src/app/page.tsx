@@ -73,21 +73,22 @@ export default function HomePage() {
       {/* 顶部品牌标语带 / Slogan band */}
       <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas">
         <PageShell className="py-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-canvas/85">
-                视域 · 情感 · 观点
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-canvas/80">
+                IMMERSION · REFLECTION · RENEWAL
               </p>
               <h1 className="text-3xl font-serif font-semibold leading-tight sm:text-4xl">
-                浙江大学晨兴文化中国人才计划
+                以体验与反思连接传统与当代
               </h1>
               <p className="text-base leading-relaxed text-canvas/90 sm:text-lg">
-                连接传统与当代，以体验与反思培养具有全球视域的文化型领袖。/ Connecting tradition and modernity to shape culturally grounded leaders.
+                连接传统与当代，通过体验与反思培育具有视域、情感与观点的文化型领袖。/ Connecting tradition and contemporary
+                China through lived experience and reflection.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <Button asChild variant="secondary">
+            <div className="flex items-center">
+              <Button asChild size="lg" variant="secondary">
                 <Link href="/intro">了解文化中国</Link>
               </Button>
             </div>
