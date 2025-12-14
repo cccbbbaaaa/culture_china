@@ -20,7 +20,6 @@ const navigation: NavItem[] = [
       { name: "使命背景", href: "/intro/mission" },
       { name: "培养宗旨", href: "/intro/purpose" },
       { name: "师资嘉宾", href: "/intro/faculty" },
-      { name: "儒商中心", href: "/intro/center" },
       { name: "周老师专栏", href: "/intro/zhou" },
     ],
   },

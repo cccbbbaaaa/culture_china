@@ -9,40 +9,28 @@ export default function PurposePage() {
           { label: "计划介绍", href: "/intro" },
           { label: "培养宗旨", href: "/intro/purpose" },
         ]}
-        subtitle="项目的核心教育理念与培养维度（当前为占位内容）。"
-        title="培养宗旨 / Purpose"
+        title="培养宗旨"
       />
 
-      <Section description="视域、情感、观点三维度，形成独特的培养结构。" title="培养维度 / Dimensions">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <Panel>
-            <h3 className="text-lg font-serif font-semibold text-ink">视域 / Horizon</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/70">全球化的广度与跨学科视野。</p>
-          </Panel>
-          <Panel>
-            <h3 className="text-lg font-serif font-semibold text-ink">情感 / Emotion</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/70">对家国文化的深度认同。</p>
-          </Panel>
-          <Panel>
-            <h3 className="text-lg font-serif font-semibold text-ink">观点 / Viewpoint</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/70">独立思考与批判性思维。</p>
-          </Panel>
-        </div>
-      </Section>
-
-      <Section
-        description="认知 → 体验 → 反思 → 笃行（后续可用时间轴组件呈现）。"
-        title="教学原则 / Learning Loop"
-      >
-        <Panel className="border-dashed">
-          <ol className="list-decimal space-y-2 pl-5 text-sm text-ink/70">
-            <li>认知 Cognition</li>
-            <li>体验 Experience</li>
-            <li>反思 Reflection</li>
-            <li>笃行 Practice</li>
-          </ol>
+      <Section title="“晨兴文化中国人才计划”旨在培养秉承中华文化之精神，具有全球视野的未来社会各界的领袖人才。">
+        <Panel>
+          <div className="mt-4 space-y-4 text-ink/90 tracking-wide leading-relaxed">
+            <p>
+              为天地立心，为生民立命，为往圣继绝学，为万世开太平。
+            </p>
+            <p>
+              文化中国从认知、体验、反思、笃行的教学原则着手设置课程，邀请海内外著名学者、社会各界杰出人士传道授业，担任导师。
+            </p>
+            <p>
+              从中华传统治理之道到国际政治，从苏子的精神世界到世界视域下的东亚语言文化……徜徉于无涯之知，无尽之学。
+            </p>
+            <p>
+              时而风乎舞雩，论道西子湖畔；时而荧屏传音，不拘山高水远；纵贯古今，上下俯仰；川流不息，渊澄取映。
+            </p>
+          </div>
         </Panel>
       </Section>
+
     </PageShell>
   );
 }
