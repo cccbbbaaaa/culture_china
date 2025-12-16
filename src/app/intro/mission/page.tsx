@@ -9,30 +9,28 @@ export default function MissionPage() {
           { label: "计划介绍", href: "/intro" },
           { label: "使命背景", href: "/intro/mission" },
         ]}
-        subtitle="项目的历史脉络、愿景与精神底色（当前为占位内容）。"
-        title="使命背景 / Mission"
+        title="使命背景"
       />
 
-      <Section title="计划概览 / Overview">
-        <Panel>
-          <p className="text-sm leading-relaxed tracking-wide text-ink/80">
-            这里将用高质量图文排版呈现项目成立背景、关键人物与愿景。
+      <Panel>
+        <div className="mt-4 space-y-4 text-ink/90 tracking-wide leading-relaxed">
+          <p>
+            21世纪全球科技迅猛发展，不同文明的冲突与对话并存，人类的发展更迫切地需要交流、包容与融合，倡导“和而不同”、和平发展的中国，将成为推动世界和平发展与繁荣的重要力量。中国的复兴与世界的和平发展不仅需要专业技术人才，更需要具有崇高理想和远大抱负，道德高尚，视野开阔，勇于奉献，具有历史使命感和社会责任感，有卓越组织领导才能的领袖人才。
           </p>
-          <p className="mt-3 text-sm leading-relaxed text-ink/70">
-            This section will present the program history, key figures, and long-term vision with editorial typography.
+          <p>
+            “大学之道，在明明德，在亲民，在止于至善”，2008年，哈佛大学杜维明教授、浙江大学周生春教授联合发起了“浙江大学文化中国人才计划”，并由周生春教授（2008-2022）、蒋岳祥教授（2022- ）先后担任责任教授，旨在培养秉承中华文化之精神、具有全球视野的未来社会各界的领袖人才。
           </p>
-        </Panel>
-      </Section>
-
-      <Section description="建议使用时间轴/里程碑的形式呈现。" title="重要节点 / Milestones">
-        <Panel className="border-dashed">
-          <ul className="space-y-2 text-sm text-ink/70">
-            <li>2008：项目启动（占位）</li>
-            <li>201x：关键升级（占位）</li>
-            <li>202x：持续发展（占位）</li>
-          </ul>
-        </Panel>
-      </Section>
+          <p>
+            浙江大学晨兴文化中国人才计划每年在全校范围内选拔30名优秀本科生，在保持其各自主修专业的基础上独立成班，邀请海内外著名学者、社会各界杰出人士传道授业，担任导师，学生经过两年学习（高年级为一年），完成初阶学业。
+          </p>
+          <p>
+            该人才计划以人为本，以专业为辅，提倡两者融会贯通、相辅相成的教育理念，着眼人的全面发展和综合素质的培养，强调知行合一和博学、审问、慎思、明辨、笃行的学风，并予受业学生以终其一生的关注与个别指导。
+          </p>
+          <p>
+            2008年至2025年，“浙江大学晨兴文化中国人才计划”共培养17期学生519人，已结业学生（第 1-15 期）459人，其中50%赴哈佛、麻省理工、斯坦福、耶鲁、剑桥和牛津等海外著名大学留学，34%在北大、清华、浙大、上海交通大学、复旦大学、中科院等国内知名学府深造，其余16%自主创业或进入心仪的单位就业。结业学生中已涌现出罗德学者，富布莱特学者，明尼苏达大学、多伦多大学、浙江大学等海内外知名高校助理教授，自主创业的企业家，知名公益组织创始人和上市公司高管等众多优秀校友，并获得了国际一流大学校长、科学院院长、政治家、著名社会活动家和企业家的高度评价。
+          </p>
+        </div>
+      </Panel>
     </PageShell>
   );
 }
