@@ -20,6 +20,11 @@
   h6 {
     @apply font-serif;
   }
+
+  /* 段落默认使用 serif 字体，符合新中式风格 / Paragraphs default to serif font for New Chinese aesthetic */
+  p {
+    @apply font-serif;
+  }
 }
 
 @layer utilities {

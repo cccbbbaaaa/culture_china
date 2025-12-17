@@ -6,27 +6,27 @@ import { PageEnter } from "@/components/shared/page-enter";
 export default function IntroFacultyPage() {
   const faculty = [
     {
-      name: "陈启宗 教授",
+      name: "陈启宗",
       img: "/images/people/faculty_portrait/chenqizong.png",
       bio: "香港恒隆集团主席，亚洲协会理事长",
     },
     {
-      name: "杜维明 教授",
+      name: "杜维明",
       img: "/images/people/faculty_portrait/duweiming.png",
       bio: "哈佛燕京学社前社长, 美国人文社会科学院院士",
     },
     {
-      name: "蒋岳祥 教授",
+      name: "蒋岳祥" ,
       img: "/images/people/faculty_portrait/jiangyuexiang.png",
       bio: "浙江大学经济学院教授、博士生导师，浙江大学证券与期货研究所所长",
     },
     {
-      name: "梁元生 教授",
+      name: "梁元生",
       img: "/images/people/faculty_portrait/liangyuansheng.png",
       bio: "香港中文大学教授，文学院院长",
     },
     {
-      name: "郑培凯 教授",
+      name: "郑培凯",
       img: "/images/people/faculty_portrait/zhengpeikai.png",
       bio: "香港城市大学教授中国文化中心主任",
     },
