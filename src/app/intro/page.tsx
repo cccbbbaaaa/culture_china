@@ -73,11 +73,11 @@ export default function IntroPage() {
             </Panel>
 
             <Panel>
-              <h3 className="text-lg font-serif font-semibold text-ink">儒商中心 / Center</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/70">相关平台介绍与资源导览。</p>
+              <h3 className="text-lg font-serif font-semibold text-ink">师资嘉宾 / Faculty</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink/70">导师名录。</p>
               <div className="mt-4">
                 <Button asChild variant="outline">
-                  <Link href="/intro/center">进入 / Open</Link>
+                  <Link href="/intro/faculty">进入 / Open</Link>
                 </Button>
               </div>
             </Panel>
@@ -88,7 +88,7 @@ export default function IntroPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Panel>
               <h3 className="text-lg font-serif font-semibold text-ink">选拔与培养</h3>
-              <ul className="mt-2 space-y-2 text-sm leading-relaxed text-ink/70">
+              <ul className="mt-2 space-y-3 font-serif text-base leading-relaxed tracking-wide text-ink/75">
                 <li>· 每年全校跨专业选拔约 30 人，独立成班，导师制+小班研讨。</li>
                 <li>· 核心活动：经典会读、年度论坛、海外/境外访学、公益实践、内部沙龙。</li>
                 <li>· 教学原则：认知—体验—反思—笃行，强调知行合一。</li>
@@ -96,10 +96,10 @@ export default function IntroPage() {
             </Panel>
             <Panel>
               <h3 className="text-lg font-serif font-semibold text-ink">校友与去向</h3>
-              <ul className="mt-2 space-y-2 text-sm leading-relaxed text-ink/70">
-                <li>· 已培养 16 期 489 人，结业 424 人。</li>
-                <li>· 50% 赴哈佛、MIT、斯坦福、耶鲁、牛津、剑桥等深造；34% 北大/清华/浙大等；16% 创业或就业。</li>
-                <li>· 涌现罗德学者、富布莱特学者、海内外高校教师、企业家与公益发起人。</li>
+              <ul className="mt-2 space-y-3 font-serif text-base leading-relaxed tracking-wide text-ink/75">
+                <li>· 累计培养 17 期 519 人，已结业学员 459 人。</li>
+                <li>· 50% 赴哈佛、MIT、剑桥等顶尖学府深造（约 260 人）；34% 北大、清华、浙大、复旦等（约 176 人）；16% 创业或职业发展（约 83 人）。</li>
+                <li>· 涌现罗德学者、富布莱特学者、知名创业者与公共领袖。</li>
               </ul>
             </Panel>
           </div>
@@ -108,9 +108,9 @@ export default function IntroPage() {
         <Section title="资料与专栏 / Resources">
           <Panel className="border-dashed">
             <ul className="space-y-2 text-sm leading-relaxed text-ink/70">
-              <li>· 师资嘉宾 / Faculty（导师名录，近期将补充）</li>
-              <li>· 周老师专栏 / Column（观点文章与随笔，待上线）</li>
-              <li>· 项目历史 / Archive（历届活动、论坛、访学资料，逐步整理）</li>
+              <li>
+                · <Link href="/intro/zhou" className="transition-colors hover:text-primary">周老师专栏 / Column（观点文章与随笔）</Link>
+              </li>
             </ul>
           </Panel>
         </Section>

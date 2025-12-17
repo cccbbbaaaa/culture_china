@@ -85,7 +85,7 @@ export default function HomePage() {
                   沉潜人文，观照当代
                 </h1>
                 <p className="text-lg leading-relaxed text-canvas/95 sm:text-xl">
-                  <span className="block">培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。</span>
+                  <span className="block">培养秉承中华文化之精神、具有全球视野的未来社会各界领袖人才。</span>
                   <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon.</span>
                 </p>
               </div>
