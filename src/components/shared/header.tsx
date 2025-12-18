@@ -27,7 +27,7 @@ const navigation: NavItem[] = [
     name: "学员风采",
     href: "/alumni",
     children: [
-      { name: "各期学员", href: "/alumni" },
+      { name: "各期学员", href: "/alumni/profiles" },
       { name: "校友故事/随笔/专栏", href: "/alumni/stories" },
     ],
   },
@@ -70,7 +70,7 @@ export const Header = () => {
                 alt="浙江大学晨兴文化中国人才计划 Icon / Program icon"
                 className="object-contain"
                 height={64}
-                src="/images/branding/icon.jpg"
+                src="/images/branding/icon.svg"
                 width={64}
               />
               <div className="hidden sm:block">
@@ -184,5 +184,9 @@ export const Header = () => {
     </header>
   );
 };
+
+
+
+
 
 

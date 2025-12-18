@@ -2,11 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ExternalLink } from "lucide-react";
+import { and, desc, eq } from "drizzle-orm";
 
 import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageShell, Panel, Section } from "@/components/shared/page-shell";
 import { Button } from "@/components/ui/button";
+import { activityMedia, externalResources, mediaAssets } from "@/db/schema";
+import { db } from "@/lib/db";
+import { getSignedMediaUrl } from "@/lib/storage";
 
 interface ExternalResource {
   title: string;
@@ -15,8 +19,8 @@ interface ExternalResource {
   tag: string;
 }
 
-export default function HomePage() {
-  const slides: HeroSlide[] = [
+export default async function HomePage() {
+  const fallbackSlides: HeroSlide[] = [
     {
       src: "/images/events/annual/2025-group-photo.png",
       alt: "年度论坛合影 / Annual forum group photo",
@@ -47,26 +51,51 @@ export default function HomePage() {
     },
   ];
 
-  const latestUpdates: ExternalResource[] = [
-    {
-      title: "课程场记｜示例链接 01",
-      description: "以外部链接引用微信公众号推文（占位数据）。",
-      href: "https://mp.weixin.qq.com/",
-      tag: "课程教学",
-    },
-    {
-      title: "特色活动｜示例链接 02",
-      description: "展示项目活力与对外交流成果（占位数据）。",
-      href: "https://mp.weixin.qq.com/",
-      tag: "特色活动",
-    },
-    {
-      title: "校友随笔｜示例链接 03",
-      description: "混合内容策略：部分内容为固定页面，部分为外链（占位数据）。",
-      href: "https://mp.weixin.qq.com/",
-      tag: "学员风采",
-    },
-  ];
+  const heroRows = await db
+    .select({
+      title: activityMedia.title,
+      subtitle: activityMedia.subtitle,
+      linkUrl: activityMedia.linkUrl,
+      storagePath: mediaAssets.storagePath,
+    })
+    .from(activityMedia)
+    .innerJoin(mediaAssets, eq(activityMedia.mediaId, mediaAssets.id))
+    .where(and(eq(activityMedia.isActive, true), eq(activityMedia.slotKey, "home_hero")))
+    .orderBy(activityMedia.sortOrder)
+    .limit(10);
+
+  const heroSlides: HeroSlide[] = await Promise.all(
+    heroRows.map(async (row, index) => {
+      const src = await getSignedMediaUrl(row.storagePath, 60 * 60);
+      return {
+        src,
+        alt: `${row.title} / 轮播图片`,
+        title: row.title,
+        subtitle: row.subtitle ?? undefined,
+        caption: row.linkUrl ? `点击跳转 / Click to open` : `Slide ${index + 1}`,
+      };
+    }),
+  );
+
+  const slides = heroSlides.length > 0 ? heroSlides : fallbackSlides;
+
+  const latestRows = await db
+    .select({
+      title: externalResources.title,
+      description: externalResources.summary,
+      href: externalResources.url,
+      tag: externalResources.type,
+    })
+    .from(externalResources)
+    .orderBy(desc(externalResources.publishedAt), desc(externalResources.createdAt))
+    .limit(3);
+
+  const latestUpdates: ExternalResource[] = latestRows.map((row) => ({
+    title: row.title,
+    description: row.description ?? "",
+    href: row.href,
+    tag: row.tag,
+  }));
 
   return (
     <div>
@@ -150,7 +179,7 @@ export default function HomePage() {
           </div>
 
           <Section
-            description="聚合课程教学、特色活动等最新内容；当前为占位数据，后续将对接 resources 表。"
+            description="聚合课程教学、特色活动等最新内容；当前已对接 external_resources 表。"
             title="近期活动动态 / Latest Updates"
           >
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -267,5 +296,9 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+
+
 
 
