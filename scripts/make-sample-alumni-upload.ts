@@ -13,7 +13,7 @@ import path from "node:path";
 import AdmZip from "adm-zip";
 import xlsx from "xlsx";
 
-const SAMPLE_SIZE = Number.parseInt(process.env.SAMPLE_SIZE ?? "50", 10);
+const SAMPLE_SIZE = Number.parseInt(process.env.SAMPLE_SIZE ?? "100", 10);
 
 const ROOT = process.cwd();
 const alumniDir = path.join(ROOT, "temp", "data", "学员风采");

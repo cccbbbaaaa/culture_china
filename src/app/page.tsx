@@ -19,6 +19,8 @@ interface ExternalResource {
   tag: string;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const fallbackSlides: HeroSlide[] = [
     {
