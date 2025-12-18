@@ -37,16 +37,21 @@
 
 ## Phase 2: 后端与管理后台 (Backend & Admin)
 
-*目标：管理员可以登录后台，录入一个“外部链接”，并能在数据库中看到。*
+*目标：管理员可以在后台上传 Excel/Zip，同步到数据库并驱动前台展示。*
 
-* [ ] **数据库模型设计 (Schema Design)**
-  * [ ] 设计 `resources` 表 (用于存储外部文章链接/新闻/活动)。
-  * [ ] 设计 `alumni` 表 (用于存储学员信息)。
-  * [ ] 设计 `faculty` 表 (用于存储师资信息)。
+* [x] **数据库蓝图 (Schema Blueprint)**
+  * [x] 撰写 `docs/plan/DATABASE_DESIGN.md`，覆盖 `upload_batches`、`alumni_*`、`external_resources`、`media_assets`、`activity_media` 设计。
+* [ ] **Drizzle Schema 落地**
+  * [x] 在 `src/db/schema.ts` 中实现/更新上述表结构（含唯一约束与类型）。
+  * [x] 为图片处理新增 `media_assets` / `activity_media` 相关类型。
+* [ ] **批量上传接口**
+  * [x] `POST /api/admin/alumni/upload`：解析 Excel + Zip，完成裁剪压缩与写库（缺图仍入库，`photo_asset_id=NULL`）。
+  * [x] `POST /api/admin/resources/upload`：解析 CSV / 表单，支持去重与批次记录。
+  * [x] `POST /api/admin/media/activity`：上传轮播图片并写入元数据（含 `slot_key`）。
 * [ ] **基础管理后台 (Basic Admin)**
-  * [ ] 搭建极简的 `/admin` 路由（需简单鉴权）。
-  * [ ] 开发 **"外部资源录入" 表单** (输入标题、URL、简介、分类)。
-  * [ ] 开发 **资源列表管理** (增删改查)。
+  * [ ] 搭建极简的 `/admin` 路由（需简单鉴权/登录态校验）。
+  * [ ] 开发 Excel/Zip 上传表单与导入历史列表。
+  * [ ] 开发外链资源 CRUD 列表视图。
 
 ## Phase 3: 数据集成与展示 (Integration)
 
@@ -54,9 +59,10 @@
 
 * [ ] **首页数据联调**
   * [ ] 首页 "近期活动动态" 对接数据库查询。
-* [ ] **列表页数据联调**
-  * [ ] "学员风采" 对接数据库，实现按期数筛选。
-  * [ ] "特色活动/课程教学" 对接 `resources` 表，实现外链跳转。
+* [x] **列表页数据联调**
+  * [x] "学员风采" 对接数据库，实现按期数筛选。
+  * [x] "学员风采" 前端支持“缺图样式”：`photo_asset_id` 为空时使用无头像展示形态。
+  * [ ] "特色活动/课程教学" 对接 `external_resources` 表，实现外链跳转。
 * [ ] **动态组件优化**
   * [ ] 优化卡片组件 (Resource Card) 的视觉样式（阴影、Hover 效果）。
 

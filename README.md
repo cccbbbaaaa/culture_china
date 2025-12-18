@@ -213,6 +213,19 @@ src/
    # 或 Vercel Postgres（自动提供 POSTGRES_URL）
    # POSTGRES_URL=postgres://...
    ```
+
+   #### 连接线上 Supabase（共享测试库）
+
+   如需直接联调线上 Supabase（包含 `media_assets`/`activity_media` 最新表数据），请额外配置以下变量，并使用 Supabase 提供的 pooler 端口（6543），否则会出现 `relation "activity_media" does not exist` 等错误。
+
+   ```env
+   POSTGRES_URL=postgres://postgres.xxx:password@aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require&supa=base-pooler.x
+   SUPABASE_URL=https://<project-ref>.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+   SUPABASE_STORAGE_BUCKET=media
+   ```
+
+   > 建议：使用 `direnv`、`source .env` 或 VSCode `dotenv` 插件，确保 `pnpm dev`/`pnpm db:*` 与 Next.js 运行时共享同一套 Supabase 凭据。
 3. **启动数据库**（Docker 示例）
 
    ```bash
@@ -233,6 +246,8 @@ src/
    ```bash
    pnpm dev
    ```
+
+   若使用线上 Supabase，请确认上述变量已生效（可在 `pnpm dev` 输出看到 `Environments: .env`），否则页面会因连接到空库而缺少最新表。
 
    访问 `http://localhost:3000`，并通过 `http://localhost:3000/api/health/db` 检查数据库连通性。
 
