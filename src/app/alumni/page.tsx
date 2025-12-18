@@ -88,23 +88,26 @@ export default async function AlumniPage({ searchParams }: AlumniPageProps) {
                 const bioLines = splitBioLines(row.bioZh ?? "");
                 const previewLines = bioLines.slice(0, 5);
                 return (
-                  <div key={row.id} className="flex gap-5 overflow-hidden rounded-xl border border-stone bg-canvas/pure shadow-sm">
+                  <div
+                    key={row.id}
+                    className="flex flex-col gap-4 overflow-hidden rounded-xl border border-stone bg-canvas/pure shadow-sm sm:flex-row sm:gap-5"
+                  >
                     {/* 左侧照片 / Left photo */}
                     {/* 固定 5:7 比例容器，统一视觉 / Fixed 5:7 frame for consistency */}
-                    <div className="relative h-[196px] w-[140px] shrink-0 bg-canvas">
+                    <div className="relative h-56 w-full bg-canvas sm:h-[196px] sm:w-[140px] sm:shrink-0">
                       {row.photoUrl ? (
                         <Image
                           alt={`${row.name} 照片 / photo`}
                           className="object-contain"
                           fill
-                          sizes="140px"
+                          sizes="(max-width: 640px) 100vw, 140px"
                           src={row.photoUrl}
                         />
                       ) : null}
                     </div>
 
                     {/* 右侧文本 / Right content */}
-                    <div className="min-w-0 flex-1 p-5">
+                    <div className="min-w-0 flex-1 px-5 pb-5 sm:p-5">
                       <p className="text-xl font-serif font-semibold tracking-wide text-ink">{row.name}</p>
                       <p className="mt-2 text-sm text-ink/70">
                         {row.cohort ? `${row.cohort} 期` : "期数未知"}
