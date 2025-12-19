@@ -4,14 +4,30 @@ import postgres from "postgres";
 import * as schema from "@/db/schema";
 import { env } from "@/lib/env";
 
-// 创建 postgres 客户端
-// Create postgres client
-const client = postgres(env.DATABASE_URL, {
-  max: 1, // 对于 Server Components，使用单个连接即可 / Single connection is enough for RSC
-});
+const createUnavailableDb = () => {
+  return new Proxy(
+    {},
+    {
+      get() {
+        throw new Error(
+          "Database is not configured. Set POSTGRES_URL/DATABASE_URL for server rendering, or set NEXT_PUBLIC_EDGE_DEPLOY=true for static preview.",
+        );
+      },
+    },
+  );
+};
 
-// 创建 Drizzle 实例
-// Create Drizzle instance
-export const db = drizzle(client, { schema });
+/**
+ * 数据库实例（惰性：无 DATABASE_URL 时不在 import 阶段崩溃）
+ * Lazy DB init: don't crash at import time when DATABASE_URL is missing.
+ */
+export const db = env.DATABASE_URL
+  ? drizzle(
+      postgres(env.DATABASE_URL, {
+        max: 1, // 对于 Server Components，使用单个连接即可 / Single connection is enough for RSC
+      }),
+      { schema },
+    )
+  : (createUnavailableDb() as unknown as ReturnType<typeof drizzle>);
 
 

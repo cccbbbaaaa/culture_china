@@ -11,6 +11,7 @@ import { PageShell, Panel, Section } from "@/components/shared/page-shell";
 import { Button } from "@/components/ui/button";
 import { activityMedia, externalResources, mediaAssets } from "@/db/schema";
 import { db } from "@/lib/db";
+import { isEdgeStaticDeploy } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 
@@ -238,6 +239,10 @@ export default async function HomePage() {
 }
 
 const HeroSection = async ({ fallbackSlides }: { fallbackSlides: HeroSlide[] }) => {
+  if (isEdgeStaticDeploy) {
+    return <HeroCarousel slides={fallbackSlides} />;
+  }
+
   const heroRows = await db
     .select({
       title: activityMedia.title,
@@ -265,6 +270,10 @@ const HeroSection = async ({ fallbackSlides }: { fallbackSlides: HeroSlide[] }) 
 };
 
 const LatestUpdatesSection = async () => {
+  if (isEdgeStaticDeploy) {
+    return <Panel className="border-dashed text-sm text-ink/60">EdgeOne 预览模式：动态内容已禁用。</Panel>;
+  }
+
   const rows = await db
     .select({
       title: externalResources.title,
