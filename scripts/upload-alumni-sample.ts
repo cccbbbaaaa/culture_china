@@ -86,3 +86,4 @@ uploadAlumni().catch((error) => {
   console.error("💥 脚本执行失败 / Script execution failed:", error);
   process.exit(1);
 });
+

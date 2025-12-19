@@ -140,6 +140,23 @@
 
 ---
 
+### 3.5 外链资源类型映射
+
+`external_resources.type` 由内容采集脚本直接写入，当前约定如下，便于前端路由与分发：
+
+| 类型值 | 前端版块 | UI 标签 |
+| --- | --- | --- |
+| `活动-年度论坛` | `/activities` | 年度论坛 |
+| `活动-访学交流` | `/activities` | 访学交流 |
+| `活动-其他活动` | `/activities` | 其他活动 |
+| `招生-招生活动` | `/admissions` | 招生活动 |
+| `课程-课程回顾/新闻场记` | `/curriculum` | 课程回顾 / Notes |
+| `校友故事/随笔/专栏` | 预留（Stories） | 校友故事 |
+
+> 未来若有新增类型，请同步更新 `src/lib/resource-types.ts` 与上表，确保前端渲染一致。
+
+---
+
 ## 4. 数据导入流程（Server Actions / Route Handlers）
 
 ### 4.1 学员批量导入 `POST /api/admin/alumni/upload`

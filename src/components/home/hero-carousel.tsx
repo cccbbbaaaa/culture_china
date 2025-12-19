@@ -43,12 +43,14 @@ export interface HeroCarouselProps {
 type FitMode = "cover" | "contain";
 
 const loadImageSize = (src: string): Promise<{ width: number; height: number }> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.referrerPolicy = "no-referrer";
     img.onload = () => {
-      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      resolve({ width: img.naturalWidth || 1920, height: img.naturalHeight || 1080 });
     };
-    img.onerror = () => reject(new Error("Failed to load image"));
+    img.onerror = () => resolve({ width: 1920, height: 1080 });
     img.src = src;
   });
 };

@@ -1,39 +1,35 @@
-import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { ExternalLink } from "lucide-react";
+import { desc, inArray } from "drizzle-orm";
 
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageHeader, PageShell, Panel, Section } from "@/components/shared/page-shell";
+import { Button } from "@/components/ui/button";
+import { externalResources } from "@/db/schema";
+import { db } from "@/lib/db";
+import { getResourceTypeLabel, getTypesBySection } from "@/lib/resource-types";
 
-interface ActivityItem {
-  title: string;
-  category: "年度论坛" | "访学交流" | "其他活动";
-  coverSrc: string;
-  href: string;
+const ACTIVITY_TYPES = getTypesBySection("activities");
+const PAGE_SIZE = 6;
+
+export const dynamic = "force-dynamic";
+
+interface ActivitiesPageProps {
+  searchParams?: {
+    page?: string;
+  };
 }
 
-export default function ActivitiesPage() {
-  const items: ActivityItem[] = [
-    {
-      title: "年度论坛｜2025 合影",
-      category: "年度论坛",
-      coverSrc: "/images/events/annual/2025-group-photo.png",
-      href: "https://mp.weixin.qq.com/",
-    },
-    {
-      title: "访学交流｜2023 US",
-      category: "访学交流",
-      coverSrc: "/images/events/visits/2023-us.jpg",
-      href: "https://mp.weixin.qq.com/",
-    },
-    {
-      title: "课程活动｜示例",
-      category: "其他活动",
-      coverSrc: "/images/events/course/bao-20251202.jpeg",
-      href: "https://mp.weixin.qq.com/",
-    },
-  ];
+const formatDate = (value: Date | string | null) => {
+  if (!value) return "日期待定";
+  const date = value instanceof Date ? value : new Date(value);
+  return Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" }).format(date);
+};
+
+export default async function ActivitiesPage({ searchParams }: ActivitiesPageProps) {
+  const page = Math.max(1, Number.parseInt(searchParams?.page ?? "1", 10) || 1);
 
   return (
     <PageShell>
@@ -44,33 +40,10 @@ export default function ActivitiesPage() {
           title="特色活动 / Featured Activities"
         />
 
-        <Section description="后续将对接 resources 表并支持置顶/推荐。" title="活动列表 / Activity Feed">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {items.map((item) => (
-              <Link
-                key={item.title}
-                className="group block overflow-hidden rounded-xl border border-stone bg-canvas/pure shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                href={item.href}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <div className="relative h-44">
-                  <Image alt={`${item.title} 封面 / cover`} className="object-cover" fill sizes="(min-width: 768px) 33vw, 100vw" src={item.coverSrc} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <p className="text-xs font-medium tracking-wide text-accent">{item.category}</p>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-base font-serif font-semibold text-ink group-hover:text-primary">{item.title}</h3>
-                    <ExternalLink className="mt-1 h-4 w-4 text-ink/50 group-hover:text-primary" />
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-ink/70">说明占位：点击跳转到微信公众号推文。</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+        <Section description="已与 external_resources 表对接，可通过后台推文控制展示与排序。" title="活动列表 / Activity Feed">
+          <Suspense fallback={<ListFallback message="活动内容加载中..." />}>
+            <ActivitiesFeed page={page} />
+          </Suspense>
         </Section>
 
         <Section description="访学交流建议用 Gallery 形式展示精彩瞬间。" title="图库 / Gallery">
@@ -83,6 +56,101 @@ export default function ActivitiesPage() {
   );
 }
 
+const ActivitiesFeed = async ({ page }: { page: number }) => {
+  const offset = (page - 1) * PAGE_SIZE;
+  const rows = ACTIVITY_TYPES.length
+    ? await db
+        .select({
+          title: externalResources.title,
+          summary: externalResources.summary,
+          url: externalResources.url,
+          type: externalResources.type,
+          publishedAt: externalResources.publishedAt,
+        })
+        .from(externalResources)
+        .where(inArray(externalResources.type, ACTIVITY_TYPES))
+        .orderBy(desc(externalResources.publishedAt), desc(externalResources.createdAt))
+        .limit(PAGE_SIZE + 1)
+        .offset(offset)
+    : [];
 
+  const hasNext = rows.length > PAGE_SIZE;
+  const resources = rows.slice(0, PAGE_SIZE);
 
+  if (resources.length === 0) {
+    return <Panel className="border-dashed text-sm text-ink/60">暂无数据，待后台录入后自动展示。</Panel>;
+  }
 
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {resources.map((item) => (
+          <Link
+            key={`${item.title}-${item.url}`}
+            className="group flex h-full flex-col rounded-xl border border-stone bg-canvas/pure p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            href={item.url}
+            prefetch={false}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <p className="text-xs font-medium tracking-wide text-accent">{getResourceTypeLabel(item.type) ?? "活动"}</p>
+              <span className="text-xs text-ink/55">{formatDate(item.publishedAt)}</span>
+            </div>
+            <h3 className="mt-3 text-lg font-serif font-semibold text-ink group-hover:text-primary">{item.title}</h3>
+            <p className="mt-3 flex-1 text-sm leading-relaxed text-ink/70">{item.summary || "点击查看公众号完整内容。"}</p>
+            <div className="mt-4 flex items-center gap-2 text-sm font-medium text-primary">
+              立即查看 <ExternalLink className="h-4 w-4" />
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <Pagination page={page} hasNext={hasNext} basePath="/activities" />
+    </>
+  );
+};
+
+const Pagination = ({ page, hasNext, basePath }: { page: number; hasNext: boolean; basePath: string }) => {
+  const prevDisabled = page <= 1;
+  const nextDisabled = !hasNext;
+
+  const prevButton = prevDisabled ? (
+    <Button disabled variant="outline">
+      上一页
+    </Button>
+  ) : (
+    <Button asChild variant="outline">
+      <Link prefetch={false} href={`${basePath}?page=${page - 1}`} scroll={false}>
+        上一页
+      </Link>
+    </Button>
+  );
+
+  const nextButton = nextDisabled ? (
+    <Button disabled variant="outline">
+      下一页
+    </Button>
+  ) : (
+    <Button asChild variant="outline">
+      <Link prefetch={false} href={`${basePath}?page=${page + 1}`} scroll={false}>
+        下一页
+      </Link>
+    </Button>
+  );
+
+  return (
+    <div className="mt-8 flex items-center justify-between">
+      {prevButton}
+      <div className="text-sm text-ink/60">第 {page} 页</div>
+      {nextButton}
+    </div>
+  );
+};
+
+const ListFallback = ({ message }: { message: string }) => (
+  <Panel className="border-dashed py-16 text-center text-sm text-ink/60">
+    <div className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-stone border-t-primary" />
+    <p className="mt-4">{message}</p>
+  </Panel>
+);
