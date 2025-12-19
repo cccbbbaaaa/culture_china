@@ -3,8 +3,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 
-import { cn } from "@/lib/utils";
-
 interface CohortFilterProps {
   cohorts: number[];
   currentCohort: number | null;
@@ -15,7 +13,7 @@ export const CohortFilter = ({ cohorts, currentCohort }: CohortFilterProps) => {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const handleCohortClick = (cohort: number) => {
+  const handleChange = (cohort: number) => {
     startTransition(() => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("cohort", cohort.toString());
@@ -25,25 +23,35 @@ export const CohortFilter = ({ cohorts, currentCohort }: CohortFilterProps) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-2">
-        {cohorts.slice(0, 28).map((c) => (
-          <button
-            key={c}
-            className={cn(
-              "rounded-full border px-3 py-1 text-xs font-medium transition",
-              currentCohort === c
-                ? "border-primary bg-primary text-canvas"
-                : "border-stone bg-canvas/70 text-ink/70 hover:border-stone/80 hover:bg-stone/20 hover:text-ink",
-              isPending && "opacity-60",
-            )}
-            disabled={isPending}
-            onClick={() => handleCohortClick(c)}
-            type="button"
-          >
-            第 {c} 期
-          </button>
-        ))}
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-ink/70" htmlFor="cohort-select">
+        选择期数 / Select cohort
+      </label>
+      <div className="relative w-full max-w-xs">
+        <select
+          id="cohort-select"
+          className="w-full appearance-none rounded-xl border border-stone bg-canvas/pure px-4 py-2 text-sm text-ink shadow-sm transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-60"
+          defaultValue={currentCohort ?? ""}
+          disabled={isPending}
+          onChange={(event) => {
+            const value = Number.parseInt(event.target.value, 10);
+            if (!Number.isNaN(value)) {
+              handleChange(value);
+            }
+          }}
+        >
+          {currentCohort === null ? <option value="">选择期数</option> : null}
+          {cohorts.map((cohort) => (
+            <option key={cohort} value={cohort}>
+              第 {cohort} 期
+            </option>
+          ))}
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-ink/50">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </div>
 
       {isPending ? (

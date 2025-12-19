@@ -193,6 +193,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                   priority
                   sizes="(min-width: 1536px) 1536px, 100vw"
                   src={activeSlide.src}
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-canvas/90 via-canvas/35 to-canvas/10" />
 
@@ -203,6 +204,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
                   priority
                   sizes="(min-width: 1536px) 1536px, 100vw"
                   src={activeSlide.src}
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-canvas/60 via-transparent to-transparent" />
               </motion.div>

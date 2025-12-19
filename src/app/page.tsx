@@ -11,7 +11,6 @@ import { PageShell, Panel, Section } from "@/components/shared/page-shell";
 import { Button } from "@/components/ui/button";
 import { activityMedia, externalResources, mediaAssets } from "@/db/schema";
 import { db } from "@/lib/db";
-import { getSignedMediaUrl } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -245,6 +244,7 @@ const HeroSection = async ({ fallbackSlides }: { fallbackSlides: HeroSlide[] }) 
       subtitle: activityMedia.subtitle,
       linkUrl: activityMedia.linkUrl,
       storagePath: mediaAssets.storagePath,
+      assetId: mediaAssets.id,
     })
     .from(activityMedia)
     .innerJoin(mediaAssets, eq(activityMedia.mediaId, mediaAssets.id))
@@ -252,18 +252,14 @@ const HeroSection = async ({ fallbackSlides }: { fallbackSlides: HeroSlide[] }) 
     .orderBy(activityMedia.sortOrder)
     .limit(10);
 
-  const heroSlides: HeroSlide[] = await Promise.all(
-    heroRows.map(async (row, index) => {
-      const src = await getSignedMediaUrl(row.storagePath, 60 * 60);
-      return {
-        src,
-        alt: `${row.title} / 轮播图片`,
-        title: row.title,
-        subtitle: row.subtitle ?? undefined,
-        caption: row.linkUrl ? `点击跳转 / Click to open` : `Slide ${index + 1}`,
-      };
-    }),
-  );
+  const heroSlides: HeroSlide[] = heroRows.map((row, index) => ({
+    // 使用本地 API 代理访问 Storage，避免浏览器端 signed URL 400 / Proxy through our API to avoid signed URL 400
+    src: `/api/media/${row.assetId}`,
+    alt: `${row.title} / 轮播图片`,
+    title: row.title,
+    subtitle: row.subtitle ?? undefined,
+    caption: row.linkUrl ? `点击跳转 / Click to open` : `Slide ${index + 1}`,
+  }));
 
   return <HeroCarousel slides={heroSlides.length > 0 ? heroSlides : fallbackSlides} />;
 };
