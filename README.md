@@ -293,6 +293,7 @@ src/
 
 - 当前项目在 **EdgeOne Pages** 上已验证可以以与 Vercel 基本一致的方式运行，不再需要 `NEXT_PUBLIC_EDGE_DEPLOY` 等特殊开关。
 - 所有运行环境（包括 Vercel、EdgeOne 等）都需要提供可用的数据库连接：`POSTGRES_URL` 或 `DATABASE_URL`，否则服务端渲染会直接报错。
+- **EdgeOne 图片显示问题**：如果发现 `public/` 目录下的图片（如微信公众号二维码、师资照片等）无法显示，且浏览器控制台显示 `/next/image?url=...` 返回 400 错误，请在 EdgeOne 环境变量中设置 `NEXT_IMAGE_UNOPTIMIZED=true`。这会禁用 Next.js Image Optimization API，直接使用静态文件路径，确保图片正常显示。
 - 如目标平台仅支持“纯静态文件托管”，且无法运行 Node.js/Next.js 服务器，则本项目将无法完整提供动态功能（数据库查询、API Routes 等）。
 
 ---
