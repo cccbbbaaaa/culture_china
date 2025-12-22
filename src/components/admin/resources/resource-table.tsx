@@ -33,20 +33,16 @@ export const ResourceTable = async ({ filters, page, typeOptions, searchParams }
   }
 
   const offset = (page - 1) * PAGE_SIZE;
-  let query = db
-    .select()
-    .from(externalResources)
+  const whereClause =
+    conditions.length === 0 ? undefined : conditions.length === 1 ? conditions[0] : and(...conditions);
+
+  const baseQuery = db.select().from(externalResources);
+  const filteredQuery = whereClause ? baseQuery.where(whereClause) : baseQuery;
+
+  const rows = await filteredQuery
     .orderBy(desc(externalResources.updatedAt))
     .limit(PAGE_SIZE + 1)
     .offset(offset);
-
-  if (conditions.length === 1) {
-    query = query.where(conditions[0]);
-  } else if (conditions.length > 1) {
-    query = query.where(and(...conditions));
-  }
-
-  const rows = await query;
   const resources = rows.slice(0, PAGE_SIZE);
   const hasNext = rows.length > PAGE_SIZE;
   const hasPrev = page > 1;
