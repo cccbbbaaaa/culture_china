@@ -60,10 +60,7 @@ export const AlumniTable = async ({ filters, page, searchParams }: AlumniTablePr
       submissionTs: alumniProfiles.submissionTs,
       photoAssetId: alumniProfiles.photoAssetId,
     })
-    .from(alumniProfiles)
-    .orderBy(desc(alumniProfiles.updatedAt))
-    .limit(PAGE_SIZE + 1)
-    .offset(offset);
+    .from(alumniProfiles);
 
   if (conditions.length === 1) {
     profileQuery = profileQuery.where(conditions[0]);
@@ -71,7 +68,10 @@ export const AlumniTable = async ({ filters, page, searchParams }: AlumniTablePr
     profileQuery = profileQuery.where(and(...conditions));
   }
 
-  const rows = await profileQuery;
+  const rows = await profileQuery
+    .orderBy(desc(alumniProfiles.updatedAt), desc(alumniProfiles.id))
+    .limit(PAGE_SIZE + 1)
+    .offset(offset);
   const profiles = rows.slice(0, PAGE_SIZE);
   const profileIds = profiles.map((profile) => profile.id);
 
