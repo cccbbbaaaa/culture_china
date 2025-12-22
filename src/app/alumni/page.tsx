@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
 
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageHeader, PageShell, Panel, Section } from "@/components/shared/page-shell";
@@ -71,7 +71,7 @@ const RandomAlumniGrid = async () => {
     })
     .from(alumniProfiles)
     .innerJoin(mediaAssets, eq(alumniProfiles.photoAssetId, mediaAssets.id))
-    .where(isNotNull(alumniProfiles.photoAssetId))
+    .where(and(isNotNull(alumniProfiles.photoAssetId), eq(alumniProfiles.isArchived, false)))
     .orderBy(sql`random()`)
     .limit(randomLimit);
 

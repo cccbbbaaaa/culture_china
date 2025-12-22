@@ -7,7 +7,8 @@ import { processAndStoreImage } from "@/lib/uploads";
 
 export const runtime = "nodejs";
 
-const MAX_ACTIVITY_IMAGE_BYTES = 1.5 * 1024 * 1024; // 1.5MB
+const MAX_PROCESSED_IMAGE_BYTES = 1 * 1024 * 1024; // 1MB
+const MAX_SOURCE_IMAGE_BYTES = 8 * 1024 * 1024; // 8MB 硬限制
 const ALLOWED_SLOTS = new Set(["home_hero", "activities_gallery"]);
 
 export async function POST(req: NextRequest) {
@@ -33,8 +34,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (image.size > MAX_ACTIVITY_IMAGE_BYTES) {
-      return NextResponse.json({ error: "图片超过 1.5MB 限制 / Image exceeds 1.5MB." }, { status: 400 });
+    if (image.size > MAX_SOURCE_IMAGE_BYTES) {
+      return NextResponse.json({ error: "原始图片超过 8MB 限制 / Source image exceeds 8MB." }, { status: 400 });
     }
 
     const batch = await db
@@ -56,11 +57,11 @@ export async function POST(req: NextRequest) {
       usage: "activity_banner",
       batchId,
       fileName: image.name,
-      maxBytes: MAX_ACTIVITY_IMAGE_BYTES,
+      maxBytes: MAX_PROCESSED_IMAGE_BYTES,
       target: {
         width: 2000,
-        height: 2000,
-        fit: "inside",
+        height: 1200,
+        fit: "cover",
         withoutEnlargement: true,
       },
     });
@@ -96,5 +97,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
+
 
 

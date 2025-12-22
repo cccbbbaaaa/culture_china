@@ -1,4 +1,4 @@
-import { count, desc, eq, isNotNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, isNotNull, isNull } from "drizzle-orm";
 
 import { AlumniCardList } from "@/components/alumni/alumni-card-list";
 import { alumniProfiles, mediaAssets } from "@/db/schema";
@@ -24,7 +24,9 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
       await db
         .select({ value: count() })
         .from(alumniProfiles)
-        .where(sql`${alumniProfiles.cohort} = ${cohort} and ${alumniProfiles.photoAssetId} is not null`)
+        .where(
+          and(eq(alumniProfiles.cohort, cohort), isNotNull(alumniProfiles.photoAssetId), eq(alumniProfiles.isArchived, false)),
+        )
     )[0]?.value ?? 0;
 
   const photoTake = Math.min(take, photoCount);
@@ -42,7 +44,7 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
     })
     .from(alumniProfiles)
     .innerJoin(mediaAssets, eq(alumniProfiles.photoAssetId, mediaAssets.id))
-    .where(eq(alumniProfiles.cohort, cohort))
+    .where(and(eq(alumniProfiles.cohort, cohort), eq(alumniProfiles.isArchived, false)))
     .orderBy(desc(alumniProfiles.submissionTs))
     .limit(photoTake);
 
@@ -58,7 +60,7 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
             websiteUrl: alumniProfiles.websiteUrl,
           })
           .from(alumniProfiles)
-          .where(sql`${alumniProfiles.cohort} = ${cohort} and ${alumniProfiles.photoAssetId} is null`)
+          .where(and(eq(alumniProfiles.cohort, cohort), isNull(alumniProfiles.photoAssetId), eq(alumniProfiles.isArchived, false)))
           .orderBy(desc(alumniProfiles.submissionTs))
           .limit(noPhotoTake)
       : [];
@@ -96,5 +98,6 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
     />
   );
 };
+
 
 

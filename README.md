@@ -226,6 +226,22 @@ src/
    ```
 
    > 建议：使用 `direnv`、`source .env` 或 VSCode `dotenv` 插件，确保 `pnpm dev`/`pnpm db:*` 与 Next.js 运行时共享同一套 Supabase 凭据。
+
+   #### 管理员账号配置（简易账号/密码登录）
+
+   1. 访问路径：`/admin/login`，登录后可根据角色进入相应模块。
+   2. 角色划分：
+      - `content_editor`：可管理 **外链资源** + **活动媒体**。
+      - `super_admin`：拥有全部权限，额外开放 **学员风采管理**。
+   3. 环境变量（本地/受控环境可直接存明文；若部署公网请改造为哈希或对接外部身份服务）：
+      ```bash
+      ADMIN_MEDIA_USER="media_editor"
+      ADMIN_MEDIA_PASSWORD="media-editor-password"
+      ADMIN_ROOT_USER="root_admin"
+      ADMIN_ROOT_PASSWORD="culture_china2025"
+      ADMIN_SESSION_SECRET="32+chars-random"
+      ```
+   4. 会话策略：登录成功后写入 `admin_session` HttpOnly Cookie，默认有效期 12 小时，可在任意页面点击“退出登录”注销。
 3. **启动数据库**（Docker 示例）
 
    ```bash
@@ -262,6 +278,16 @@ src/
 | `pnpm db:generate` | 生成 Drizzle 迁移文件               |
 | `pnpm db:migrate`  | 执行数据库迁移                      |
 | `pnpm db:studio`   | 打开 Drizzle Studio（可视化数据库） |
+
+### 🛠 运维后台 / Admin Console
+
+- 登录入口：`/admin/login`（内置账号密码鉴权，见上文环境变量配置）。
+- 功能概览：
+  - **外链资源管理**：新增/编辑/删除公众号推文，支持 Featured & Pinned 开关。
+- **活动媒体管理**：维护首页轮播与 `/activities` 图库，支持图片上传（原图 ≤ 8MB，自动压缩至 ≤ 1MB）、排序与启停。
+  - **学员风采管理**（仅 `super_admin`）：提供筛选、手动录入、编辑、归档、照片替换、教育/经历维护等能力（照片自动裁剪为 5:7，≤1MB）。
+- 上传限制：所有批量导入（Excel/CSV/Zip）及手动上传文件体积须 ≤ **700MB**，超出将被拒绝并提示。
+- 会话安全：登录后写入 HttpOnly Cookie，默认 12 小时有效，可随时手动退出。
 
 ### EdgeOne / 其他平台部署说明
 

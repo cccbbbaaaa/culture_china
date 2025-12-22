@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { count, eq, isNotNull } from "drizzle-orm";
+import { and, count, eq, isNotNull } from "drizzle-orm";
 
 import { AlumniData } from "@/components/alumni/alumni-data";
 import { CohortFilter } from "@/components/alumni/cohort-filter";
@@ -29,7 +29,7 @@ export default async function AlumniProfilesPage({ searchParams }: AlumniProfile
   const cohortsRaw = await db
     .selectDistinct({ cohort: alumniProfiles.cohort })
     .from(alumniProfiles)
-    .where(isNotNull(alumniProfiles.cohort));
+    .where(and(isNotNull(alumniProfiles.cohort), eq(alumniProfiles.isArchived, false)));
 
   const cohorts = cohortsRaw
     .map((item) => item.cohort)
@@ -42,7 +42,10 @@ export default async function AlumniProfilesPage({ searchParams }: AlumniProfile
   const totalCount =
     cohortFilter !== null
       ? (
-          await db.select({ value: count() }).from(alumniProfiles).where(eq(alumniProfiles.cohort, cohortFilter))
+          await db
+            .select({ value: count() })
+            .from(alumniProfiles)
+            .where(and(eq(alumniProfiles.cohort, cohortFilter), eq(alumniProfiles.isArchived, false)))
         )[0]?.value ?? 0
       : 0;
 
@@ -90,6 +93,7 @@ export default async function AlumniProfilesPage({ searchParams }: AlumniProfile
     </PageShell>
   );
 }
+
 
 
 

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { ChevronDown, Menu, X } from "lucide-react";
 
@@ -52,12 +53,17 @@ const navigation: NavItem[] = [
 ];
 
 export const Header = () => {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
 
   useEffect(() => {
     if (!mobileMenuOpen) setMobileSubmenu(null);
   }, [mobileMenuOpen]);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-stone bg-canvas shadow-sm">

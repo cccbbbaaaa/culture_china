@@ -1,13 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { ExternalLink } from "lucide-react";
-import { desc, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageHeader, PageShell, Panel, Section } from "@/components/shared/page-shell";
 import { Button } from "@/components/ui/button";
-import { externalResources } from "@/db/schema";
+import { activityMedia, externalResources, mediaAssets } from "@/db/schema";
 import { db } from "@/lib/db";
 import { getResourceTypeLabel, getTypesBySection } from "@/lib/resource-types";
 
@@ -40,16 +41,16 @@ export default async function ActivitiesPage({ searchParams }: ActivitiesPagePro
           title="特色活动 / Featured Activities"
         />
 
+        <Section description="内容由运维后台「活动媒体管理 · /activities 图库」维护。" title="图库 / Gallery">
+          <Suspense fallback={<ListFallback message="图库加载中..." />}>
+            <GalleryGrid />
+          </Suspense>
+        </Section>
+
         <Section description="已与 external_resources 表对接，可通过后台推文控制展示与排序。" title="活动列表 / Activity Feed">
           <Suspense fallback={<ListFallback message="活动内容加载中..." />}>
             <ActivitiesFeed page={page} />
           </Suspense>
-        </Section>
-
-        <Section description="访学交流建议用 Gallery 形式展示精彩瞬间。" title="图库 / Gallery">
-          <Panel className="border-dashed">
-            <p className="text-sm text-ink/70">预留：瀑布流/灯箱预览、按年份筛选等。</p>
-          </Panel>
         </Section>
       </PageEnter>
     </PageShell>
@@ -108,6 +109,84 @@ const ActivitiesFeed = async ({ page }: { page: number }) => {
 
       <Pagination page={page} hasNext={hasNext} basePath="/activities" />
     </>
+  );
+};
+
+const GalleryGrid = async () => {
+  const galleryItems = await db
+    .select({
+      id: activityMedia.id,
+      title: activityMedia.title,
+      subtitle: activityMedia.subtitle,
+      linkUrl: activityMedia.linkUrl,
+      mediaId: activityMedia.mediaId,
+      width: mediaAssets.width,
+      height: mediaAssets.height,
+      ratio: mediaAssets.ratio,
+    })
+    .from(activityMedia)
+    .leftJoin(mediaAssets, eq(activityMedia.mediaId, mediaAssets.id))
+    .where(and(eq(activityMedia.slotKey, "activities_gallery"), eq(activityMedia.isActive, true)))
+    .orderBy(asc(activityMedia.sortOrder), desc(activityMedia.updatedAt));
+
+  if (galleryItems.length === 0) {
+    return <Panel className="border-dashed text-sm text-ink/60">图库暂无内容，请在后台上传活动图片。</Panel>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {galleryItems.map((item) => {
+        const ratio = item.ratio ?? (item.width && item.height ? item.width / item.height : 4 / 3);
+        const paddingTop = `${(1 / ratio) * 100}%`;
+        const cardContent = (
+          <>
+            <div className="relative w-full" style={{ paddingTop }}>
+              <Image
+                alt={item.title}
+                className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                fill
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                src={`/api/media/${item.mediaId}`}
+              />
+            </div>
+            <div className="space-y-2 px-4 py-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-ink/50">Gallery</p>
+              <h3 className="text-lg font-serif font-semibold text-ink">{item.title}</h3>
+              {item.subtitle ? <p className="text-sm text-ink/70">{item.subtitle}</p> : null}
+              {item.linkUrl ? (
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  查看详情 <ExternalLink className="h-4 w-4" />
+                </span>
+              ) : null}
+            </div>
+          </>
+        );
+
+        if (item.linkUrl) {
+          return (
+            <a
+              key={item.id}
+              className="group flex flex-col overflow-hidden rounded-3xl border border-stone/40 bg-canvas shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+              href={item.linkUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {cardContent}
+            </a>
+          );
+        }
+
+        return (
+          <div
+            key={item.id}
+            className="group flex flex-col overflow-hidden rounded-3xl border border-stone/40 bg-canvas shadow-sm"
+          >
+            {cardContent}
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

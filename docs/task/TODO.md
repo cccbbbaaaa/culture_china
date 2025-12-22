@@ -49,9 +49,11 @@
   * [x] `POST /api/admin/resources/upload`：解析 CSV / 表单，支持去重与批次记录。
   * [x] `POST /api/admin/media/activity`：上传轮播图片并写入元数据（含 `slot_key`）。
 * [ ] **基础管理后台 (Basic Admin)**
-  * [ ] 搭建极简的 `/admin` 路由（需简单鉴权/登录态校验）。
+  * [x] 搭建极简的 `/admin` 路由（需简单鉴权/登录态校验）。
   * [ ] 开发 Excel/Zip 上传表单与导入历史列表。
-  * [ ] 开发外链资源 CRUD 列表视图。
+  * [x] 开发外链资源 CRUD 列表视图。
+  * [x] 开发活动媒体管理界面（首页轮播 + /activities 图库）。
+  * [x] 开发学员风采管理界面（手动录入 / 编辑 / 归档）。
 
 ## Phase 3: 数据集成与展示 (Integration)
 

@@ -57,6 +57,7 @@ export const alumniProfiles = pgTable(
     batchId: integer("batch_id").references(() => uploadBatches.id),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    isArchived: boolean("is_archived").default(false).notNull(),
   },
   (table) => ({
     emailSubmissionUnique: uniqueIndex("alumni_email_submission_idx").on(table.email, table.submissionTs),
