@@ -15,7 +15,7 @@ import { getResourceTypeLabel, getTypesBySection } from "@/lib/resource-types";
 interface TimelineStep {
   title: string;
   description: string;
-  date: string;
+  period?: string;
   note?: string;
 }
 
@@ -34,30 +34,24 @@ export default async function AdmissionsPage() {
     {
       title: "关注信息 / Follow",
       description: "请以官方微信公众号的当期招生推文为准，获取时间节点与报名表链接。",
-      date: "以推文为准",
+      period: "每年 3 月 启动招生",
     },
     {
-      title: "建议提交 / Early Submit",
-      description: "优先安排首轮面试，建议按推文推荐时间提交报名表与在线表单。",
-      date: "推荐：3/16 23:59",
-      note: "具体以当期推文为准",
-    },
-    {
-      title: "最终截止 / Deadline",
-      description: "按推文指引完成报名表与在线表单提交。",
-      date: "最终：3/23 23:59",
-      note: "以当期推文时间为准",
+      title: "招生活动与报名提交 / Application Submission",
+      description: "参加招生活动，全面了解文化中国项目，并按推文指引提交报名表。",
+      period: "3 月 - 4 月",
     },
     {
       title: "选拔面试 / Interview",
       description: "3-5 月集中安排，短信/邮件通知，请保持联络畅通。",
-      date: "3 月下旬 - 5 月上旬",
-      note: "以推文通知为准",
+      period: "4 月 - 5 月上旬",
+
     },
     {
-      title: "录取与入班 / Admission",
+      title: "录取名单公示与入班 / Admission",
       description: "录取后入班，参与课程、访学、论坛与导师制培养。",
-      date: "滚动通知",
+      period: "5 - 6 月",
+
     },
   ];
 
@@ -66,27 +60,18 @@ export default async function AdmissionsPage() {
       <PageEnter>
         <PageHeader
           breadcrumbs={[{ label: "首页", href: "/" }, { label: "招生信息", href: "/admissions" }]}
-          subtitle="最新招生时间与表单以微信公众号当期推文为准；下方为概要说明。"
+          subtitle="最新招生讯息，以微信公众号当期推文为准"
           title="招生信息 / Admissions"
         />
 
-        <Section title="招生概览 / Overview">
-          <Panel>
-            <div className="space-y-3 text-base leading-relaxed text-ink/85">
-              <p>“培养秉承中华文化之精神、具全球视野的未来社会各界领袖人才。” 你好，这里是文化中国。</p>
-              <p className="text-sm text-ink/65">
-                最新信息请以公众号招生推文为准；本页为概要，时间节点与表单链接以当期推文为准。
-              </p>
-            </div>
-          </Panel>
-        </Section>
+
 
         <Section title="招生对象与规模">
           <Panel>
             <ul className="space-y-2 text-base leading-relaxed text-ink/80">
               <li>· 每年全校范围选拔约 30 名学生（低年级/高年级均可，需至少 1 年在校）。</li>
               <li>· 认同中华文化精神，致力于成为具全球视野的未来领袖人才。</li>
-              <li>· 入班需保持出勤；如有 ≥4 个月线下交流计划，建议暂缓报名（以推文要求为准）。</li>
+              <li>· 入班需保持出勤；如有 ≥4 个月线下交流计划，建议暂缓报名。</li>
             </ul>
           </Panel>
         </Section>
@@ -103,37 +88,41 @@ export default async function AdmissionsPage() {
         </Section>
 
         <Section
-          description="时间节点以当期公众号推文为准，以下为典型节奏示例。"
+          description="时间节点以当期公众号推文为准，以下为往年招生流程。"
           title="招生流程 / Timeline"
         >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {steps.map((step) => (
-              <Panel key={step.title} className="flex h-full flex-col gap-2">
-                <div className="flex items-baseline justify之间">
-                  <h3 className="text-lg font-serif font-semibold text-ink">{step.title}</h3>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary/90">{step.date}</span>
+          <div className="mx-auto max-w-2xl">
+            <div className="relative space-y-8">
+              {/* 居中的时间轴线 */}
+              <div className="absolute left-8 top-0 h-full w-0.5 bg-stone/60"></div>
+              {steps.map((step, index) => (
+                <div key={step.title} className="relative flex items-start gap-6 pl-4">
+                  {/* 时间轴节点 */}
+                  <div className="z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-canvas">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                  </div>
+                  {/* 内容区域 */}
+                  <div className="flex-1">
+                    <div className="flex h-6 items-center">
+                      {step.period && (
+                        <p className="font-serif text-sm font-medium leading-none tracking-wide text-primary/90">
+                          {step.period}
+                        </p>
+                      )}
+                    </div>
+                    <h4 className="mt-1 text-lg font-serif font-semibold text-ink">{step.title}</h4>
+                    <p className="mt-2 font-serif text-sm leading-relaxed text-ink/75">{step.description}</p>
+                    {step.note && <p className="mt-2 text-xs text-ink/50">{step.note}</p>}
+                  </div>
                 </div>
-                <p className="text-sm leading-relaxed text-ink/70">{step.description}</p>
-                {step.note ? <p className="text-xs text-ink/50">{step.note}</p> : null}
-              </Panel>
-            ))}
-          </div>
-          <p className="mt-3 text-xs text-ink/60">以上时间为示例，请以公众号当期招生推文为准。</p>
-        </Section>
-
-        <Section title="报名提示 / How to Apply">
-          <Panel>
-            <div className="space-y-2 text-base leading-relaxed text-ink/80">
-              <p>· 报名表与在线表单链接以当期公众号推文为准，请优先查阅最新推文。</p>
-              <p>· 建议在推文中的“建议提交时间”前提交，便于尽早安排首轮面试。</p>
-              <p className="text-sm text-ink/65">
-                Note: 请关注“文化中国成才俱乐部”公众号，最新招生推文和表单链接以公众号发布为准。
-              </p>
+              ))}
             </div>
-          </Panel>
+          </div>
         </Section>
 
-        <Section description="突出公众号二维码与咨询方式（后续替换为真实二维码）。" title="关注引导 / CTA">
+
+
+        <Section  title="关注公众号 / Follow ">
           <Panel>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
               <div className="relative h-28 w-28 overflow-hidden rounded border border-stone">
@@ -147,7 +136,7 @@ export default async function AdmissionsPage() {
           </Panel>
         </Section>
 
-        <Section description="同步公众号招生活动推文，方便快速获取报名相关动态。" title="招生活动 / Recruitment Highlights">
+        <Section description="同步公众号招生活动推文，方便快速获取报名相关动态。" title="往年招生回顾 / Recruitment Highlights">
           <Suspense fallback={<ListFallback message="招生活动加载中..." />}>
             <AdmissionsHighlights />
           </Suspense>
