@@ -39,7 +39,10 @@ export const AlumniTable = async ({ filters, page, searchParams }: AlumniTablePr
   }
 
   const offset = (page - 1) * PAGE_SIZE;
-  let profileQuery = db
+  const whereClause =
+    conditions.length === 0 ? undefined : conditions.length === 1 ? conditions[0] : and(...conditions);
+
+  const baseQuery = db
     .select({
       id: alumniProfiles.id,
       name: alumniProfiles.name,
@@ -62,13 +65,9 @@ export const AlumniTable = async ({ filters, page, searchParams }: AlumniTablePr
     })
     .from(alumniProfiles);
 
-  if (conditions.length === 1) {
-    profileQuery = profileQuery.where(conditions[0]);
-  } else if (conditions.length > 1) {
-    profileQuery = profileQuery.where(and(...conditions));
-  }
+  const filteredQuery = whereClause ? baseQuery.where(whereClause) : baseQuery;
 
-  const rows = await profileQuery
+  const rows = await filteredQuery
     .orderBy(desc(alumniProfiles.updatedAt), desc(alumniProfiles.id))
     .limit(PAGE_SIZE + 1)
     .offset(offset);
