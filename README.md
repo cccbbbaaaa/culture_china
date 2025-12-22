@@ -263,18 +263,11 @@ src/
 | `pnpm db:migrate`  | 执行数据库迁移                      |
 | `pnpm db:studio`   | 打开 Drizzle Studio（可视化数据库） |
 
-### EdgeOne / 纯静态托管注意事项
+### EdgeOne / 其他平台部署说明
 
-如果需要将站点部署到 **EdgeOne Pages** 或其他仅提供静态托管的 CDN，需要禁用 Next.js 自带的图片优化（该能力依赖 Node 运行时，静态托管上不可用），否则 `next/image` 会请求 404 的 `/_next/image` 接口。
-
-**做法：**
-
-```bash
-# 构建 EdgeOne 版本
-NEXT_PUBLIC_EDGE_DEPLOY=true pnpm build
-```
-
-该环境变量会在构建阶段设置 `images.unoptimized=true`，使所有图片直接引用 `public/` 资源，EdgeOne 即可正常显示。Vercel 正常构建时无需设置，继续享受原生图片优化。
+- 当前项目在 **EdgeOne Pages** 上已验证可以以与 Vercel 基本一致的方式运行，不再需要 `NEXT_PUBLIC_EDGE_DEPLOY` 等特殊开关。
+- 所有运行环境（包括 Vercel、EdgeOne 等）都需要提供可用的数据库连接：`POSTGRES_URL` 或 `DATABASE_URL`，否则服务端渲染会直接报错。
+- 如目标平台仅支持“纯静态文件托管”，且无法运行 Node.js/Next.js 服务器，则本项目将无法完整提供动态功能（数据库查询、API Routes 等）。
 
 ---
 

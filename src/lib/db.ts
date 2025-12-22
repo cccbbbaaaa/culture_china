@@ -9,9 +9,7 @@ const createUnavailableDb = () => {
     {},
     {
       get() {
-        throw new Error(
-          "Database is not configured. Set POSTGRES_URL/DATABASE_URL for server rendering, or set NEXT_PUBLIC_EDGE_DEPLOY=true for static preview.",
-        );
+        throw new Error("Database is not configured. Set POSTGRES_URL/DATABASE_URL for server rendering.");
       },
     },
   );
