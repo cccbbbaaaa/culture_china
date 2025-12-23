@@ -113,3 +113,4 @@ export default async function ActivitiesOthersPage({ searchParams }: ActivitiesO
     </PageShell>
   );
 }
+

@@ -34,3 +34,4 @@ export const getTypesBySection = (section: ResourceSection) =>
     .filter(([, config]) => config.section === section)
     .map(([type]) => type);
 
+

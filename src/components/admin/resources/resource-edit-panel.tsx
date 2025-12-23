@@ -26,3 +26,4 @@ export const ResourceEditPanel = ({ resource, typeOptions }: ResourceEditPanelPr
   );
 };
 
+
