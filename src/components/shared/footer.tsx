@@ -57,8 +57,10 @@ export const Footer = () => {
         </div>
       </div>
 
+
+
       {/* 版权信息 / Copyright */}
-      <div className="border-t border-canvas/20">
+      <div>
         <div className="mx-auto max-w-screen-2xl px-4 py-6 text-center sm:px-6 lg:px-8">
           <p className="text-sm text-canvas/60">
             © {new Date().getFullYear()} 浙江大学晨兴文化中国人才计划. All rights reserved.

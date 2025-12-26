@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { ExternalLink } from "lucide-react";
 import { and, desc, eq } from "drizzle-orm";
 
+import { FacultyCarousel } from "@/components/alumni/faculty-carousel";
 import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageShell, Panel, Section } from "@/components/shared/page-shell";
@@ -49,7 +50,7 @@ export default async function HomePage() {
   return (
     <div>
       <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
-        <PageShell className="py-24">
+        <PageShell className="py-28">
           <PageEnter
             className="w-full"
             initial={{ opacity: 0, x: -48 }}
@@ -89,43 +90,107 @@ export default async function HomePage() {
       <PageShell className="pt-12">
         <PageEnter>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <Panel className="lg:col-span-2">
-              <h2 className="text-section text-ink">文化中国介绍 / Program Overview</h2>
-              <p className="mt-4 max-w-4xl text-base leading-relaxed tracking-wide text-ink/85">
-                浙江大学晨兴文化中国人才计划（2008 年创办）是一个非学分制、跨学科的精英培养项目，秉承“视域 · 情感 · 观点”三位一体的培养理念，帮助同学在全球化语境中重建文化自信。
-              </p>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-ink/75">
-                <li>每年全校范围选拔约 30 名学员，导师制 + 小班研讨，强调“认知 → 体验 → 反思 → 笃行”。</li>
-                <li>核心活动涵盖经典会读、年度论坛、国内外访学、公益实践、内部沙龙等，形成高黏性的“文中人”社群。</li>
-                <li>已累计培养 17 期 500+ 学员，50% 赴哈佛 / MIT / 剑桥等深造，34% 在北大 / 清华 / 浙大等继续求学，其余投身创业与公共服务。</li>
-              </ul>
-              <div className="mt-7 flex flex-wrap items-center gap-3">
-                <Button asChild size="lg">
-                  <Link href="/intro">了解计划 / Learn more</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/intro/mission">使命背景 / Mission</Link>
-                </Button>
+            <Panel className="relative lg:col-span-2 overflow-hidden">
+              {/* 背景装饰线 / Background Decorative Lines */}
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-stone-300/60 via-stone-200/40 to-transparent"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-baseline gap-3">
+                  <h2 className="text-3xl font-serif font-bold tracking-tight text-ink">文化中国介绍</h2>
+                  <span className="text-sm font-sans uppercase tracking-widest text-ink/40">Program Overview</span>
+                </div>
+                
+                <div className="mt-6 max-w-3xl space-y-4">
+                  <p className="text-[1.05rem] leading-relaxed text-ink/85">
+                    浙江大学晨兴文化中国人才计划于 2008 年创办，是一个非学分制、跨学科的精英培养项目，至今已累计培养 17 期 500 余位杰出学子。
+                  </p>
+                  <p className="text-[1.05rem] leading-relaxed text-ink/85">
+                    我们致力于在全校范围内选拔优秀学子，秉承
+                    <span className="mx-1 font-serif font-bold text-primary underline underline-offset-4 decoration-primary/30">视域 · 情感 · 观点</span>
+                    三位一体的培养理念，在全球化语境中重建文化自信。
+                  </p>
+
+                </div>
+
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 border-t border-stone/50 pt-8">
+                  <div className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
+                      <span className="font-serif font-bold text-lg">01</span>
+                    </div>
+                    <div>
+                      <h4 className="font-serif font-bold text-ink">精英选拔与导师制</h4>
+                      <p className="mt-1 text-sm leading-relaxed text-ink/60">每年选拔约 30 名学员，强调“认知 → 体验 → 反思 → 笃行”的行动闭环。</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
+                      <span className="font-serif font-bold text-lg">02</span>
+                    </div>
+                    <div>
+                      <h4 className="font-serif font-bold text-ink">高黏性文中人社群</h4>
+                      <p className="mt-1 text-sm leading-relaxed text-ink/60">涵盖经典会读、年度论坛、国内外访学及公益实践，形成终身受益的社群链接。</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-10 flex flex-wrap items-center gap-4">
+                  <Button asChild size="lg" className="px-8 shadow-sm transition-all hover:opacity-90">
+                    <Link href="/intro">了解计划 / Learn more</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="px-8 border-stone-300 transition-all hover:bg-stone-50 hover:text-primary">
+                    <Link href="/intro/mission">使命背景 / Mission</Link>
+                  </Button>
+                </div>
               </div>
             </Panel>
 
-            <Panel>
-              <h3 className="text-xl font-serif font-semibold text-ink">品牌视觉 / Visual</h3>
-              <p className="mt-3 text-base leading-relaxed text-ink/75">
-                以“新中式”留白与沉稳配色为基调，强化高端、学术与人文的品牌气质。
-              </p>
-              <p className="mt-2 text-base leading-relaxed text-ink/70">
-                A modern “New Chinese” aesthetic: calm tones, generous whitespace, and editorial typography.
-              </p>
-              <div className="relative mt-5 overflow-hidden rounded-xl border border-stone">
-                <Image alt="Banner / 横幅" className="h-52 w-full object-cover" height={520} src="/images/branding/banner.png" width={1000} />
+            <Panel className="relative flex flex-col justify-between overflow-hidden">
+              {/* 背景装饰引号 / Decorative Background Quotes */}
+              <div className="pointer-events-none absolute -right-4 -top-6 select-none font-serif text-[120px] leading-none text-primary/5">
+                ”
+              </div>
+              <div className="pointer-events-none absolute -bottom-10 -left-4 select-none font-serif text-[120px] leading-none text-primary/5">
+                “
+              </div>
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-xl font-serif font-semibold text-primary">学者寄语</h3>
+                  {/* 项目 Logo 恢复原色 / Project Logo back to original */}
+                  <div className="relative h-10 w-10">
+                    <Image src="/images/branding/icon.svg" alt="Project Icon" fill className="object-contain" />
+                  </div>
+                </div>
+                
+                <div className="mt-2 h-px w-full bg-primary/10"></div>
+
+                <div className="mt-8">
+                  <p className="font-serif text-[1.15rem] font-medium leading-relaxed tracking-wide text-ink/90">
+                    中国的复兴不仅需要专业技术人才，更需要具有
+                    <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">历史使命感</span>
+                    、
+                    <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">社会责任感</span>
+                    与卓越领导能力的未来领袖。
+                  </p>
+                </div>
+
+                <div className="mt-8 flex items-center justify-end gap-3">
+                  <div className="h-px w-6 bg-primary/40"></div>
+                  <p className="font-serif text-lg text-primary">杜维明 · 周生春</p>
+                </div>
+              </div>
+
+              <div className="relative z-10 mt-10 flex justify-end border-t border-stone/30 pt-4">
+                <Button asChild size="sm" variant="ghost" className="text-ink/60 hover:text-primary hover:bg-primary/5">
+                  <Link href="/intro/mission">阅读完整背景 / Full Story →</Link>
+                </Button>
               </div>
             </Panel>
           </div>
 
           <Section
             className="mt-10"
-            description="从使命到师资，帮助访客迅速了解核心价值。"
+
             title="计划亮点 / Highlights"
           >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -172,31 +237,21 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <Panel className="lg:col-span-2">
                 <h3 className="text-xl font-serif font-semibold text-ink">师资墙 / Faculty Wall</h3>
-                <p className="mt-3 text-base leading-relaxed text-ink/75">横向滚动展示导师头像（示例），后续可加入详情页与筛选。</p>
+                <p className="mt-3 text-base leading-relaxed text-ink/75">海内外学者、企业家、社会领袖担任导师，提供长期陪伴式指导。</p>
 
-                <div className="mt-6 flex gap-6 overflow-x-auto pb-2">
-                  {(
-                    [
-                      "/images/people/faculty/duweiming.png",
-                      "/images/people/faculty/zhengpeikai.png",
-                      "/images/people/faculty/liangyuansheng.png",
-                      "/images/people/faculty/chenqizong.jpg",
-                      "/images/people/faculty/jiangyuexiang.jpeg",
-                    ] as const
-                  ).map((src, index) => (
-                    <div key={index} className="min-w-[150px]">
-                      <div className="relative h-20 w-20 overflow-hidden rounded-full border border-stone">
-                        <Image alt="导师头像 / Faculty avatar" className="object-cover" fill sizes="80px" src={src} />
-                      </div>
-                      <p className="mt-3 text-base font-medium text-ink">导师 {index + 1}</p>
-                      <p className="text-sm text-ink/60">Title / Affiliation</p>
-                    </div>
-                  ))}
-                </div>
+                <FacultyCarousel
+                  faculty={[
+                    { name: "陈启宗", title: "香港恒隆集团主席", img: "/images/people/faculty_portrait/chenqizong.png" },
+                    { name: "杜维明", title: "哈佛燕京学社前社长", img: "/images/people/faculty_portrait/duweiming.png" },
+                    { name: "蒋岳祥", title: "浙江大学经济学院教授", img: "/images/people/faculty_portrait/jiangyuexiang.png" },
+                    { name: "梁元生", title: "香港中文大学教授", img: "/images/people/faculty_portrait/liangyuansheng.png" },
+                    { name: "郑培凯", title: "香港城市大学教授", img: "/images/people/faculty_portrait/zhengpeikai.png" },
+                  ]}
+                />
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Button asChild size="lg" variant="outline">
-                    <Link href="/intro">查看师资 / Faculty</Link>
+                    <Link href="/intro/faculty">查看师资 / Faculty</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline">
                     <Link href="/alumni">学员风采 / Alumni</Link>
@@ -209,28 +264,21 @@ export default async function HomePage() {
                 <dl className="mt-5 space-y-4">
                   <div className="flex items-baseline justify-between">
                     <dt className="text-base text-ink/70">已培养期数</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">XX</dd>
+                    <dd className="text-3xl font-serif font-semibold text-primary">17</dd>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <dt className="text-base text-ink/70">覆盖行业</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">XX</dd>
+                    <dt className="text-base text-ink/70">培养学员</dt>
+                    <dd className="text-3xl font-serif font-semibold text-primary">519</dd>
                   </div>
                   <div className="flex items-baseline justify-between">
                     <dt className="text-base text-ink/70">年度活动</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">XX</dd>
+                    <dd className="text-3xl font-serif font-semibold text-primary">50+</dd>
                   </div>
                 </dl>
-                <p className="mt-6 text-base leading-relaxed text-ink/75">这里将接入后台录入的结构化数据，用于真实展示与运营配置（置顶/推荐）。</p>
+                <p className="mt-6 text-base leading-relaxed text-ink/75">已累计培养 17 期 519 名学员，50% 赴哈佛 / MIT / 剑桥等深造，34% 在北大 / 清华 / 浙大等继续求学。</p>
               </Panel>
             </div>
           </Section>
-
-          <div className="mt-16 overflow-hidden rounded-3xl border border-stone/60 bg-gradient-to-r from-canvas via-primary/8 to-canvas shadow-sm">
-            <div className="flex flex-col items-center gap-2 px-6 py-12 text-center sm:py-14">
-              <p className="text-2xl font-serif font-semibold text-ink">认知 · 体验 · 反思 · 笃行</p>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-ink/70">COGNITION · EXPERIENCE · REFLECTION · PRACTICE</p>
-            </div>
-          </div>
         </PageEnter>
       </PageShell>
     </div>
