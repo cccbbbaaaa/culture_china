@@ -121,7 +121,7 @@ export interface PanelProps {
  */
 export const Panel = ({ children, className }: PanelProps) => {
   return (
-    <div className={cn("rounded-2xl border border-stone bg-canvas/pure p-6 shadow-sm sm:p-7 lg:p-8", className)}>
+    <div className={cn("rounded-2xl border border-stone bg-canvas/pure p-6 shadow-sm transition duration-300 sm:p-7 lg:p-8", className)}>
       {children}
     </div>
   );

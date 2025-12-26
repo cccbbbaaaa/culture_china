@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { ExternalLink } from "lucide-react";
 import { and, desc, eq } from "drizzle-orm";
 
-import { FacultyCarousel } from "@/components/alumni/faculty-carousel";
+import { FacultyCarousel, type Faculty } from "@/components/alumni/faculty-carousel";
 import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
 import { PageEnter } from "@/components/shared/page-enter";
 import { PageShell, Panel, Section } from "@/components/shared/page-shell";
@@ -19,41 +19,114 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   {
     src: "/images/events/annual/2025-group-photo.png",
     alt: "年度论坛合影 / Annual forum group photo",
-    title: "年度论坛 · 经世与人文",
-    subtitle: "2025 年度论坛 · 顶级导师与学员共襄盛举",
-    caption: "沉浸式高端对话，围绕历史使命感与当代责任展开",
+    title: "浙江大学晨兴文化中国人才计划",
+    subtitle: "Zhejiang University Morningside Cultural China Scholars Program",
+    caption: "年度论坛 · 2025（示例图片 / sample image）",
   },
   {
     src: "/images/events/visits/2024-hk1.jpg",
     alt: "访学交流剪影 / Study visit moment",
-    title: "访学交流 · 港澳与世界现场",
-    subtitle: "浙大学子与港澳导师共研经典与现实",
-    caption: "跨区域访学，以当下议题为纽带，连接思想与文化",
+    title: "以经典为骨，以世界为镜",
+    subtitle: "以人文与学术的方式，培养具有全球视野的未来领袖。",
+    caption: "访学交流 · 2024（示例图片 / sample image）",
   },
   {
     src: "/images/events/course/bao-20251202.jpeg",
     alt: "课程教学现场 / Curriculum session moment",
-    title: "课程教学 · 经典与现实并行",
+    title: "知行合一，笃行致远",
     subtitle: "认知 → 体验 → 反思 → 笃行",
-    caption: "沉浸式课程结合专业研讨与社会调研，强化行动闭环",
+    caption: "课程教学 · 2025.12.02（示例图片 / sample image）",
   },
   {
     src: "/images/events/visits/2023-us2.jpg",
     alt: "海外访学剪影 / Overseas study visit moment",
-    title: "海外访学 · 世界视野",
-    subtitle: "哈佛 · 牛津 · 斯坦福等世界名校站点",
-    caption: "用世界现场映照中华传统，在全球语境中重构文化自信",
+    title: "在世界现场，回到文化中国",
+    subtitle: "以体验与反思连接传统与当代。",
+    caption: "海外访学 · 2023（示例图片 / sample image）",
+  },
+];
+
+interface ProgramPillar {
+  /**
+   * 序号 / Display number
+   */
+  id: string;
+  /**
+   * 标题 / Pillar title
+   */
+  title: string;
+  /**
+   * 描述 / Supporting copy
+   */
+  description: string;
+}
+
+// 首页亮点数据 / Pillar highlights for overview section
+const PROGRAM_PILLARS: ProgramPillar[] = [
+  {
+    id: "01",
+    title: "精英选拔与导师制",
+    description: "每年从浙江大学全校选拔约 30 名学员，独立成班，导师制+小班研讨，进行终身制培养",
+  },
+  {
+    id: "02",
+    title: "高黏性文中人社群",
+    description: "涵盖经典会读、年度论坛、国内外访学及公益实践，形成终身受益的社群链接",
+  },
+];
+
+interface HighlightCard {
+  /**
+   * 标题 / Card heading
+   */
+  title: string;
+  /**
+   * 摘要 / Primary summary
+   */
+  summary: string;
+  /**
+   * 补充描述 / Supporting copy
+   */
+  support: string;
+  /**
+   * CTA 文字 / CTA label
+   */
+  cta: string;
+  /**
+   * 跳转链接 / CTA href
+   */
+  href: string;
+}
+
+const HIGHLIGHT_CARDS: HighlightCard[] = [
+  {
+    title: "使命与精神",
+    summary: "“为天地立心，为生民立命，为往圣继绝学，为万世开太平”",
+    support: "以中华文化精神为核心，培养兼具理想与担当的未来领袖",
+    cta: "了解使命",
+    href: "/intro/mission",
+  },
+  {
+    title: "培养路径",
+    summary: "全球广度· 文化认同· 独立思考",
+    support: "课程、访学、实践构成“认知—体验—反思—笃行”的闭环",
+    cta: "培养宗旨",
+    href: "/intro/purpose",
+  },
+  {
+    title: "导师与社群",
+    summary: "导师来自海内外学者、企业家与社会领袖",
+    support: "构建高黏性的“文中人”校友网络，持续提供成长陪伴",
+    cta: "查看师资",
+    href: "/intro/faculty",
   },
 ];
 
 export default async function HomePage() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
-        <div className="pointer-events-none absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-[url('/images/branding/paper-texture.svg')] bg-[length:280px_280px] bg-repeat opacity-60 mix-blend-multiply" />
-        </div>
-        <PageShell className="relative z-10 py-24 md:py-28">
+      <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
+        <PageShell className="py-28">
           <PageEnter
             className="w-full"
             initial={{ opacity: 0, x: -48 }}
@@ -66,8 +139,8 @@ export default async function HomePage() {
                   沉潜人文，观照当代
                 </h1>
                 <p className="text-lg leading-relaxed text-canvas/95 sm:text-xl">
-                  <span className="block">培养秉承中华文化之精神、具有全球视野的未来社会各界领袖人才。</span>
-                  <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon.</span>
+                  <span className="block">培养秉承中华文化之精神、具有全球视野的未来社会各界领袖人才</span>
+                  <span className="block">Cultivating future leaders grounded in Chinese culture and equipped with a global horizon</span>
                 </p>
               </div>
 
@@ -85,152 +158,153 @@ export default async function HomePage() {
       </div>
 
       <div className="bg-gradient-to-b from-canvas via-canvas to-stone/20 py-10">
-        <div className="relative -mt-12 px-4 md:px-0">
-          <Suspense fallback={<HeroSkeleton />}>
-            <HeroSection fallbackSlides={FALLBACK_SLIDES} />
-          </Suspense>
-        </div>
+        <Suspense fallback={<HeroSkeleton />}>
+          <HeroSection fallbackSlides={FALLBACK_SLIDES} />
+        </Suspense>
       </div>
 
       <PageShell className="pt-12">
         <PageEnter>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <Panel className="relative lg:col-span-2 overflow-hidden">
-              {/* 背景装饰线 / Background Decorative Lines */}
-              <div className="pointer-events-none absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-stone-300/60 via-stone-200/40 to-transparent"></div>
-              
+            <Panel className="relative overflow-hidden rounded-[28px] border border-stone bg-gradient-to-b from-canvas/pure to-stone/5 shadow-[0_25px_70px_-50px_rgba(15,23,42,0.35)] transition hover:-translate-y-0.5 hover:shadow-md lg:col-span-2">
+              {/* 装饰纹理与高光 / Decorative texture and highlight */}
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/30" />
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,136,118,0.09),_transparent_60%)]" />
+
               <div className="relative z-10">
-                <div className="flex items-baseline gap-3">
+                <div className="flex flex-wrap items-baseline gap-3">
                   <h2 className="text-3xl font-serif font-bold tracking-tight text-ink">计划简介</h2>
-                  <span className="text-sm font-sans uppercase tracking-widest text-ink/40">Program Overview</span>
+                  <span className="text-xs font-sans uppercase tracking-[0.35em] text-ink/50">Program Overview</span>
                 </div>
-                
-                <div className="mt-6 max-w-3xl space-y-4">
-                  <p className="text-[1.05rem] leading-relaxed text-ink/85">
-                    浙江大学晨兴文化中国人才计划于 2008 年创办，是一个非学分制、跨学科的精英培养项目，至今已累计培养 17 期 500 余位杰出学子。
-                  </p>
-                  <p className="text-[1.05rem] leading-relaxed text-ink/85">
+
+                <div className="mt-6 max-w-3xl space-y-4 text-[1.05rem] leading-relaxed text-ink/85">
+                  <p>浙江大学晨兴文化中国人才计划于 2008 年创办，是一个非学分制、跨学科的精英培养项目，至今已累计培养 17 期 500 余位杰出学子。</p>
+                  <p>
                     我们致力于在全校范围内选拔优秀学子，秉承
-                    <span className="mx-1 font-serif font-bold text-primary underline underline-offset-4 decoration-primary/30">视域 · 情感 · 观点</span>
+                    <span className="mx-1 font-serif font-bold text-primary underline decoration-primary/30 underline-offset-4">视域 · 情感 · 观点</span>
                     三位一体的培养理念，在全球化语境中重建文化自信。
                   </p>
-
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 border-t border-stone/50 pt-8">
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
-                      <span className="font-serif font-bold text-lg">01</span>
+                <div className="mt-8 grid gap-4 border-t border-stone/40 pt-8 sm:grid-cols-2">
+                  {PROGRAM_PILLARS.map((pillar) => (
+                    <div
+                      key={pillar.id}
+                      className="group relative flex gap-4 rounded-2xl border border-transparent p-4 transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/5"
+                    >
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <span className="font-serif text-lg font-bold">{pillar.id}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-serif font-semibold text-ink group-hover:text-primary">{pillar.title}</h4>
+                        <p className="mt-1 text-sm leading-relaxed text-ink/65">{pillar.description}</p>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-y-4 left-10 hidden w-px bg-primary/15 sm:block"
+                      />
                     </div>
-                    <div>
-                      <h4 className="font-serif font-bold text-ink">精英选拔与导师制</h4>
-                      <p className="mt-1 text-sm leading-relaxed text-ink/60">每年选拔约 30 名学员，强调“认知 → 体验 → 反思 → 笃行”的行动闭环。</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
-                      <span className="font-serif font-bold text-lg">02</span>
-                    </div>
-                    <div>
-                      <h4 className="font-serif font-bold text-ink">高黏性文中人社群</h4>
-                      <p className="mt-1 text-sm leading-relaxed text-ink/60">涵盖经典会读、年度论坛、国内外访学及公益实践，形成终身受益的社群链接。</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
-                <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <Button asChild size="lg" className="px-8 shadow-sm transition-all hover:opacity-90">
+                <div className="mt-10 flex flex-wrap items-center gap-5">
+                  <Button asChild size="lg" className="px-8 shadow-md shadow-primary/15 transition hover:-translate-y-0.5">
                     <Link href="/intro">了解计划</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="px-8 border-stone-300 transition-all hover:bg-stone-50 hover:text-primary">
-                    <Link href="/intro/mission">使命背景</Link>
-                  </Button>
+                  <Link
+                    className="inline-flex items-center text-base font-semibold text-primary/80 transition hover:text-primary"
+                    href="/intro/mission"
+                  >
+                    <span>使命背景</span>
+                    <span aria-hidden="true" className="ml-2 text-xl">
+                      →
+                    </span>
+                  </Link>
                 </div>
               </div>
             </Panel>
 
-            <Panel className="relative flex flex-col justify-between overflow-hidden">
-              {/* 背景装饰引号 / Decorative Background Quotes */}
-              <div className="pointer-events-none absolute -right-4 -top-6 select-none font-serif text-[120px] leading-none text-primary/5">
-                ”
-              </div>
-              <div className="pointer-events-none absolute -bottom-10 -left-4 select-none font-serif text-[120px] leading-none text-primary/5">
-                “
-              </div>
+            <Panel className="relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-primary/10 bg-gradient-to-b from-[#fffefd] via-[#fbf7f2] to-[#f7f1ec] shadow-[0_25px_70px_-55px_rgba(150,46,42,0.45)] transition hover:-translate-y-0.5 hover:shadow-md">
+              {/* 寄语背景纹理 / Background texture for founder message */}
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(180,117,80,0.12),_transparent_65%)]" />
+              <div aria-hidden="true" className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
 
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-xl font-serif font-semibold text-primary">创办人寄语</h3>
-                  {/* 项目 Logo 恢复原色 / Project Logo back to original */}
-                  <div className="relative h-10 w-10">
-                    <Image src="/images/branding/icon.svg" alt="Project Icon" fill className="object-contain" />
+              <div className="relative z-10 flex flex-col gap-6">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary/50">Founder Message</p>
+                    <h3 className="mt-1 text-xl font-serif font-semibold text-primary">创办人寄语</h3>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="hidden text-sm tracking-[0.6em] text-primary/30 [writing-mode:vertical-rl] sm:inline-flex">文化中国</span>
+                    {/* 项目 Logo 恢复原色 / Project logo */}
+                    <div className="relative h-12 w-12">
+                      <Image alt="Project Icon" className="object-contain" fill src="/images/branding/icon.svg" />
+                    </div>
                   </div>
                 </div>
-                
-                <div className="mt-2 h-px w-full bg-primary/10"></div>
 
-                <div className="mt-8">
-                  <p className="font-serif text-[1.15rem] font-medium leading-relaxed tracking-wide text-ink/90">
-                    中国的复兴不仅需要专业技术人才，更需要具有
-                    <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">历史使命感</span>
-                    、
-                    <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">社会责任感</span>
-                    与卓越领导能力的未来领袖。
-                  </p>
-                </div>
+                <blockquote className="font-serif text-[1.05rem] leading-relaxed text-ink/90">
+                  <span aria-hidden="true" className="mr-2 text-4xl leading-none text-primary/25">
+                    “
+                  </span>
+                  中国的复兴不仅需要专业技术人才，更需要具有
+                  <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">历史使命感</span>
+                  、
+                  <span className="mx-1 border-b border-primary/30 pb-0.5 text-primary">社会责任感</span>
+                  与卓越领导能力的未来领袖。
+                  <span aria-hidden="true" className="ml-2 text-4xl leading-none text-primary/25">
+                    ”
+                  </span>
+                </blockquote>
 
-                <div className="mt-8 flex items-center justify-end gap-3">
-                  <div className="h-px w-6 bg-primary/40"></div>
+                <div className="flex items-center justify-end gap-3">
+                  <div className="h-px w-8 bg-primary/30" />
                   <p className="font-serif text-lg text-primary">杜维明 · 周生春</p>
                 </div>
               </div>
 
-              <div className="relative z-10 mt-10 flex justify-end border-t border-stone/30 pt-4">
-                <Button asChild size="sm" variant="ghost" className="text-ink/60 hover:text-primary hover:bg-primary/5">
-                  <Link href="/intro/mission">阅读完整背景 / Full Story →</Link>
+              <div className="relative z-10 mt-6 flex justify-end border-t border-primary/10 pt-4">
+                <Button asChild size="sm" variant="ghost" className="text-ink/70 transition hover:text-primary hover:bg-primary/5">
+                  <Link href="/intro/mission">阅读完整背景 → </Link>
                 </Button>
               </div>
             </Panel>
           </div>
-          <Section
-            className="mt-10"
-
-            title="计划亮点 / Highlights"
-          >
+          <Section className="mt-10" title="计划亮点 / Highlights">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <Panel>
-                <h3 className="text-lg font-serif font-semibold text-ink">使命与精神</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink/70">
-                  “为天地立心，为生民立命，为往圣继绝学，为万世开太平。”——项目以中华文化的精神坐标为核心，培养兼具理想与担当的未来领袖。
-                </p>
-                <Button asChild className="mt-4" variant="outline">
-                  <Link href="/intro/mission">了解使命</Link>
-                </Button>
-              </Panel>
-              <Panel>
-                <h3 className="text-lg font-serif font-semibold text-ink">培养路径</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink/70">
-                  视域（全球广度）· 情感（文化认同）· 观点（独立思考）。通过课程、访学、论坛、公益实践形成“认知—体验—反思—笃行”的行动闭环。
-                </p>
-                <Button asChild className="mt-4" variant="outline">
-                  <Link href="/intro/purpose">培养宗旨</Link>
-                </Button>
-              </Panel>
-              <Panel>
-                <h3 className="text-lg font-serif font-semibold text-ink">导师与社群</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink/70">
-                  邀请海内外学者、企业家、社会领袖担任导师，形成高黏性的校友网络，支持学员长期成长。
-                </p>
-                <Button asChild className="mt-4" variant="outline">
-                  <Link href="/intro/faculty">查看师资</Link>
-                </Button>
-              </Panel>
+              {HIGHLIGHT_CARDS.map((card, index) => (
+                <Panel
+                  key={card.title}
+                  className="group relative flex h-full flex-col rounded-[26px] border border-stone bg-canvas/pure p-8 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <div className="flex flex-1 flex-col gap-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/40">Highlight</p>
+                        <h3 className="mt-1 text-lg font-serif font-semibold text-ink">{card.title}</h3>
+                      </div>
+                      <span className="rounded-full border border-primary/15 bg-primary/5 px-3 py-1 font-serif text-sm text-primary/60">
+                        {`0${index + 1}`}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-ink/70">{card.summary}</p>
+                    <p className="text-sm leading-relaxed text-ink/60">{card.support}</p>
+                  </div>
+                  <Button
+                    asChild
+                    className="mt-6 w-full justify-center border-primary/20 text-primary transition group-hover:-translate-y-0.5 group-hover:border-primary group-hover:bg-primary/5 group-hover:text-primary"
+                    variant="outline"
+                  >
+                    <Link href={card.href}>{card.cta}</Link>
+                  </Button>
+                </Panel>
+              ))}
             </div>
           </Section>
 
 
           <Section
-            description="聚合课程教学、特色活动等最新内容；当前已对接 external_resources 表。"
             title="近期活动动态 / Latest Updates"
           >
             <Suspense fallback={<UpdatesSkeleton />}>
@@ -238,49 +312,98 @@ export default async function HomePage() {
             </Suspense>
           </Section>
 
-          <Section description="展示师资密度与社群底蕴；当前为占位，后续将对接 faculty/alumni 表。" title="校友与师资 / Alumni & Community">
+          <Section  title="校友与师资 / Alumni & Community">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <Panel className="lg:col-span-2">
-                <h3 className="text-xl font-serif font-semibold text-ink">师资墙 / Faculty Wall</h3>
+              <Panel className="lg:col-span-2 hover:-translate-y-1 hover:shadow-xl">
+                <h3 className="text-xl font-serif font-semibold text-ink">师资墙</h3>
                 <p className="mt-3 text-base leading-relaxed text-ink/75">海内外学者、企业家、社会领袖担任导师，提供长期陪伴式指导。</p>
 
                 <FacultyCarousel
                   faculty={[
-                    { name: "陈启宗", title: "香港恒隆集团主席", img: "/images/people/faculty_portrait/chenqizong.png" },
-                    { name: "杜维明", title: "哈佛燕京学社前社长", img: "/images/people/faculty_portrait/duweiming.png" },
-                    { name: "蒋岳祥", title: "浙江大学经济学院教授", img: "/images/people/faculty_portrait/jiangyuexiang.png" },
-                    { name: "梁元生", title: "香港中文大学教授", img: "/images/people/faculty_portrait/liangyuansheng.png" },
-                    { name: "郑培凯", title: "香港城市大学教授", img: "/images/people/faculty_portrait/zhengpeikai.png" },
+                    {
+                      name: "陈启宗",
+                      title: "香港恒隆集团主席",
+                      img: "/images/people/faculty_portrait/chenqizong.png",
+                      url: "https://zh.wikipedia.org/wiki/%E9%99%B3%E5%95%9F%E5%AE%97",
+                    },
+                    {
+                      name: "杜维明",
+                      title: "哈佛燕京学社前社长",
+                      img: "/images/people/faculty_portrait/duweiming.png",
+                      url: "https://zh.wikipedia.org/wiki/%E6%9D%9C%E7%BB%B4%E6%98%8E",
+                    },
+                    {
+                      name: "蒋岳祥",
+                      title: "浙江大学经济学院教授",
+                      img: "/images/people/faculty_portrait/jiangyuexiang.png",
+                      url: "https://baike.baidu.com/item/%E8%92%8B%E5%B2%B3%E7%A5%A5/148831",
+                    },
+                    {
+                      name: "梁元生",
+                      title: "香港中文大学教授",
+                      img: "/images/people/faculty_portrait/liangyuansheng.png",
+                      url: "https://zh.wikipedia.org/wiki/%E6%A2%81%E5%85%83%E7%94%9F",
+                    },
+                    {
+                      name: "郑培凯",
+                      title: "香港城市大学教授",
+                      img: "/images/people/faculty_portrait/zhengpeikai.png",
+                      url: "https://baike.baidu.com/item/%E9%83%91%E5%9F%B9%E5%87%AF/10222268",
+                    },
                   ]}
                 />
 
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Button asChild size="lg" variant="outline">
-                    <Link href="/intro/faculty">查看师资 / Faculty</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline">
-                    <Link href="/alumni">学员风采 / Alumni</Link>
+                <div className="mt-8">
+                  <Button
+                    asChild
+                    className="group w-full border-primary/20 text-primary transition hover:-translate-y-0.5 hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto"
+                    size="lg"
+                    variant="outline"
+                  >
+                    <Link className="inline-flex items-center gap-2" href="/intro/faculty">
+                      <span>查看师资详情</span>
+                      <span aria-hidden="true" className="text-lg transition-transform group-hover:translate-x-1">
+                        →
+                      </span>
+                    </Link>
                   </Button>
                 </div>
               </Panel>
 
-              <Panel>
-                <h3 className="text-xl font-serif font-semibold text-ink">社群概览 / Community</h3>
-                <dl className="mt-5 space-y-4">
-                  <div className="flex items-baseline justify-between">
-                    <dt className="text-base text-ink/70">已培养期数</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">17</dd>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <dt className="text-base text-ink/70">培养学员</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">519</dd>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <dt className="text-base text-ink/70">年度活动</dt>
-                    <dd className="text-3xl font-serif font-semibold text-primary">50+</dd>
-                  </div>
-                </dl>
-                <p className="mt-6 text-base leading-relaxed text-ink/75">已累计培养 17 期 519 名学员，50% 赴哈佛 / MIT / 剑桥等深造，34% 在北大 / 清华 / 浙大等继续求学。</p>
+              <Panel className="flex h-full flex-col hover:-translate-y-1 hover:shadow-xl">
+                <div className="flex-1">
+                  <h3 className="text-xl font-serif font-semibold text-ink">社群概览</h3>
+                  <dl className="mt-5 space-y-4">
+                    <div className="flex items-baseline justify-between">
+                      <dt className="text-base text-ink/70">已培养期数</dt>
+                      <dd className="text-3xl font-serif font-semibold text-primary">17</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <dt className="text-base text-ink/70">培养学员</dt>
+                      <dd className="text-3xl font-serif font-semibold text-primary">519</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <dt className="text-base text-ink/70">年度活动</dt>
+                      <dd className="text-3xl font-serif font-semibold text-primary">50+</dd>
+                    </div>
+                  </dl>
+                  <p className="mt-6 text-base leading-relaxed text-ink/75">已累计培养 17 期 519 名学员，50% 赴哈佛 / MIT / 剑桥等深造，34% 在北大 / 清华 / 浙大等继续求学。</p>
+                </div>
+                <div className="mt-8">
+                  <Button
+                    asChild
+                    className="group w-full border-primary/20 text-primary transition hover:-translate-y-0.5 hover:border-primary hover:bg-primary/5 hover:shadow-md"
+                    size="lg"
+                    variant="outline"
+                  >
+                    <Link className="inline-flex items-center gap-2" href="/alumni">
+                      <span>学员风采</span>
+                      <span aria-hidden="true" className="text-lg transition-transform group-hover:translate-x-1">
+                        →
+                      </span>
+                    </Link>
+                  </Button>
+                </div>
               </Panel>
             </div>
           </Section>
@@ -357,9 +480,17 @@ const LatestUpdatesSection = async () => {
         ))}
       </div>
 
-      <div className="mt-8">
-        <Button asChild size="lg" variant="secondary">
-          <Link href="/activities">查看全部活动 / View all activities</Link>
+      <div className="mt-8 flex justify-center">
+        <Button
+          asChild
+          className="group border-primary/20 text-primary transition hover:-translate-y-0.5 hover:border-primary hover:bg-primary/5 hover:shadow-md"
+          size="lg"
+          variant="outline"
+        >
+          <Link className="inline-flex items-center gap-2" href="/activities">
+            <span>查 看 全 部 活 动</span>
+
+          </Link>
         </Button>
       </div>
     </>

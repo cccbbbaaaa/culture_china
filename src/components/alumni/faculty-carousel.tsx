@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-interface Faculty {
+export interface Faculty {
   name: string;
   title: string;
   img: string;
+  url?: string;
 }
 
 interface FacultyCarouselProps {
@@ -85,15 +87,38 @@ export const FacultyCarousel = ({ faculty }: FacultyCarouselProps) => {
       ref={scrollContainerRef}
       className="mt-6 flex gap-6 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
-      {duplicatedFaculty.map((facultyMember, index) => (
-        <div key={index} className="group min-w-[150px] cursor-pointer transition-transform hover:-translate-y-1">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-stone/30 transition-colors group-hover:border-primary/50">
-            <Image alt={`${facultyMember.name} / Faculty avatar`} className="object-cover" fill sizes="80px" src={facultyMember.img} />
+      {duplicatedFaculty.map((facultyMember, index) => {
+        const content = (
+          <>
+            <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-stone/30 transition-colors group-hover:border-primary/50">
+              <Image alt={`${facultyMember.name} / Faculty avatar`} className="object-cover" fill sizes="80px" src={facultyMember.img} />
+            </div>
+            <p className="mt-3 text-base font-medium text-ink group-hover:text-primary transition-colors">{facultyMember.name}</p>
+            <p className="text-sm text-ink/60 line-clamp-2">{facultyMember.title}</p>
+          </>
+        );
+
+        if (facultyMember.url) {
+          return (
+            <Link
+              key={index}
+              className="group min-w-[150px] block cursor-pointer transition-transform hover:-translate-y-1"
+              href={facultyMember.url}
+              prefetch={false}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {content}
+            </Link>
+          );
+        }
+
+        return (
+          <div key={index} className="group min-w-[150px] cursor-default">
+            {content}
           </div>
-          <p className="mt-3 text-base font-medium text-ink group-hover:text-primary transition-colors">{facultyMember.name}</p>
-          <p className="text-sm text-ink/60 line-clamp-2">{facultyMember.title}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
