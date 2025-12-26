@@ -19,38 +19,41 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   {
     src: "/images/events/annual/2025-group-photo.png",
     alt: "年度论坛合影 / Annual forum group photo",
-    title: "浙江大学晨兴文化中国人才计划",
-    subtitle: "Zhejiang University Morningside Cultural China Scholars Program",
-    caption: "年度论坛 · 2025（示例图片 / sample image）",
+    title: "年度论坛 · 经世与人文",
+    subtitle: "2025 年度论坛 · 顶级导师与学员共襄盛举",
+    caption: "沉浸式高端对话，围绕历史使命感与当代责任展开",
   },
   {
     src: "/images/events/visits/2024-hk1.jpg",
     alt: "访学交流剪影 / Study visit moment",
-    title: "以经典为骨，以世界为镜",
-    subtitle: "以人文与学术的方式，培养具有全球视野的未来领袖。",
-    caption: "访学交流 · 2024（示例图片 / sample image）",
+    title: "访学交流 · 港澳与世界现场",
+    subtitle: "浙大学子与港澳导师共研经典与现实",
+    caption: "跨区域访学，以当下议题为纽带，连接思想与文化",
   },
   {
     src: "/images/events/course/bao-20251202.jpeg",
     alt: "课程教学现场 / Curriculum session moment",
-    title: "知行合一，笃行致远",
+    title: "课程教学 · 经典与现实并行",
     subtitle: "认知 → 体验 → 反思 → 笃行",
-    caption: "课程教学 · 2025.12.02（示例图片 / sample image）",
+    caption: "沉浸式课程结合专业研讨与社会调研，强化行动闭环",
   },
   {
     src: "/images/events/visits/2023-us2.jpg",
     alt: "海外访学剪影 / Overseas study visit moment",
-    title: "在世界现场，回到文化中国",
-    subtitle: "以体验与反思连接传统与当代。",
-    caption: "海外访学 · 2023（示例图片 / sample image）",
+    title: "海外访学 · 世界视野",
+    subtitle: "哈佛 · 牛津 · 斯坦福等世界名校站点",
+    caption: "用世界现场映照中华传统，在全球语境中重构文化自信",
   },
 ];
 
 export default async function HomePage() {
   return (
     <div>
-      <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
-        <PageShell className="py-28">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary-dark via-primary to-primary-light text-canvas shadow-inner">
+        <div className="pointer-events-none absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-[url('/images/branding/paper-texture.svg')] bg-[length:280px_280px] bg-repeat opacity-60 mix-blend-multiply" />
+        </div>
+        <PageShell className="relative z-10 py-24 md:py-28">
           <PageEnter
             className="w-full"
             initial={{ opacity: 0, x: -48 }}
@@ -82,9 +85,11 @@ export default async function HomePage() {
       </div>
 
       <div className="bg-gradient-to-b from-canvas via-canvas to-stone/20 py-10">
-        <Suspense fallback={<HeroSkeleton />}>
-          <HeroSection fallbackSlides={FALLBACK_SLIDES} />
-        </Suspense>
+        <div className="relative -mt-12 px-4 md:px-0">
+          <Suspense fallback={<HeroSkeleton />}>
+            <HeroSection fallbackSlides={FALLBACK_SLIDES} />
+          </Suspense>
+        </div>
       </div>
 
       <PageShell className="pt-12">
@@ -96,7 +101,7 @@ export default async function HomePage() {
               
               <div className="relative z-10">
                 <div className="flex items-baseline gap-3">
-                  <h2 className="text-3xl font-serif font-bold tracking-tight text-ink">文化中国介绍</h2>
+                  <h2 className="text-3xl font-serif font-bold tracking-tight text-ink">计划简介</h2>
                   <span className="text-sm font-sans uppercase tracking-widest text-ink/40">Program Overview</span>
                 </div>
                 
@@ -135,10 +140,10 @@ export default async function HomePage() {
 
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   <Button asChild size="lg" className="px-8 shadow-sm transition-all hover:opacity-90">
-                    <Link href="/intro">了解计划 / Learn more</Link>
+                    <Link href="/intro">了解计划</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="px-8 border-stone-300 transition-all hover:bg-stone-50 hover:text-primary">
-                    <Link href="/intro/mission">使命背景 / Mission</Link>
+                    <Link href="/intro/mission">使命背景</Link>
                   </Button>
                 </div>
               </div>
@@ -155,7 +160,7 @@ export default async function HomePage() {
 
               <div className="relative z-10">
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-xl font-serif font-semibold text-primary">学者寄语</h3>
+                  <h3 className="text-xl font-serif font-semibold text-primary">创办人寄语</h3>
                   {/* 项目 Logo 恢复原色 / Project Logo back to original */}
                   <div className="relative h-10 w-10">
                     <Image src="/images/branding/icon.svg" alt="Project Icon" fill className="object-contain" />
@@ -187,7 +192,6 @@ export default async function HomePage() {
               </div>
             </Panel>
           </div>
-
           <Section
             className="mt-10"
 
@@ -223,6 +227,7 @@ export default async function HomePage() {
               </Panel>
             </div>
           </Section>
+
 
           <Section
             description="聚合课程教学、特色活动等最新内容；当前已对接 external_resources 表。"
@@ -340,7 +345,7 @@ const LatestUpdatesSection = async () => {
             rel="noreferrer"
             target="_blank"
           >
-            <div className="flex items-start justify之间 gap-4">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-medium tracking-wide text-accent">{item.tag || "动态"}</p>
                 <h3 className="mt-3 text-lg font-serif font-semibold text-ink group-hover:text-primary">{item.title}</h3>
