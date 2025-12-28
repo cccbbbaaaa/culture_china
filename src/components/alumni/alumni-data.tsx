@@ -3,7 +3,6 @@ import { and, count, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { AlumniCardList } from "@/components/alumni/alumni-card-list";
 import { alumniProfiles, mediaAssets } from "@/db/schema";
 import { db } from "@/lib/db";
-import { getSignedMediaUrl } from "@/lib/storage";
 
 interface AlumniDataProps {
   cohort: number | null;
@@ -39,7 +38,7 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
       cohort: alumniProfiles.cohort,
       major: alumniProfiles.major,
       bioZh: alumniProfiles.bioZh,
-      storagePath: mediaAssets.storagePath,
+      assetId: mediaAssets.id,
       websiteUrl: alumniProfiles.websiteUrl,
     })
     .from(alumniProfiles)
@@ -65,16 +64,10 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
           .limit(noPhotoTake)
       : [];
 
-  const photoWithUrls = await Promise.all(
-    photoRows.map(async (row) => {
-      try {
-        const signed = await getSignedMediaUrl(row.storagePath, 60 * 60);
-        return { ...row, photoUrl: signed };
-      } catch {
-        return { ...row, photoUrl: null as string | null };
-      }
-    }),
-  );
+  const photoWithUrls = photoRows.map((row) => ({
+    ...row,
+    photoUrl: `/api/media/${row.assetId}`,
+  }));
 
   return (
     <AlumniCardList
@@ -98,6 +91,7 @@ export const AlumniData = async ({ cohort, take }: AlumniDataProps) => {
     />
   );
 };
+
 
 
 

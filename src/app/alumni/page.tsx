@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { alumniProfiles, externalResources, mediaAssets } from "@/db/schema";
 import { getResourceTypeLabel, getTypesBySection } from "@/lib/resource-types";
-import { getSignedMediaUrl } from "@/lib/storage";
 const STORY_TYPES = getTypesBySection("stories");
 
 export const dynamic = "force-dynamic";
@@ -66,7 +65,7 @@ const RandomAlumniGrid = async () => {
       cohort: alumniProfiles.cohort,
       major: alumniProfiles.major,
       bioZh: alumniProfiles.bioZh,
-      storagePath: mediaAssets.storagePath,
+      assetId: mediaAssets.id,
       websiteUrl: alumniProfiles.websiteUrl,
     })
     .from(alumniProfiles)
@@ -75,16 +74,10 @@ const RandomAlumniGrid = async () => {
     .orderBy(sql`random()`)
     .limit(randomLimit);
 
-  const photoWithUrls = await Promise.all(
-    photoRows.map(async (row) => {
-      try {
-        const signed = await getSignedMediaUrl(row.storagePath, 60 * 60);
-        return { ...row, photoUrl: signed };
-      } catch {
-        return { ...row, photoUrl: null as string | null };
-      }
-    }),
-  );
+  const photoWithUrls = photoRows.map((row) => ({
+    ...row,
+    photoUrl: `/api/media/${row.assetId}`,
+  }));
 
   return (
     <>
