@@ -74,7 +74,7 @@ export const ImageLightbox = ({ src, alt, thumbSize = 96, className }: ImageLigh
           >
             <div className="flex items-center justify-between gap-4">
               <p className="text-sm font-medium text-canvas" id={titleId}>
-                微信公众号二维码 / WeChat QR
+                微信公众号二维码
               </p>
               <button
                 aria-label="关闭 / Close"
@@ -93,16 +93,15 @@ export const ImageLightbox = ({ src, alt, thumbSize = 96, className }: ImageLigh
             </div>
 
             <p className="mt-4 text-xs leading-relaxed text-canvas/70">
-              点击遮罩或按 ESC 关闭。
-              <br />
-              Click outside or press ESC to close.
-            </p>
+              按 ESC 键关闭。
+                </p>
           </div>
         </div>
       ) : null}
     </>
   );
 };
+
 
 
 

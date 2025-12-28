@@ -29,3 +29,4 @@ export const AlumniEditPanel = ({ profile, educations, experiences }: AlumniEdit
 };
 
 
+

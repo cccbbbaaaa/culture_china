@@ -60,3 +60,4 @@ export const AdminPanel = ({ trigger, title, description, children, widthClass =
 };
 
 
+
