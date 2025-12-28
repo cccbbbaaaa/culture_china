@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -29,6 +30,10 @@ export interface HeroSlide {
    * 图片说明 / Caption
    */
   caption?: string;
+  /**
+   * 点击跳转链接 / Optional href target
+   */
+  href?: string;
 }
 
 export interface HeroCarouselProps {
@@ -70,6 +75,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
   const safeIndex = safeSlides.length === 0 ? 0 : Math.min(activeIndex, safeSlides.length - 1);
   const activeSlide = safeSlides[safeIndex];
   const activeSrc = activeSlide?.src ?? "";
+  const activeHref = activeSlide?.href;
 
   // 清除并重新设置自动滚动定时器 / Clear and reset auto-scroll timer
   const resetAutoScroll = useCallback(() => {
@@ -211,7 +217,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
             </AnimatePresence>
 
             {/* 控制按钮：固定在容器左右，缩放也稳定 / Stable controls */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
+            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-20">
               <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between px-3 sm:px-6 lg:px-8">
                 <button
                   aria-label="上一张 / Previous"
@@ -233,7 +239,7 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
             </div>
 
             {/* Dots：放到底部中间 / Dots */}
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-canvas/70 px-3 py-2 backdrop-blur">
+            <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-canvas/70 px-3 py-2 backdrop-blur">
               {safeSlides.map((slide, index) => {
                 const isActive = index === activeIndex;
                 return (
@@ -258,14 +264,27 @@ export const HeroCarousel = ({ slides, isFullBleed = false, className }: HeroCar
           {/* 文案区域：上图下文，更干净 / Text area below image */}
           <div className="px-6 py-7 sm:px-10 sm:py-10">
             <p className="text-xs font-medium uppercase tracking-widest text-accent/90">视域 · 情感 · 观点</p>
-            <h1 className="mt-3 text-[clamp(1.9rem,3vw,3.1rem)] font-serif font-semibold leading-tight text-ink">
-              {activeSlide.title}
-            </h1>
+            {activeHref ? (
+              <Link
+                href={activeHref}
+                prefetch={false}
+                rel="noreferrer"
+                target="_blank"
+                className="group mt-3 inline-flex items-center gap-2"
+                aria-label="查看原文"
+              >
+                <h1 className="text-[clamp(1.9rem,3vw,3.1rem)] font-serif font-semibold leading-tight text-ink transition-colors group-hover:text-primary">
+                  {activeSlide.title}
+                </h1>
+                <ExternalLink className="h-5 w-5 text-ink/50 transition-colors group-hover:text-primary" />
+              </Link>
+            ) : (
+              <h1 className="mt-3 text-[clamp(1.9rem,3vw,3.1rem)] font-serif font-semibold leading-tight text-ink">
+                {activeSlide.title}
+              </h1>
+            )}
             {activeSlide.subtitle ? (
               <p className="mt-3 max-w-4xl text-lg leading-relaxed text-ink/80">{activeSlide.subtitle}</p>
-            ) : null}
-            {activeSlide.caption ? (
-              <p className="mt-3 max-w-4xl text-base leading-relaxed text-ink/65">{activeSlide.caption}</p>
             ) : null}
           </div>
         </div>

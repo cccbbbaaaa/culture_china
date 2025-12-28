@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { ExternalLink } from "lucide-react";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, or } from "drizzle-orm";
 
 import { FacultyCarousel, type Faculty } from "@/components/alumni/faculty-carousel";
 import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
@@ -312,7 +312,7 @@ export default async function HomePage() {
             </Suspense>
           </Section>
 
-          <Section  title="校友与师资 / Alumni & Community">
+          <Section title="校友与师资 / Alumni & Community">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <Panel className="lg:col-span-2 hover:-translate-y-1 hover:shadow-xl">
                 <h3 className="text-xl font-serif font-semibold text-ink">师资墙</h3>
@@ -428,20 +428,21 @@ const HeroSection = async ({ fallbackSlides }: { fallbackSlides: HeroSlide[] }) 
     .orderBy(activityMedia.sortOrder)
     .limit(10);
 
-  const heroSlides: HeroSlide[] = heroRows.map((row, index) => ({
+  const heroSlides: HeroSlide[] = heroRows.map((row) => ({
     // 使用本地 API 代理访问 Storage，避免浏览器端 signed URL 400 / Proxy through our API to avoid signed URL 400
     src: `/api/media/${row.assetId}`,
     alt: `${row.title} / 轮播图片`,
     title: row.title,
     subtitle: row.subtitle ?? undefined,
-    caption: row.linkUrl ? `点击跳转 / Click to open` : `Slide ${index + 1}`,
+    href: row.linkUrl ?? undefined,
   }));
 
   return <HeroCarousel slides={heroSlides.length > 0 ? heroSlides : fallbackSlides} />;
 };
 
 const LatestUpdatesSection = async () => {
-  const rows = await db
+  // 优先查询置顶或推荐的内容 / Prioritize pinned or featured content
+  let rows = await db
     .select({
       title: externalResources.title,
       description: externalResources.summary,
@@ -449,8 +450,30 @@ const LatestUpdatesSection = async () => {
       tag: externalResources.type,
     })
     .from(externalResources)
-    .orderBy(desc(externalResources.publishedAt), desc(externalResources.createdAt))
+    .where(
+      or(eq(externalResources.isPinned, true), eq(externalResources.isFeatured, true))
+    )
+    .orderBy(
+      // 置顶优先，然后按发布时间排序 / Pinned first, then by published date
+      desc(externalResources.isPinned),
+      desc(externalResources.publishedAt),
+      desc(externalResources.createdAt)
+    )
     .limit(3);
+
+  // 如果没有置顶/推荐内容，回退到显示最新内容 / Fallback to latest if no featured/pinned
+  if (rows.length === 0) {
+    rows = await db
+      .select({
+        title: externalResources.title,
+        description: externalResources.summary,
+        href: externalResources.url,
+        tag: externalResources.type,
+      })
+      .from(externalResources)
+      .orderBy(desc(externalResources.publishedAt), desc(externalResources.createdAt))
+      .limit(3);
+  }
 
   if (rows.length === 0) {
     return <Panel className="border-dashed text-sm text-ink/60">暂无最新动态。</Panel>;
