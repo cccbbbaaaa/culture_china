@@ -25,6 +25,20 @@ const nextConfig = {
         basePath: process.env.EDGEONE_BASE_PATH || "",
       }
     : {}),
+  // EdgeOne Server Actions 兼容：允许代理域名访问
+  // EdgeOne Server Actions compatibility: allow proxy domain access
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "culture.zh-cn.edgeone.cool",
+        "pages-pro-19-6883.pages-scf-gz-pro.qcloudteo.com",
+        // 允许所有 EdgeOne 代理域名（通配符匹配）
+        // Allow all EdgeOne proxy domains (wildcard match)
+        /\.edgeone\.cool$/,
+        /\.qcloudteo\.com$/,
+      ],
+    },
+  },
 };
 
 export default nextConfig;
