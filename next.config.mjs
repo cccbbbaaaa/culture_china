@@ -31,6 +31,7 @@ const nextConfig = {
     serverActions: {
       allowedOrigins: [
         "culture.zh-cn.edgeone.cool",
+        "new.ccsper.com",
         "pages-pro-19-6883.pages-scf-gz-pro.qcloudteo.com",
         // 允许所有 EdgeOne 代理域名（通配符匹配）
         // Allow all EdgeOne proxy domains (wildcard match)
