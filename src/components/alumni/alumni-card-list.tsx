@@ -5,6 +5,8 @@ import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
 
+import { isValidWebsiteUrl, normalizeUrl } from "@/lib/utils";
+
 interface AlumniCard {
   id: number;
   name: string;
@@ -89,10 +91,10 @@ export const AlumniCardList = ({ photoCards, noPhotoCards }: AlumniCardListProps
                     {bioLines.length > previewLines.length ? <p className="text-ink/55">……</p> : null}
                   </div>
 
-                  {row.websiteUrl ? (
+                  {isValidWebsiteUrl(row.websiteUrl) ? (
                     <p className="mt-3 text-sm text-ink/70">
                       个人主页：
-                      <a className="ml-2 break-all text-primary hover:underline" href={row.websiteUrl} rel="noreferrer" target="_blank">
+                      <a className="ml-2 break-all text-primary hover:underline" href={normalizeUrl(row.websiteUrl)} rel="noreferrer" target="_blank">
                         {row.websiteUrl}
                       </a>
                     </p>
@@ -134,10 +136,10 @@ export const AlumniCardList = ({ photoCards, noPhotoCards }: AlumniCardListProps
                     ))}
                   </div>
                 ) : null}
-                {row.websiteUrl ? (
+                {isValidWebsiteUrl(row.websiteUrl) ? (
                   <p className="mt-2 text-xs text-ink/70">
                     主页：
-                    <a className="ml-2 break-all text-primary hover:underline" href={row.websiteUrl} rel="noreferrer" target="_blank">
+                    <a className="ml-2 break-all text-primary hover:underline" href={normalizeUrl(row.websiteUrl)} rel="noreferrer" target="_blank">
                       {row.websiteUrl}
                     </a>
                   </p>

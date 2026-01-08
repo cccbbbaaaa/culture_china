@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { alumniProfiles, externalResources, mediaAssets } from "@/db/schema";
 import { getResourceTypeLabel, getTypesBySection } from "@/lib/resource-types";
+import { isValidWebsiteUrl, normalizeUrl } from "@/lib/utils";
 const STORY_TYPES = getTypesBySection("stories");
 
 export const dynamic = "force-dynamic";
@@ -123,10 +124,10 @@ const RandomAlumniGrid = async () => {
                     {bioLines.length > previewLines.length ? <p className="text-ink/55">……</p> : null}
                   </div>
 
-                  {row.websiteUrl ? (
+                  {isValidWebsiteUrl(row.websiteUrl) ? (
                     <p className="mt-3 text-sm text-ink/70">
                       个人主页：
-                      <a className="ml-2 break-all text-primary hover:underline" href={row.websiteUrl} rel="noreferrer" target="_blank">
+                      <a className="ml-2 break-all text-primary hover:underline" href={normalizeUrl(row.websiteUrl)} rel="noreferrer" target="_blank">
                         {row.websiteUrl}
                       </a>
                     </p>
