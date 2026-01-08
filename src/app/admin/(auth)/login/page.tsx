@@ -4,6 +4,10 @@ import { AdminLoginForm } from "@/components/admin/login-form";
 import { getAdminSession } from "@/lib/admin-session";
 import { getRoleLandingPath } from "@/lib/admin-auth";
 
+// 强制动态渲染，避免登录后因缓存导致的 404 / Force dynamic rendering to avoid cached 404 after login
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminLoginPage() {
   const session = getAdminSession();
 
