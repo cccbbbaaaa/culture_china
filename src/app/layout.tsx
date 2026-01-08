@@ -38,8 +38,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "浙江大学晨兴文化中国人才计划",
-  description: "Zhejiang University Morningside Cultural China Scholars Program",
+  title: "晨兴文化中国人才计划",
+  description: "Morningside Cultural China Scholars Program",
   icons: {
     icon: "/images/branding/icon.svg",
     shortcut: "/images/branding/icon.svg",
@@ -65,6 +65,7 @@ export default function RootLayout({
     </html>
   );
 }
+
 
 
 

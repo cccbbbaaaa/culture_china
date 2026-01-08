@@ -73,7 +73,7 @@ export const Header = () => {
           <div className="flex items-center">
             <Link className="flex items-center gap-3" href="/">
               <Image
-                alt="浙江大学晨兴文化中国人才计划 Icon / Program icon"
+                alt="晨兴文化中国人才计划 Icon / Program icon"
                 className="object-contain"
                 height={64}
                 src="/images/branding/icon.svg"
@@ -81,7 +81,7 @@ export const Header = () => {
               />
               <div className="hidden sm:block">
                 <p className="text-lg font-serif font-semibold leading-tight text-primary md:text-xl xl:text-2xl">
-                  浙江大学晨兴文化中国人才计划
+                  晨兴文化中国人才计划
                 </p>
               </div>
               <span className="text-lg font-serif font-semibold text-primary sm:hidden">文化中国</span>

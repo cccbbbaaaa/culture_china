@@ -11,9 +11,9 @@ export const Footer = () => {
         <div>
           <h3 className="mb-4 text-lg font-serif font-semibold">关于我们</h3>
           <p className="text-sm leading-relaxed text-canvas/80">
-            浙江大学晨兴文化中国人才计划
+            晨兴文化中国人才计划
             <br />
-            Zhejiang University Morningside Cultural China Scholars Program
+            Morningside Cultural China Scholars Program
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export const Footer = () => {
       <div>
         <div className="mx-auto max-w-screen-2xl px-4 py-6 text-center sm:px-6 lg:px-8">
           <p className="text-sm text-canvas/60">
-            © {new Date().getFullYear()} 浙江大学晨兴文化中国人才计划. All rights reserved.
+            © {new Date().getFullYear()} 晨兴文化中国人才计划. All rights reserved.
           </p>
         </div>
       </div>

@@ -50,3 +50,4 @@ export const PaginationControls = ({ page, hasPrev, hasNext, basePath, searchPar
 
 
 
+
