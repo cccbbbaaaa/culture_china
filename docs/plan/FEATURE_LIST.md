@@ -8,8 +8,8 @@
 
 ## 1. 核心架构与引用 (References)
 
-* **技术架构** : 见 `docs/basic_rule/ARCHITECTURE.md` (Next.js, LangGraph, Drizzle ORM).
-* **视觉规范** : 见 `docs/basic_rule/DESIGN_SYSTEM.md` (新中式风格, 沉稳枣红/典雅金).
+* **技术架构** : 见 `docs/basic_rule/ARCHITECTURE.md` (Next.js, TypeScript, Drizzle ORM).
+* **视觉规范** : 见 `docs/basic_rule/DESIGH_SYSTEM.md` (新中式风格, 沉稳枣红 / 典雅金).
 
 ## 2. 功能模块清单 (Feature Modules)
 
@@ -46,7 +46,6 @@
 * **使命背景** : 项目历史与愿景介绍。
 * **培养宗旨** : 核心教育理念阐述。
 * **师资嘉宾** : 导师名录（卡片墙），支持点击查看详情。
-* **儒商中心** : 静态介绍页。
 * **周老师专栏** : 专栏文章列表（本地存储或精选链接）。
 
 ### 2.2 模块二：学员风采 (Alumni Showcase)
