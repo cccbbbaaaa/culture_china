@@ -96,6 +96,7 @@ git commit -m "<type>: <中文描述>"
 - 以“一个完整部分 / 一个可独立验收的子任务”为最小交付单位推进，不并行堆积多个未发布改动
 - 每完成一个完整部分后，必须按顺序执行：`typecheck` → `commit` → `push` → 等待部署完成 → 浏览器验收前端页面
 - 每次准备 `push` 前，必须同步更新 `docs/task/TODO.md` 中本次任务的勾选状态、执行说明与新增发现；TODO 更新应与代码改动同批提交
+- 除非明确决定下线，现有公开页面、导航入口与路由一律保留；未完成页面优先改造成体面的“待建设 / 待开发”状态页，而不是直接删除或隐藏
 - 只有在**部署成功**且**前端页面验收无明显问题**后，才进入下一个部分
 - 若部署失败或页面验收发现问题，必须优先在当前部分内修复并重新发布，不得带着已知问题切到下一个 Task
 - 涉及 UI 的 Task，验收至少包含对应页面的桌面端 + 移动端检查；必要时补截图留档
@@ -252,7 +253,7 @@ git commit -m "<type>: <中文描述>"
 - `src/app/layout.tsx:40` 已有全局 metadata：`title: "晨兴文化中国人才计划"`，`description: "Morningside Cultural China Scholars Program"`
 - 缺少 `title.template`，导致子页面 title 无法自动拼接站点名
 - description 为纯英文，与中文优先策略不符
-- 经 `find src/app -name "page.tsx"` 实际清点，**当前公开页面共 17 个**；若 Task G 决定暂不上线 `课程介绍`，该数量与下方 matrix 需同步改为 16 个
+- 经 `find src/app -name "page.tsx"` 实际清点，**当前公开页面共 17 个**；其中 `课程介绍` 页暂时保留，待后续补齐正式内容
 
 **第一步：升级 `src/app/layout.tsx` 全局 metadata**
 
@@ -286,11 +287,10 @@ export const metadata: Metadata = {
 | `src/app/activities/others/page.tsx` | `其他活动` | 文化中国系列其他主题活动。 |
 | `src/app/curriculum/page.tsx` | `课程教学` | 历届课程新闻场记与精选讲座。 |
 | `src/app/curriculum/news/page.tsx` | `新闻场记` | 课程活动记录与新闻推文。 |
-| `src/app/curriculum/overview/page.tsx` | `课程介绍` | 文化中国课程体系介绍。（仅在 Task G 决定保留入口时配置） |
+| `src/app/curriculum/overview/page.tsx` | `课程介绍` | 文化中国课程体系介绍。 |
 | `src/app/admissions/page.tsx` | `招生信息` | 报名条件、招生流程与时间安排。 |
 
 > Admin 路由（`src/app/admin/**`）无需配置公开 metadata，跳过。
-> 若 Task G 决定下线 `课程介绍` 入口，则删除 `src/app/curriculum/overview/page.tsx` 这一行，并同步调整公开页面总数。
 
 * [ ] 升级 `src/app/layout.tsx`：添加 `title.template`，description 改为中文
 * [ ] 按 matrix 为公开页面补全 `export const metadata`
@@ -330,25 +330,25 @@ export const metadata: Metadata = {
 ### Task G — 处理未完成栏目“课程介绍”的发布策略（P0，替换旧站前必须决策）
 
 **问题**：
-- `src/app/curriculum/overview/page.tsx` 仍然是公开可访问的占位页，正文直接写着“即将发布”“内容筹备中”
+- `src/app/curriculum/overview/page.tsx` 仍然是公开可访问的未完成页面，需要从“裸占位文案”升级为体面的待建设页
 - `src/components/shared/header.tsx` 的桌面/移动端导航仍然都暴露了 `课程介绍` 入口
-- 这意味着虽然主 `curriculum` 页里的空白 Section 已删除，但未完成栏目仍然以独立页面形式对外上线
+- 这意味着虽然主 `curriculum` 页里的空白 Section 已删除，但该栏目仍需以“保留入口、优化呈现”的方式继续对外承接访问
 
 **涉及文件**：
 - `src/app/curriculum/overview/page.tsx`
 - `src/components/shared/header.tsx`
 
-**建议策略（二选一，发布前定案）**：
-1. **补完内容后保留入口**
-   - 将 `课程介绍` 页做成真正的课程体系介绍/归档页
-   - 至少补齐页面首屏、课程结构、年份/主题归档入口
-2. **本次发布暂不上线**
-   - 从 Header 中移除 `课程介绍` 导航入口
-   - 如有必要，将 `/curriculum/overview` 临时重定向到 `/curriculum`
+**当前策略**：
+- 课程介绍栏目先保留，不从导航中移除
+- `src/app/curriculum/overview/page.tsx` 继续保留独立路由
+- 当前页面先优化为正式的“待建设”状态页，避免继续暴露开发期占位文案
+- 后续补齐正式内容与 metadata 后，再升级为稳定上线栏目
 
-* [ ] 决定 `课程介绍` 本次发布策略：补完上线 or 暂时下线入口
-* [ ] 若暂不上线，移除 Header 中 `课程介绍` 导航入口
-* [ ] 若继续保留路由，替换“即将发布 / 内容筹备中”占位文案与空壳内容
+* [x] 决定 `课程介绍` 当前策略：先保留栏目与入口，后续补内容
+* [x] 保留 Header 中 `课程介绍` 导航入口
+* [x] 保留 `/curriculum/overview` 独立页面路由
+* [x] 将 `课程介绍` 页面优化为可公开访问的“待建设”状态页
+* [ ] 后续补齐 `课程介绍` 的正式内容与 metadata，避免长期保持为说明页
 
 ---
 
