@@ -87,14 +87,78 @@ git commit -m "<type>: <中文描述>"
 ```
 
 **重要原则**：
-- 修改前先 `git status` 确认工作区干净
+- 修改前先 `git status` 确认当前工作区状态；若工作区非干净，需明确本 Task 涉及文件，并确保只暂存当前任务相关改动
 - 每次只提交本 Task 涉及的文件，不捎带无关改动
 - 若 `pnpm typecheck` 失败，修复后再提交，**不得带着 TS 错误提交**
 - Task D 体量大（18个文件），建议分两次 commit：先 `layout.tsx`，再所有 page 文件
 
+**发布推进规范（新增，替换旧站前严格执行）**：
+- 以“一个完整部分 / 一个可独立验收的子任务”为最小交付单位推进，不并行堆积多个未发布改动
+- 每完成一个完整部分后，必须按顺序执行：`typecheck` → `commit` → `push` → 等待部署完成 → 浏览器验收前端页面
+- 每次准备 `push` 前，必须同步更新 `docs/task/TODO.md` 中本次任务的勾选状态、执行说明与新增发现；TODO 更新应与代码改动同批提交
+- 只有在**部署成功**且**前端页面验收无明显问题**后，才进入下一个部分
+- 若部署失败或页面验收发现问题，必须优先在当前部分内修复并重新发布，不得带着已知问题切到下一个 Task
+- 涉及 UI 的 Task，验收至少包含对应页面的桌面端 + 移动端检查；必要时补截图留档
+- 若一个 Task 体量过大，应先拆成多个“可独立发布的小部分”，每一部分都遵守上述发布节奏
+
 **文件冲突警告**：
 - `src/app/intro/faculty/page.tsx` 同时被 **Task C**（布局调整）和 **Task D**（添加 metadata）修改
 - 解决方案：Task C 执行完 commit 后，Task D 再 pull/rebase 并在同文件追加 metadata，或由同一 agent 串行完成这两个文件
+
+---
+
+### 推荐执行顺序与可行性评估
+
+**Wave 0（发布前置决策，必须先完成）**
+- **Task G — 处理未完成栏目“课程介绍”的发布策略**
+  - **可行性**：高。主要是产品决策 + 导航策略调整，技术改动可控。
+  - **风险**：高。会直接影响公开页面数量、Header 导航、SEO matrix 与上线范围。
+- **Task H — 统一全站项目数据口径**
+  - **可行性**：中。技术实现不复杂，但需要先确认官方数字来源。
+  - **风险**：高。若口径未统一，后续 SEO、文案与截图验收都会放大错误信息。
+
+**Wave 1（立即收口，提交前确认）**
+- **Task F — 工程稳定性修复**
+  - **可行性**：高。当前 worktree 已落地，重点是提交/发布时确认不回退，并同步 TODO 状态。
+  - **风险**：低。属于小范围修复，但文档状态必须与代码保持一致。
+- **Task C — 师资嘉宾页面优化**
+  - **可行性**：高。集中在 `src/app/intro/faculty/page.tsx` 单页，主要是网格、标题和分组层级调整，不涉及数据结构。
+  - **风险**：低。只需注意与 Task D 的 metadata 修改冲突。
+- **Task E — 首页移动端 Hero 副标题优化**
+  - **可行性**：高。集中在 `src/app/page.tsx` 首屏文案样式，改动范围极小。
+  - **风险**：低。完成后需补 390px 左右视口截图确认。
+
+**Wave 2（发布质量补齐，中风险，中等体量）**
+- **Task D — 全站 SEO Metadata 补全**
+  - **可行性**：高。属于机械性补全，但必须建立在 Task G / H 已定稿的前提上。
+  - **风险**：中。涉及公开页面范围较大；若导航结构或页面数量变化，需同步重算 matrix。
+- **Task I — 清理公开页面中的后台术语与分类编码**
+  - **可行性**：高。以文案和标签映射调整为主，改动面可控。
+  - **风险**：低。适合与 metadata、公开页首屏文案一起收口。
+
+**Wave 3（UI 统一与视觉升级，中风险，高收益）**
+- **统一公开页面首屏层级**
+  - **可行性**：高。主要复用 `PageHeader` 体系，属于样式一致性工作。
+  - **风险**：低。重点控制标题区过高、首屏内容过晚出现的问题。
+- **优化首页与内页的品牌连续性**
+  - **可行性**：中高。建议先选 `intro` 与 `activities` 两个页面作为试点，而不是一次推全站。
+  - **风险**：中。若没有明确基线，容易做成局部风格漂移。
+- **增加页面段落节奏控制**
+  - **可行性**：高。主要调整 section 间距、标题区与首个内容块的距离。
+  - **风险**：低。适合在 Wave 3 统一处理。
+
+**Wave 4（验收与长期优化，非阻塞）**
+- **截图验收基线（Desktop + Mobile）**
+  - **可行性**：高。建议在首页、师资页、学员页、活动页建立基线。
+  - **风险**：低。对后续视觉回归价值很高。
+- **替换全部占位图片 / 批量添加微交互**
+  - **可行性**：中。需要素材质量和统一的动效策略支持。
+  - **风险**：中高。若过早推进，容易分散精力，不建议作为近期阻塞项。
+
+**总体判断**
+- 当前 Phase 4 方案总体**可行**，但发布替换旧站前，必须先锁定 `Task G + Task H`，否则导航范围、公开页面数与对外文案会反复变动。
+- 最合理的推进链路是：`Task G / Task H → Task F → Task C / Task E → Task D / Task I → Wave 3 视觉收口`。
+- 不建议现在把“全站视觉精修”大范围铺开；应先稳定公开信息结构与上线范围，再做整站统一。
 
 ---
 
@@ -122,8 +186,8 @@ git commit -m "<type>: <中文描述>"
 - 删除整个 <Section title="课程介绍 / Overview">...</Section> 块（约第49–55行）
 ```
 
-* [ ] 修复 `src/app/activities/page.tsx` 3处开发注释
-* [ ] 删除 `src/app/curriculum/page.tsx` 中 "课程介绍/Overview" 空白占位 Section
+* [x] 修复 `src/app/activities/page.tsx` 3处开发注释
+* [x] 删除 `src/app/curriculum/page.tsx` 中 "课程介绍/Overview" 空白占位 Section
 
 ---
 
@@ -150,8 +214,8 @@ git commit -m "<type>: <中文描述>"
 → 删除此 description（技术性说明，非用户信息）
 ```
 
-* [ ] 优化无照片学员卡片样式，与有照片卡片视觉档次一致
-* [ ] 删除学员风采页面中面向开发者的 Section description
+* [x] 优化无照片学员卡片样式，与有照片卡片视觉档次一致
+* [x] 删除学员风采页面中面向开发者的 Section description
 
 ---
 
@@ -188,7 +252,7 @@ git commit -m "<type>: <中文描述>"
 - `src/app/layout.tsx:40` 已有全局 metadata：`title: "晨兴文化中国人才计划"`，`description: "Morningside Cultural China Scholars Program"`
 - 缺少 `title.template`，导致子页面 title 无法自动拼接站点名
 - description 为纯英文，与中文优先策略不符
-- 经 `find src/app -name "page.tsx"` 实际清点，**公开页面共 17 个**，全部无页面级 metadata
+- 经 `find src/app -name "page.tsx"` 实际清点，**当前公开页面共 17 个**；若 Task G 决定暂不上线 `课程介绍`，该数量与下方 matrix 需同步改为 16 个
 
 **第一步：升级 `src/app/layout.tsx` 全局 metadata**
 
@@ -222,13 +286,14 @@ export const metadata: Metadata = {
 | `src/app/activities/others/page.tsx` | `其他活动` | 文化中国系列其他主题活动。 |
 | `src/app/curriculum/page.tsx` | `课程教学` | 历届课程新闻场记与精选讲座。 |
 | `src/app/curriculum/news/page.tsx` | `新闻场记` | 课程活动记录与新闻推文。 |
-| `src/app/curriculum/overview/page.tsx` | `课程介绍` | 文化中国课程体系介绍。 |
+| `src/app/curriculum/overview/page.tsx` | `课程介绍` | 文化中国课程体系介绍。（仅在 Task G 决定保留入口时配置） |
 | `src/app/admissions/page.tsx` | `招生信息` | 报名条件、招生流程与时间安排。 |
 
 > Admin 路由（`src/app/admin/**`）无需配置公开 metadata，跳过。
+> 若 Task G 决定下线 `课程介绍` 入口，则删除 `src/app/curriculum/overview/page.tsx` 这一行，并同步调整公开页面总数。
 
 * [ ] 升级 `src/app/layout.tsx`：添加 `title.template`，description 改为中文
-* [ ] 按 matrix 为 17 个公开页面补全 `export const metadata`
+* [ ] 按 matrix 为公开页面补全 `export const metadata`
 
 ---
 
@@ -250,14 +315,99 @@ export const metadata: Metadata = {
 
 ---
 
-### 已完成的 Phase 4 其他项
+### Task F — 工程稳定性修复（P2，当前 worktree 已完成）
+
+**问题来源**：代码 review 发现 2 处 Tailwind 类名 typo，以及 `typecheck` 对增量缓存较敏感。
+
+> 说明：以下 3 项在当前工作树已落地；后续若拆分提交、回滚或 cherry-pick，需同步修正文档状态。
+
+* [x] 修复 `src/app/activities/others/page.tsx` 分页容器中的 `justify-between` typo
+* [x] 修复 `src/app/curriculum/page.tsx` 卡片头部中的 `justify-between` typo
+* [x] 调整 `package.json` 中的 `typecheck` 脚本为 `tsc --noEmit --incremental false`，降低对 `tsconfig.tsbuildinfo` 增量缓存的依赖
+
+---
+
+### Task G — 处理未完成栏目“课程介绍”的发布策略（P0，替换旧站前必须决策）
+
+**问题**：
+- `src/app/curriculum/overview/page.tsx` 仍然是公开可访问的占位页，正文直接写着“即将发布”“内容筹备中”
+- `src/components/shared/header.tsx` 的桌面/移动端导航仍然都暴露了 `课程介绍` 入口
+- 这意味着虽然主 `curriculum` 页里的空白 Section 已删除，但未完成栏目仍然以独立页面形式对外上线
+
+**涉及文件**：
+- `src/app/curriculum/overview/page.tsx`
+- `src/components/shared/header.tsx`
+
+**建议策略（二选一，发布前定案）**：
+1. **补完内容后保留入口**
+   - 将 `课程介绍` 页做成真正的课程体系介绍/归档页
+   - 至少补齐页面首屏、课程结构、年份/主题归档入口
+2. **本次发布暂不上线**
+   - 从 Header 中移除 `课程介绍` 导航入口
+   - 如有必要，将 `/curriculum/overview` 临时重定向到 `/curriculum`
+
+* [ ] 决定 `课程介绍` 本次发布策略：补完上线 or 暂时下线入口
+* [ ] 若暂不上线，移除 Header 中 `课程介绍` 导航入口
+* [ ] 若继续保留路由，替换“即将发布 / 内容筹备中”占位文案与空壳内容
+
+---
+
+### Task H — 统一全站项目数据口径（P1，发布前必须校对）
+
+**问题**：当前公开页面中的核心数字口径不一致，容易在替换旧站后被用户直接发现。
+
+**已发现的冲突样例**：
+- `src/app/page.tsx`：`17 期 / 500 余位`、另处写 `519`
+- `src/app/intro/page.tsx`：`17 期 519 人，已结业学员 459 人`
+- `src/app/admissions/page.tsx`：`16 期、489 名学员；已结业 424 人`
+- `src/app/intro/purpose/page.tsx`：`17 期 · 500+ “文中人”`
+
+**建议做法**：
+- 先以旧官网/官方材料确定唯一口径
+- 修正文案后，尽量抽到共享常量或内容配置，避免后续再次漂移
+
+* [ ] 确认官方口径：培养期数、累计学员、已结业人数、升学/职业去向比例
+* [ ] 统一首页、计划介绍、使命背景、培养宗旨、招生信息等页面中的数字文案
+* [ ] 将复用统计抽到共享常量或内容配置，避免未来再次分叉
+
+---
+
+### Task I — 清理公开页面中的后台术语与分类编码（P2）
+
+**问题**：部分公开页面仍带有“后台 / 推文类型 / 自动同步 / 实时获取”等实现细节措辞，首页最新动态还直接展示了原始分类值，不适合作为正式官网文案。
+
+**已发现位置**：
+- `src/app/page.tsx`：首页 `Latest Updates` 卡片标签直接输出原始 `type`
+- `src/app/activities/forum/page.tsx`
+- `src/app/activities/visits/page.tsx`
+- `src/app/activities/others/page.tsx`
+- `src/app/curriculum/news/page.tsx`
+- `src/app/alumni/stories/page.tsx`
+
+**操作方案**：
+- 首页动态标签统一改为前台友好的展示名（复用 `getResourceTypeLabel`）
+- 各公开页 description 只保留用户价值、内容范围与浏览引导，不解释后台实现
+
+* [ ] 首页最新动态标签改为用户可读的前台文案
+* [ ] 清理公开页面中“后台 / 推文类型 / 自动同步 / 实时获取”等实现细节措辞
+* [ ] 逐页复查公开页首屏说明，确保不再泄露管理后台语境
+
+---
+
+### Phase 4 其他项（持续推进）
 
 * [ ] **视觉精修**
   * [ ] 替换所有占位图片为高质量素材。
   * [ ] 调整字间距、行高，落实 "新中式" 留白设计。
   * [ ] 添加微交互动画 (Framer Motion)。
+  * [ ] 统一公开页面首屏层级：为 `intro / alumni / curriculum / activities / admissions` 建立一致的 PageHeader 间距、标题字号与副标题宽度规则。
+  * [ ] 师资嘉宾页编排优化见 Task C，不在此处重复维护独立子清单。
+  * [ ] 优化首页与内页的品牌连续性：将首页的红色品牌氛围、衬线标题语言和高光细节，延续到至少 2 个核心内页。
+  * [ ] 首页移动端首屏优化见 Task E；其余页面移动端体验问题在此处统一收口，不再重复拆分首页子项。
+  * [ ] 增加页面段落节奏控制：收紧部分内页顶部留白，统一 Section 间距，避免“标题区过高、首屏内容过晚出现”。
 * [ ] **SEO 与 性能**
   * [ ] 配置 Metadata (Title, Description)。← 见 Task D
   * [ ] 检查图片加载性能 (Image Optimization)。
+  * [ ] 为首页、师资页、学员页、活动页建立截图验收基线（Desktop + Mobile），作为后续视觉回归标准。
 
 *注：具体每个板块的设计细节（如具体的排版样式、交互特效）将在开发过程中根据实际素材进行迭代。*

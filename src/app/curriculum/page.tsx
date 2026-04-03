@@ -46,13 +46,6 @@ export default async function CurriculumPage({ searchParams }: CurriculumPagePro
           </Suspense>
         </Section>
 
-        <Section title="课程介绍 / Overview">
-          <Panel className="border-dashed">
-            <p className="text-sm leading-relaxed text-ink/70">
-              预留：按年份归档课程大纲、师资与阅读清单等。
-            </p>
-          </Panel>
-        </Section>
       </PageEnter>
     </PageShell>
   );
@@ -95,7 +88,7 @@ const CurriculumFeed = async ({ page }: { page: number }) => {
             rel="noreferrer"
             target="_blank"
           >
-            <div className="flex items-start justify之间 gap-4">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-medium text-ink/60">{formatDate(item.publishedAt)}</p>
                 <h3 className="mt-2 text-base font-serif font-semibold text-ink group-hover:text-primary">{item.title}</h3>

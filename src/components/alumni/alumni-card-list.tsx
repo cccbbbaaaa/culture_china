@@ -117,13 +117,13 @@ export const AlumniCardList = ({ photoCards, noPhotoCards }: AlumniCardListProps
             return (
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl border border-dashed border-stone bg-canvas/pure p-4"
+                className="rounded-xl border border-stone/60 bg-canvas/pure p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 initial={{ opacity: 0, y: 20 }}
                 key={row.id}
                 transition={{ duration: 0.4, delay: (photoCards.length + index) * 0.05 + 0.2 }}
               >
-                <p className="text-sm font-medium text-ink">{row.name}</p>
-                <p className="mt-1 text-xs text-ink/60">
+                <p className="font-serif text-base font-semibold text-ink">{row.name}</p>
+                <p className="mt-1 text-sm text-ink/60">
                   {row.cohort ? `第 ${row.cohort} 期` : "期数未知"}
                   {row.major ? ` · ${row.major}` : ""}
                 </p>
@@ -137,8 +137,8 @@ export const AlumniCardList = ({ photoCards, noPhotoCards }: AlumniCardListProps
                   </div>
                 ) : null}
                 {isValidWebsiteUrl(row.websiteUrl) ? (
-                  <p className="mt-2 text-xs text-ink/70">
-                    主页：
+                  <p className="mt-3 text-sm text-ink/70">
+                    个人主页：
                     <a className="ml-2 break-all text-primary hover:underline" href={normalizeUrl(row.websiteUrl)} rel="noreferrer" target="_blank">
                       {row.websiteUrl}
                     </a>

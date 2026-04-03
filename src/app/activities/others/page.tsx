@@ -83,7 +83,7 @@ export default async function ActivitiesOthersPage({ searchParams }: ActivitiesO
             </div>
           )}
 
-          <div className="mt-8 flex items-center justify之间">
+          <div className="mt-8 flex items-center justify-between">
             {page <= 1 ? (
               <Button disabled variant="outline">
                 上一页

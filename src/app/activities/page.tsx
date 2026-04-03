@@ -37,17 +37,17 @@ export default async function ActivitiesPage({ searchParams }: ActivitiesPagePro
       <PageEnter>
         <PageHeader
           breadcrumbs={[{ label: "首页", href: "/" }, { label: "特色活动", href: "/activities" }]}
-          subtitle="展现项目活力与对外交流成果；图片可作为图库入口（当前为骨架占位）。"
+          subtitle="展现项目活力与对外交流成果。"
           title="特色活动 / Featured Activities"
         />
 
-        <Section description="内容由运维后台「活动媒体管理 · /activities 图库」维护。" title="图库 / Gallery">
+        <Section title="图库 / Gallery">
           <Suspense fallback={<ListFallback message="图库加载中..." />}>
             <GalleryGrid />
           </Suspense>
         </Section>
 
-        <Section description="已与 external_resources 表对接，可通过后台推文控制展示与排序。" title="活动列表 / Activity Feed">
+        <Section title="活动列表 / Activity Feed">
           <Suspense fallback={<ListFallback message="活动内容加载中..." />}>
             <ActivitiesFeed page={page} />
           </Suspense>

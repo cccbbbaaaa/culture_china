@@ -63,7 +63,6 @@ export default async function AlumniProfilesPage({ searchParams }: AlumniProfile
         />
 
         <Section
-          description="有照片学员优先展示；无照片学员会统一排列在列表底部（不影响入库）。"
           title="按期数查看 / Browse by Cohort"
         >
           <Panel>
@@ -93,10 +92,3 @@ export default async function AlumniProfilesPage({ searchParams }: AlumniProfile
     </PageShell>
   );
 }
-
-
-
-
-
-
-
