@@ -178,7 +178,7 @@ export default async function HomePage() {
                 </div>
 
                 <div className="mt-6 max-w-3xl space-y-4 text-[1.05rem] leading-relaxed text-ink/85">
-                  <p>浙江大学晨兴文化中国人才计划于 2008 年创办，是一个非学分制、跨学科的精英培养项目，至今已累计培养 17 期 500 余位杰出学子。</p>
+                  <p>浙江大学晨兴文化中国人才计划于 2008 年创办，是一个非学分制、跨学科的精英培养项目，至今已累计培养 17 期 519 名学员。</p>
                   <p>
                     我们致力于在全校范围内选拔优秀学子，秉承
                     <span className="mx-1 font-serif font-bold text-primary underline decoration-primary/30 underline-offset-4">视域 · 情感 · 观点</span>

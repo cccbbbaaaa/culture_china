@@ -34,7 +34,7 @@ export default function CurriculumOverviewPage() {
             { label: "课程教学", href: "/curriculum" },
             { label: "课程介绍", href: "/curriculum/overview" },
           ]}
-          subtitle="本页作为课程体系入口继续保留。正式内容正在整理中，后续会补充课程主线、模块设置与历年专题资料。"
+          subtitle="本页已作为官网公开版本的一部分对外展示，当前处于持续建设阶段，后续会逐步补充课程主线、模块设置与历年专题资料。"
           title="课程教学 · 课程介绍"
         />
 
@@ -44,10 +44,10 @@ export default function CurriculumOverviewPage() {
             <div className="relative">
               <p className="text-xs uppercase tracking-[0.32em] text-primary/70">Under Construction</p>
               <h2 className="mt-4 max-w-3xl font-serif text-3xl font-semibold leading-tight text-ink sm:text-4xl">
-                课程体系内容正在整理，页面先行保留。
+                课程体系内容持续建设中。
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-ink/75">
-                当前阶段先保留栏目入口，避免公开站点出现断链或空白导航。正式上线前，这里会补齐课程结构、年度主题、阅读线索与代表性讲座内容。
+                当前公开版本先提供课程入口说明与资料索引框架，避免栏目缺位。后续会在现有公开页面基础上持续补充课程结构、年度主题、阅读线索与代表性讲座内容。
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -65,13 +65,13 @@ export default function CurriculumOverviewPage() {
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-2xl border border-primary/10 bg-canvas/80 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.26em] text-ink/45">当前状态</p>
-                  <p className="mt-3 text-lg font-serif font-semibold text-ink">栏目保留中</p>
-                  <p className="mt-2 text-sm leading-6 text-ink/70">导航入口与独立路由继续开放，可稳定访问。</p>
+                  <p className="mt-3 text-lg font-serif font-semibold text-ink">公开版本已开放</p>
+                  <p className="mt-2 text-sm leading-6 text-ink/70">导航入口与独立路由继续开放，当前即可对外访问。</p>
                 </div>
                 <div className="rounded-2xl border border-primary/10 bg-canvas/80 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.26em] text-ink/45">建设方向</p>
                   <p className="mt-3 text-lg font-serif font-semibold text-ink">课程结构化展示</p>
-                  <p className="mt-2 text-sm leading-6 text-ink/70">后续将按主题、模块与年份维度补齐课程资料。</p>
+                  <p className="mt-2 text-sm leading-6 text-ink/70">将按主题、模块与年份维度持续补充课程资料。</p>
                 </div>
                 <div className="rounded-2xl border border-primary/10 bg-canvas/80 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.26em] text-ink/45">临时入口</p>
@@ -95,8 +95,8 @@ export default function CurriculumOverviewPage() {
               </div>
               <ul className="mt-5 space-y-3 text-sm leading-7 text-ink/72">
                 <li>页面会继续保留，不做下线或跳转处理。</li>
-                <li>现阶段先以说明页承接访问，避免看到空白模块或开发占位文案。</li>
-                <li>后续补内容时，可在现有结构上直接扩展为正式课程介绍页。</li>
+                <li>当前公开版本先以说明页承接访问，避免看到空白模块或开发占位文案。</li>
+                <li>后续补内容时，将直接在这一公开页面上持续扩展，不再切换栏目策略。</li>
               </ul>
             </Panel>
 
@@ -129,7 +129,7 @@ export default function CurriculumOverviewPage() {
         </div>
 
         <Section
-          description="本页后续将从占位入口升级为完整的课程体系说明页，补齐结构与资料索引。"
+          description="本页当前已作为公开版本的一部分上线，后续将在此基础上持续补齐课程结构与资料索引。"
           title="后续将补充的内容 / In Progress"
         >
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

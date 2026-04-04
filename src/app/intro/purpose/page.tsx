@@ -88,7 +88,7 @@ export default function PurposePage() {
                     视域（Horizon）· 情感（Empathy）· 观点（Perspective）——在全球化视野中重建中华文化自信。
                   </p>
                   <div className="space-y-2 border-t border-primary/10 pt-4 text-sm text-ink/70">
-                    <p>・ 17 期 · 500+ “文中人”</p>
+                    <p>・ 17 期 · 519 位“文中人”</p>
                     <p>・ 每期 30 位学员，导师制关注</p>
                     <p>・ 海内外导师、跨界嘉宾共同参与</p>
                   </div>

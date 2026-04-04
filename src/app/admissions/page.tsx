@@ -79,7 +79,7 @@ export default async function AdmissionsPage() {
         <Section title="项目亮点 / Highlights">
           <Panel>
             <ul className="space-y-2 text-base leading-relaxed text-ink/80">
-              <li>· 自 2008 年起已培养 16 期、489 名学员；已结业 424 人。</li>
+              <li>· 自 2008 年起已培养 17 期、519 名学员；已结业学员 459 人。</li>
               <li>· 50% 赴哈佛、MIT、斯坦福、耶鲁、牛津、剑桥等留学；34% 在北大、清华、浙大等深造。</li>
               <li>· 16% 自主创业或就业，涌现罗德学者、富布莱特学者、海内外高校教师、企业家与公益发起人。</li>
               <li>· 课程 + 访学 + 论坛 + 公益实践 + 导师制，全程关注与个别指导。</li>
